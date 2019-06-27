@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>田螺哥</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        body {
+            background-color: #F4F4F4;
+            min-height: 100vh;
+        }
+
+        .empty {
+            min-height: 100vh;
+        }
+
+        .myBox {
+            width: 100%;
+            height: calc(50vw - 50px);
+            border-bottom: 3px solid #006B8D;
+            /*margin-bottom: 20px;*/
+            position: relative;
+        }
+
+        .myBox .bg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .userBox {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -55px;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .userBox .headBox {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background-color: #fff;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .userBox .headBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .userBox .center {
+            /*display: flex;
+            flex-wrap: wrap;
+            align-items: center;*/
+        }
+
+        .userBox .name {
+            font-size: 16px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            margin-bottom: 10px;
+        }
+
+        .userBox .phone {
+            font-size: 14px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            opacity: 0.6;
+        }
+
+        .userBox .right {
+            margin-left: auto;
+        }
+
+        .userBox .right>div {
+            height: 24px;
+            border-radius: 12px;
+            padding: 0 15px;
+            background: rgba(19, 118, 150, 0.5);
+            font-size: 12px;
+            color: white;
+            line-height: 24px;
+            margin-top: 5px;
+        }
+
+        .ul {
+            width: calc(100vw - 30px);
+            position: absolute;
+            left: 15px;
+            bottom: -31px;
+            background-color: white;
+            box-shadow: 0px 0px 20px 0px rgba(109, 109, 109, 0.5);
+            border-radius: 8px;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 99;
+        }
+
+        .ul .li {
+            width: 50%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .ul .li div {
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .ul .li:last-child div {
+            border-right: 0px solid #f0f0f0;
+        }
+
+        .ul .li .num {
+            font-size: 14px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .ul .li .title {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .tableBox {
+            /*width: calc(100vw - 30px);*/
+            margin-top: 41px;
+            padding: 10px 15px;
+            display: flex;
+            /*justify-content: space-between;*/
+            justify-content: space-around;
+            align-items: center;
+            background-color: #fff;
+        }
+
+        .tableBox>div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tableBox .imgBox {
+            width: 40px;
+            height: 40px;
+        }
+
+        .tableBox .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tableBox .text {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+        }
+
+        ul {
+            padding: 0 15px;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+
+        li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        li .imgBox {
+            width: 30px;
+            height: 30px;
+            /*background: linear-gradient(60deg, rgba(19, 118, 150, 0.2), rgba(0, 149, 197, 0.2));*/
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        li:nth-child(1)>.imgBox {
+            /*background: rgba(233, 157, 55, 0.2);*/
+        }
+
+        li .border {
+            width: calc(100vw - 74px);
+            border-bottom: 1px solid #ECECEC;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li .rightText {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #999999;
+        }
+
+        li .text {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: #666;
+            margin-left: 15px;
+            margin-right: auto;
+        }
+
+        li .right {
+            width: 26px;
+            height: 26px;
+        }
+
+        .myCode {
+            text-align: center;
+            font-size: 12px;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .cover {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .codeImgBox {
+            width: calc(100vw - 100px);
+            margin: auto;
+            padding: 5px;
+            border-radius: 8px;
+            background-color: white;
+            position: relative;
+            /*display: flex;
+            justify-content: center;*/
+        }
+
+        .codeImgBox .con {
+            width: calc(100vw - 100px - 20px - 40px);
+            /*height: 200px;*/
+            border: 2px solid #127FC4;
+            border-radius: 16px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: calc(0px - ((100vw - 100px - 20px - 40px)/2));
+            z-index: 99;
+            background: white;
+            /*display: flex;
+            justify-content: center;*/
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .codeImgBox .con .userbox {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .codeImgBox .con .userbox>img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .codeImgBox .con .userbox>div>div:first-child {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: bold;
+            color: rgba(51, 51, 51, 1);
+            line-height: 18px;
+        }
+
+        .codeImgBox .con .userbox>div>div:last-child {
+            font-size: 10px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .codeImgBox .con .code {
+            width: 100px;
+            height: 100px;
+            margin: auto;
+        }
+
+        .saveBtn {
+            width: 150px;
+            line-height: 30px;
+            text-align: center;
+            color: white;
+            background-color: #137696;
+            border-radius: 8px;
+            margin: auto;
+        }
+
+        .closeBtn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            margin-left: -15px;
+            background: white;
+            text-align: center;
+            line-height: 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .qianBtn {
+            width: 40px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 5px;
+            background-color: #0096C8;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            margin-left: 15px;
+        }
+
+        #cover_qian .qianBox {
+            border-radius: 8px;
+            overflow: hidden;
+            /*width: calc(100vw - 100px);*/
+        }
+
+        #cover_qian .qianTop {
+            width: 268px;
+            height: 107px;
+            position: relative;
+        }
+
+        #cover_qian .qianTop div {
+            width: 100%;
+            position: absolute;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            z-index: 9999;
+            left: 0;
+            top: 61px;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianTop img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cover_qian .qianCon {
+            background-color: white;
+            padding-bottom: 10px;
+        }
+
+        #cover_qian .qianCon .qianNum {
+            font-size: 24px;
+            text-align: center;
+            color: #FF5200;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianCon .qianNum span {
+            font-size: 36px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        #cover_qian .qianCon .btn {
+            width: 200px;
+            height: 50px;
+            border-radius: 25px;
+            line-height: 50px;
+            background: linear-gradient(-90deg, rgba(255, 137, 0, 1) 0%, rgba(255, 76, 0, 1) 100%);
+            text-align: center;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 1);
+            margin: 10px auto;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianCon .text {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            line-height: 18px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .rightText span {
+            color: #FF5200;
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="myBox">
+            <img class="bg" src="../image/my/bg.png" alt="">
+            <div class="userBox">
+                <div class="headBox">
+                    <img :src="userInfo.head_url&&token?userInfo.head_url:'../image/touxiang.png'" alt="" @click="fnOpenLoginWin">
+                </div>
+                <div class="center" @click="fnOpenLoginWin">
+                    <div class="name">{{token?userInfo.name:"点击登录"}}</div>
+                    <div class="phone">{{token?userInfo.phone:""}}</div>
+                </div>
+                <div class="right" v-if="token">
+                    <div @click="fnOpenMyCode">分享二维码</div>
+                    <div>邀请码{{token?userInfo.id:""}}</div>
+
+                </div>
+            </div>
+            <div class="ul" v-if="token&&showMoney">
+                <div class='li' @click="fnOpenIntegral_win">
+                    <div>
+                        <div class='num'>{{userInfo.integral||0}}</div>
+                        <div class='title'>积分</div>
+                    </div>
+                </div>
+                <div class='li' @click="fnOpenMyMoney_win">
+                    <div>
+                        <div class='num'>{{parseInt(userInfo.snail_coin)||0}}</div>
+                        <div class='title'>田螺币</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tableBox">
+            <div @click="fnOpenSupervisionServiceOrderDetail_frm">
+                <div class="imgBox"><img src="../image/my/jianli.png" alt=""></div>
+                <div class="text">监理订单</div>
+            </div>
+            <div @click="fnOpenAdvisoryOrderOrderDetail_win">
+                <div class="imgBox"><img src="../image/my/zixun.png" alt=""></div>
+                <div class="text">咨询订单</div>
+            </div>
+            <div @click="fnOpenTestOrderOrderDetail_win">
+                <div class="imgBox"><img src="../image/my/jiance.png" alt=""></div>
+                <div class="text">验房订单</div>
+            </div>
+            <div @click="fnOpenIntegralOrder_win" v-if="showMoney">
+                <div class="imgBox"><img src="../image/my/order.png" alt=""></div>
+                <div class="text">积分订单</div>
+            </div>
+            <div @click="fnOpenCashOrder_win" v-if="showMoney">
+                <div class="imgBox"><img src="../image/my/cash.png" alt=""></div>
+                <div class="text">现金订单</div>
+            </div>
+        </div>
+        <ul>
+            <li v-if="showMoney" @click="fnOpensignIn_win">
+                <div class="imgBox">
+                    <img src="../image/my/qiandao.png" alt="">
+                </div>
+                <div class="border"  >
+                    <div class="text">
+                        每日签到
+                    </div>
+                    <div class="rightText" v-if="sign"><span>已签到 +{{sign||addQianCode}}积分</span></div>
+                    <div class="rightText" v-if="!sign">连续签到有奖励</div>
+
+                    <div class="qianBtn" v-if="!sign">签到</div>
+                    <div class="right">
+                        <img src="../image/index/arrow.png" alt="">
+                    </div>
+                </div>
+            </li>
+            <li @click="fnOpenMyMoney_win">
+                <div class="imgBox">
+                    <img src="../image/my/money.png" alt="">
+                </div>
+                <div class="border">
+                    <div class="text">
+                        田螺币
+                    </div>
+                    <div class="right">
+                        <img src="../image/index/arrow.png" alt="">
+                    </div>
+                </div>
+            </li>
+            <li @click="fnOpenIntegral_win" v-if="showMoney">
+                <div class="imgBox">
+                    <img src="../image/my/jifen.png" alt="">
+                </div>
+                <div class="border">
+                    <div class="text">
+                        积分管理
+                    </div>
+                    <div class="right">
+                        <img src="../image/index/arrow.png" alt="">
+                    </div>
+                </div>
+            </li>
+
+            <li @click="fnOpenMyTuijian_win">
+                <div class="imgBox">
+                    <img src="../image/my/share.png" alt="">
+                </div>
+                <div class="border">
+                    <div class="text">
+                        我的推荐
+                    </div>
+                    <div class="right">
+                        <img src="../image/index/arrow.png" alt="">
+                    </div>
+                </div>
+            </li>
+            <li @click="fnOpenMyPrize_win">
+                <div class="imgBox">
+                    <img src="../image/my/gift.png" alt="">
+                </div>
+                <div class="border">
+                    <div class="text">
+                        我的奖品
+                    </div>
+                    <div class="right">
+                        <img src="../image/index/arrow.png" alt="">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="cover" class="cover" v-show="showCover" @click='fnCancel'>
+            <div id="codeImgBox" class="codeImgBox">
+                <img src="../image/myShareImg.png" alt="">
+                <div class="con">
+                    <div class="userbox">
+                        <img :src="userInfo.head_url?userInfo.head_url:'../image/touxiang.png'" alt="">
+                        <div class="right">
+                            <div>我是{{userInfo.name}}</div>
+                            <div>我为田螺哥代言</div>
+                        </div>
+                    </div>
+                    <img class="code" :src="myCode" alt="">
+                </div>
+                <div class="closeBtn">×</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript" src="../script/html2canvas.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                userInfo: '',
+                sign: "", //是否签到
+                token: '',
+                showCover: false,
+                showCover_qian: false,
+                myCode: "",
+                showMoney: true,
+                addQianCode: ""
+            },
+            mounted: function() {
+                var _this = this;
+                api.systemType == 'ios' ? this.fnShowMoney() : "";
+                this.fnGetToken();
+                this.fnGetUserInfo();
+                api.addEventListener({
+                    name: 'loginOut'
+                }, function(ret, err) {
+                    if (ret) {
+                        // alert('loginOut')
+                        _this.fnGetToken();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                api.addEventListener({
+                    name: 'loginIn'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetToken();
+                        _this.fnGetUserInfo();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                api.addEventListener({
+                    name: 'userInfoChaged'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetUserInfo();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                api.addEventListener({
+                    name: 'longpress'
+                }, function(ret, err) {
+                    _this.showCover ? _this.fnSaveCodeImg() : "";
+                });
+                api.addEventListener({
+                    name: 'myIntegralChanged'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetUserInfo();
+                    } else {}
+                });
+                // this.fnMakeCode();
+            },
+            methods: {
+                //ios控制显示田螺币
+                fnShowMoney: function() {
+                    var _this = this;
+                    // alert(api.appVersion)
+                    ajax('home/version_control', {
+                        type: 1,
+                        version_code: api.appVersion + ''
+                    }, function(res) {
+                        // console.log(JSON.stringify(res))
+                        if (res.code == 10000) {
+                            res.msg.show == "1" ? _this.showMoney = true : _this.showMoney = false;
+                        }
+                    }, function(res) {
+                        // console.log(JSON.stringify(res))
+                        // api.refreshHeaderLoadDone();
+                        hideProgress();
+                        // messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        // api.refreshHeaderLoadDone();
+                    })
+                },
+                takeScreenshot: function() {
+                    // console.log('test');
+                    html2canvas(document.getElementById('cover'), {
+                        onrendered: function(canvas) {
+                            // document.body.appendChild(canvas);
+                            // console.log(canvas)
+                        },
+                        // width: 300,
+                        // height: 300
+                    });
+                },
+                //获取token
+                fnGetToken: function() {
+                    this.token = api.getPrefs({
+                        sync: true,
+                        key: 'token'
+                    })
+                    // console.log("获取token===="+this.token)
+                },
+
+                //获取个人信息
+                fnGetUserInfo: function() {
+                    var _this = this;
+                    var token = api.getPrefs({
+                        sync: true,
+                        key: 'token'
+                    })
+                    if (!token) {
+                        return;
+                    }
+                    showProgress();
+                    ajax('getUserInfo', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.userInfo = res.msg;
+                            _this.sign = res.sign?parseInt(res.sign):res.sign;
+                            // console.log("res.sign---"+res.sign)
+                            _this.myCode = 'https://bshare.optimix.asia/barCode?site=weixin&url=https://www.tianluoge.com/tianluogeH5/verification.html?uid=' + res.msg.id
+                                // console.log('getUserInfo-----'+JSON.stringify(res))
+                            api.setPrefs({
+                                key: 'uid',
+                                value: res.msg.id
+                            });
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        // console.log("err--------"+JSON.stringify(res))
+                        api.removePrefs({
+                            key: 'token'
+                        });
+                        api.removePrefs({
+                            key: 'userInfo'
+                        });
+                        api.sendEvent({
+                            name: 'loginOut',
+                            extra: {}
+                        });
+                        // api.refreshHeaderLoadDone();
+                        hideProgress();
+                        // messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        // api.refreshHeaderLoadDone();
+                    })
+                },
+                //打开我的二维码
+                fnOpenMyCode: function() {
+                    messageToast('长按保存图片', 3000);
+                    this.fnOpenScreenCover()
+                },
+                fnOpenScreenCover: function() {
+                    this.showCover = true;
+                },
+                fnCancel: function() {
+                    this.showCover = false;
+                },
+                //保存二维码到本地
+                fnSaveCodeImg: function() {
+                    var _this = this;
+                    var wrapper = document.getElementById('codeImgBox');
+                    showProgress('')
+                    var trans = api.require('trans');
+                    var w = $api.offset(wrapper).w;
+                    var h = $api.offset(wrapper).h;
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    var getPixelRatio = function(context) {
+                        var backingStore = context.backingStorePixelRatio || context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio ||
+                            context.backingStorePixelRatio || 1;
+                        return (window.devicePixelRatio || 1) / backingStore;
+                    };
+                    var ratio = getPixelRatio(context);
+                    canvas.width = w * ratio;
+                    canvas.height = h * ratio;
+                    canvas.style.width = w + 'px';
+                    canvas.style.height = h + 'px';
+                    context.scale(ratio, ratio);
+                    html2canvas(wrapper, {
+                        canvas: canvas,
+                        background: '#fff',
+                        allowTaint: true
+                    }).then(function(canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        imgData = imgData.replace('data:image/png;base64,', '');
+                        trans.saveImage({
+                            base64Str: imgData,
+                            album: true,
+                            imgName: 'sample.png',
+                            imgPath: 'fs://img/'
+                        }, function(ret, err) {
+                            _this.fnCancel();
+                            hideProgress();
+                            if (ret.status) {
+                                successToast('已保存到相册')
+                            } else {
+                                alert("图片保存失败！")
+                            }
+                        });
+                    });
+
+                    // if (api.systemType == "ios") {
+                    //     api.saveMediaToAlbum({
+                    //         path: url,
+                    //     }, function(ret, err) {
+                    //         if (ret && ret.status) {
+                    //             successToast('保存成功');
+                    //         } else {
+                    //             messageToast('保存失败');
+                    //         }
+                    //     });
+                    // } else {
+                    //     api.download({
+                    //         url: url,
+                    //         savePath: 'fs://tianluoge.jpeg',
+                    //         report: false,
+                    //         cache: true,
+                    //         allowResume: true
+                    //     }, function(ret, err) {
+                    //         if (ret.state == 1) {
+                    //             api.saveMediaToAlbum({
+                    //                 path: 'fs://tianluoge.jpeg',
+                    //                 groupName: '田螺哥'
+                    //             }, function(ret, err) {
+                    //                 if (ret && ret.status) {
+                    //                     successToast('保存成功');
+                    //                 } else {
+                    //                     messageToast('保存失败');
+                    //                 }
+                    //             });
+                    //         }
+                    //     });
+                    // }
+
+                },
+                fnOpenSupervisionServiceOrderDetail_frm: function() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'supervisionServiceOrderDetail_win',
+                            url: './supervisionServiceOrderDetail_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnOpenAdvisoryOrderOrderDetail_win: function() {
+                    if (this.token) {
+                        //获取列表
+                        var _this = this;
+                        showProgress();
+                        ajax('order/historyAdvOrderList', {
+                            offset: _this.offset,
+                            limit: _this.limit
+                        }, function(res) {
+                            hideProgress();
+                            if (res.code == 10000) {
+                                if (res.msg.length != 0) {
+                                    if (res.msg[0].uids) {
+                                        // api.openWin({
+                                        //     name: 'advisoryOrderOrderDetail_win',
+                                        //     url: './advisoryOrderOrderDetail_win.html',
+                                        //     pageParam: {
+                                        //         targetId: res.msg[0].superUserInfo[0].id,
+                                        //         name: res.msg[0].superUserInfo[0].name,
+                                        //         head: res.msg[0].superUserInfo[0].head_url,
+                                        //     }
+                                        // });
+                                        api.openWin({
+                                            name: 'advisoryOrderOrderDetail_webSocket_win',
+                                            url: './advisoryOrderOrderDetail_webSocket_win.html',
+                                            pageParam: {
+                                                toName: res.msg[0].superUserInfo[0].name,
+                                                toId: res.msg[0].superUserInfo[0].id,
+                                                toHead: res.msg[0].superUserInfo[0].head_url,
+                                            }
+                                        });
+                                    } else {
+                                        api.openWin({
+                                            name: 'advisoryOrderOrderDetailHistory_win',
+                                            url: './advisoryOrderOrderDetailHistory_win.html',
+                                            pageParam: {
+                                                name: 'test'
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    messageToast('没有咨询订单')
+                                }
+
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            // api.refreshHeaderLoadDone();
+                            hideProgress();
+                            // messageToast(ERRMSG)
+                        }, function(res) {
+                            hideProgress();
+                            // api.refreshHeaderLoadDone();
+                        })
+
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnOpenTestOrderOrderDetail_win: function() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'testServiceOrderDetail_win',
+                            url: './testServiceOrderDetail_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnOpenMyMoney_win: function() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'myMoney_win',
+                            url: './myMoney_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnOpenMyTuijian_win: function() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'myTuijian_win',
+                            url: './myTuijian_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                //打开积分
+                fnOpenIntegral_win() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'myIntegral_win',
+                            url: './myIntegral_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                //打开积分订单
+                fnOpenIntegralOrder_win() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'integralOrder_win',
+                            url: './integralOrder_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnOpenCashOrder_win(){
+                    if (this.token) {
+                        api.openWin({
+                            name: 'cashOrder_win',
+                            url: './cashOrder_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                //打开登录
+                fnOpenLoginWin: function() {
+                    if (this.token) return;
+                    api.openWin({
+                        name: 'login_win',
+                        url: './login_win.html',
+                        pageParam: {
+                            name: 'test'
+                        }
+                    });
+                },
+                //点击签到
+                fnOpensignIn_win() {
+                    if (this.token) {
+                        var _this =this;
+                        api.openWin({
+                            name: 'signIn_win',
+                            url: './signIn_win.html',
+                            singleInstance:true,
+                            pageParam: {
+                                sign:_this.sign
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                //打开我的抽奖
+                fnOpenMyPrize_win() {
+                    if (this.token) {
+                        api.openWin({
+                            name: 'myPrize_win',
+                            url: './myPrize_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    } else {
+                        this.fnOpenLoginWin();
+                    }
+                },
+                fnNoOpen() {
+                    messageToast('暂未开放')
+                }
+            }
+        })
+    }
+</script>
+
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak >
+        <div class="" v-if="network" v-html="detail.content"></div>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                aid:api.pageParam.aid,
+                detail: ''
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetDetail();
+                })
+                this.fnGetDetail();
+                this.fnCustomRefresh();
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                },
+                //获取文章详情
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('college/articleDetail', {
+                        aid:_this.aid
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.detail = res.msg;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+            }
+        })
+
+
+    }
+</script>

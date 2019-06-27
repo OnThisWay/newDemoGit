@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #fff;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+        .top{
+            padding: 30px;
+            border-bottom: 1px solid #E9E9E9;
+        }
+        .top div{
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+        ul{
+            padding: 15px;
+        }
+        li{
+            display: flex;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        li span:first-child{
+            width: 100px;
+            color: #999999;
+
+        }
+        li span:last-child{
+            color: #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="top">
+            <div v-if="data.cash_type==1"> 微信提现</div>
+            <div v-if="data.cash_type==2"> 支付宝提现</div>
+            <div>-￥{{data.account_total}}</div>
+        </div>
+        <ul>
+            <li>
+                <span>提现状态</span>
+                <span class="denger" v-if="data.status==1">审核中</span>
+                <span class="" v-if="data.status==2">已完成</span>
+                <span class="red" v-if="data.status==3">已驳回</span>
+            </li>
+            <li>
+                <span>提现时间</span>
+                <span>{{fnClipSecond(data.created_time)}}</span>
+            </li>
+
+            <li>
+                <span>用户名</span>
+                <span >{{data.account_name}}</span>
+            </li>
+            <li>
+                <span>账号</span>
+                <span>{{data.account}}</span>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var balance = api.pageParam.balance;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                data:api.pageParam.item
+            },
+            mounted: function() {
+                console.log(this.data)
+
+            },
+            methods: {
+
+
+            }
+        })
+    }
+</script>

@@ -1,0 +1,700 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #006198;
+            height: auto;
+            padding-bottom: 30px;
+        }
+
+        .bannerImg {
+            position: relative;
+        }
+
+        .bannerImg .myPrize_btn {
+            width: 84px;
+            height: 27px;
+            background: #0096C8;
+            border-radius: 13px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -42px;
+            text-align: center;
+            line-height: 27px;
+        }
+
+        .con {
+            margin: auto;
+            /*position: absolute;
+            top:50%;
+            left:50%;
+            margin-top: calc((50px - 100vw)/2);
+            margin-left: calc((50px - 100vw)/2);*/
+            width: calc(100vw - 50px);
+            height: calc(100vw - 50px);
+            padding: 25px;
+            background: url("../image/integralPrize/boxBg.png");
+            background-size: 100% 100%;
+            -moz-background-size: contain;
+            /* 老版本的 Firefox */
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .con>div {
+            width: calc((100vw - 106px)/3);
+            height: calc((100vw - 116px)/3);
+        }
+
+        .con>div.wai {
+            background: url("../image/integralPrize/whiteBg.png");
+            background-size: 100% 100%;
+            -moz-background-size: contain;
+            /* 老版本的 Firefox */
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .con>div.wai img {
+            width: 50%;
+            height: 50%;
+        }
+
+        .con>div.li {
+            background: url("../image/integralPrize/yellowBg.png");
+            background-size: 100% 100%;
+            -moz-background-size: contain;
+            /* 老版本的 Firefox */
+            background-repeat: no-repeat;
+        }
+
+        .con>div.active {
+            background: url("../image/integralPrize/activeBg.png");
+            background-size: 100% 100%;
+            -moz-background-size: contain;
+            /* 老版本的 Firefox */
+            background-repeat: no-repeat;
+        }
+
+        .leg {
+            width: calc(100vw - 50px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #0096C8;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        .leg>div {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .leg>.left {
+            padding-right: 15px;
+            /*border-right: 1px solid #fff;*/
+        }
+
+        .leg>.right {
+            padding-left: 15px;
+        }
+
+        .mess {
+            width: calc(100vw - 50px);
+            padding: 15px;
+            border-radius: 5px;
+            background: white;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        .mess .title {
+            font-size: 13px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .mess .text {
+            font-size: 11px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            margin-bottom: 8px;
+            line-height: 18px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .cover {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+        }
+
+        .showH {
+            position: relative;
+        }
+
+        .hongBox {
+            position: absolute;
+            left: 60px;
+            top: 40%;
+            width: calc(100vw - 120px);
+        }
+
+        .hong {
+            position: relative;
+        }
+
+        .hong .tit {
+            width: 100%;
+            position: absolute;
+            top: 15%;
+            left: 0;
+            text-align: center;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: white;
+        }
+
+        .hong .prizeBox {
+            width: 80%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: absolute;
+            left: 10%;
+            top: 31%;
+        }
+
+        .hong .prizeBox .imgBox {
+            /*width: 50px;*/
+            height: 50px;
+        }
+
+        .hong .prizeBox .imgBox img {
+            /*width: 100%;*/
+            height: 100%;
+        }
+
+        .hong .prizeBox .prizeName {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .hong .btn {
+            width: 86%;
+            height: 40px;
+            border-radius: 20px;
+            background: linear-gradient(0deg, rgba(246, 220, 152, 1) 0%, rgba(245, 239, 211, 1) 100%);
+            line-height: 40px;
+            text-align: center;
+            position: absolute;
+            bottom: 30px;
+            left: 7%;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: bold;
+            color: rgba(225, 53, 58, 1);
+        }
+
+        .hong .bottom {
+            width: 100%;
+            font-size: 11px;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(246, 227, 172, 1);
+            line-height: 18px;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+        }
+
+        .hong .del {
+            width: 25px;
+            height: 25px;
+            bottom: -40px;
+            position: absolute;
+            left: 50%;
+            margin-left: -12.5px;
+        }
+
+        .hong .del img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .no {
+            /*width:*/
+        }
+
+        .li {
+            display: flex;
+            justify-content: center;
+            /*align-items: center;*/
+            align-content: center;
+            flex-wrap: wrap;
+        }
+
+        .li .pbtn {
+            font-size: 16px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 1);
+            /*margin-top: 10px;*/
+        }
+
+        .li .price {
+            background-color: #F6BC41;
+            height: 25px;
+            line-height: 25px;
+            padding: 0 10px;
+            border-radius: 13px;
+            font-size: 11px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 0, 0, 1);
+            /*margin-top: 10px;*/
+        }
+
+        .onTit {
+            width: 100%;
+            position: absolute;
+            top: 20px;
+            left: 0;
+            text-align: center;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: #FFE538;
+        }
+
+        .twTit {
+            width: 100%;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            text-align: center;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: #FFFFFF;
+        }
+
+        .faceBox {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 50%;
+            top: 100px;
+            margin-left: -40px;
+        }
+
+        .faceBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .opacity {
+            opacity: 0;
+        }
+        /*过度效果  渐变*/
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+        /*过度效果  弹动*/
+
+        .bounce-enter-active {
+            animation: bounce-in .5s;
+        }
+
+        .bounce-leave-active {
+            animation: bounce-in .5s reverse;
+        }
+
+        @keyframes bounce-in {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .listBox {
+            width: calc(100vw - 50px);
+            border-radius: 4px;
+            margin: auto;
+            margin-bottom: 10px;
+            padding: 0 15px;
+            background-color: white;
+        }
+
+        .rollScreen_container {
+            height: 30px;
+            display: inline-block;
+            /*position: relative;*/
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .rollScreen_list {
+            transition: 1s linear;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .rollScreen_list_unanim {
+            transition: none
+        }
+
+        .rollScreen_once {
+            line-height: 35px;
+        }
+
+        .goods {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div v-if="network">
+            <div class="bannerImg">
+                <img src="../image/integralPrize/prizeBanner.png" alt="">
+                <div class="myPrize_btn" @click="fnOpenMyPrize">我的奖品</div>
+            </div>
+            <div class="listBox">
+                <div :style="{height:height*lineNum + 'px'}" class="rollScreen_container" id="rollScreen_container">
+                    <ul class="rollScreen_list" :style={transform:transform} :class="{rollScreen_list_unanim:num===0}">
+                        <li class="rollScreen_once" v-for="(item,index) in winList" :key=index :style="{height:height+'px'}">
+                            <span>{{item.name}}:</span> <span class="goods">{{item.prize_name}}</span>
+                        </li>
+                        <li class="rollScreen_once" v-for="(item,index) in winList" :key=index+winList.length :style="{height:height+'px'}">
+                            <span>{{item.name}}:</span> <span class="goods">{{item.prize_name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="con">
+                <div class="wai" :class="{active:activeIndex==0}"><img :src="detail[0].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==1}"><img :src="detail[1].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==2}"><img :src="detail[2].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==7}"><img :src="detail[7].prize_img" alt=""></div>
+                <div class="li" @click="fnClickRun">
+                    <div class="pbtn">立即抽奖</div>
+                    <div class="price">-{{oncePrice}}积分</div>
+                </div>
+                <div class="wai" :class="{active:activeIndex==3}"><img :src="detail[3].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==6}"><img :src="detail[6].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==5}"><img :src="detail[5].prize_img" alt=""></div>
+                <div class="wai" :class="{active:activeIndex==4}"><img :src="detail[4].prize_img" alt=""></div>
+            </div>
+            <div class="leg">
+                <div class="left">剩余积分：{{myIntegral}}</div>
+                <!-- <div class="right">今日剩余抽奖次数： 3</div> -->
+            </div>
+            <div class="mess">
+                <div class="title">积分抽奖规则</div>
+                <div>
+                    <img src="../image/integralPrize/prizeText1.png" alt="">
+                    <img src="../image/integralPrize/prizeText2.png" alt="">
+                </div>
+            </div>
+            <div class="footer"></div>
+
+            <div class="cover" v-show="winning">
+                <transition name="bounce">
+                    <div class="showH" v-show="winning">
+                        <div class="light" :class="{opacity:winning==2}">
+                            <img src="../image/integralPrize/light.png" alt="">
+                        </div>
+                        <div class="hongBox">
+                            <div class="hong" v-show="winning==1">
+                                <img src="../image/integralPrize/hongbao.png" alt="">
+                                <div class="tit">恭喜您获得</div>
+                                <div class="prizeBox">
+                                    <div class="imgBox"><img :src="detail[activeIndex].prize_img" alt=""></div>
+                                    <div class="prizeName">{{detail[activeIndex].prize}}</div>
+                                </div>
+                                <div class="btn" @click="fnOpenMyPrize">我的奖品</div>
+                                <div class="bottom">您可在我的奖品中查看抽中的商品</div>
+                                <div class="del" @click="fnCloseCvoer">
+                                    <img src="../image/integralPrize/del.png" alt="">
+                                </div>
+                            </div>
+                            <div class="hong" v-show="winning==2">
+                                <img src="../image/integralPrize/hongbg.png" alt="">
+                                <div class="onTit">很遗憾</div>
+                                <div class="twTit">您与奖品擦肩而过</div>
+                                <div class="faceBox">
+                                    <img src="../image/integralPrize/face.png" alt="">
+                                </div>
+                                <div class="btn" @click="fnCloseCvoer">再抽一次</div>
+                                <div class="del" @click="fnCloseCvoer">
+                                    <img src="../image/integralPrize/del.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+
+        </div>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+
+        var stopStep = 1; //表示最终奖品位置
+        var runT = null; //转动方法
+        var step = 0; //计算转动的步数，控制转速和停止
+        var during = 8; //转速,起始转速为8
+        var isRun = false; //是否正在运行，防止重复点击
+        var app = new Vue({
+            el: '#app',
+            data: {
+                myIntegral: api.pageParam.myIntegral || 0,
+                network: true,
+                activeIndex: 0,
+                winning: 0,
+                oncePrice: "",
+                detail: "",
+                winList: [],
+                num: 0,
+                height: 30,
+                lineNum: 1,
+
+            },
+            computed: {
+                transform: function() {
+                    return 'translateY(-' + this.num * this.height + 'px)'
+                }
+            },
+            created: function() {
+
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetDetail();
+                })
+                this.fnGetDetail();
+                this.fnGetWinList();
+            },
+            methods: {
+                fnRun() {
+                    isRun = true;
+                    // stopStep = Math.floor(Math.random() * 8 + 1);
+                    var _this = this;
+                    runT = setTimeout(_this.runF(), 100);
+                },
+                runF() {
+                    if (step >= (32 + stopStep)) { //设置转动多少圈(奖品的倍数),当进行步数step>=(最大步数+奖品位置步数)，停止动画，用户获得奖品
+                        this.activeIndex = step % 8;
+                        step = stopStep; //当前奖品停止位置赋值给step,用于下次开始抽奖起始使用
+                        isRun = false;
+                        clearTimeout(runT); //停止转动
+                        if (this.detail[this.activeIndex].status == 1) {
+                            this.winning = 1
+                        } else {
+                            this.winning = 2
+                        }
+                        return;
+                    }
+                    if (step >= (24 + stopStep)) { //在即将结束转动前减速
+                        during += 1;
+                    } else { //控制中间转速
+                        if (during <= 2) { //保证最低转速
+                            during = 2;
+                        }
+                        during--;
+                    }
+                    step++;
+                    this.activeIndex = step % 8;
+                    var _this = this;
+                    runT = setTimeout(function() {
+                        _this.runF()
+                    }, during * 50);
+                },
+                //获取奖品列表
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('prizeLists', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.detail = res.msg;
+                            _this.oncePrice = res.integral;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        _this.network = false;
+                    })
+                },
+                //获取中奖结果
+                fnClickRun: function() {
+                    if (isRun) return;
+                    var _this = this;
+                    ajax('draw', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            var pidArr = _this.detail.map((item, index) => {
+                                return item.pid;
+                            })
+                            var _index = pidArr.findIndex((item) => {
+                                return item == res.msg;
+                            })
+                            stopStep = _index;
+                            _this.myIntegral -= _this.oncePrice;
+                            api.sendEvent({
+                                name: 'myIntegralChanged',
+                                extra: {
+                                    myIntegral: _this.myIntegral
+                                }
+                            });
+
+                            _this.fnRun();
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        _this.network = false;
+                    })
+                },
+                //获取中奖名单
+                fnGetWinList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('winList', {}, function(res) {
+                        hideProgress();
+                        console.log(JSON.stringify(res));
+                        if (res.code == 10000) {
+                            _this.winList = res.msg;
+                            _this.fnMoveList();
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        _this.network = false;
+                    })
+                },
+                // 滚动列表
+                fnMoveList() {
+                    let _this = this
+                    setInterval(function() {
+                        if (_this.num !== _this.winList.length) {
+                            _this.num++
+                        } else {
+                            _this.num = 0
+                        }
+                    }, 3000)
+                },
+                //关闭遮罩
+                fnCloseCvoer() {
+                    this.winning = false;
+                },
+                // 打开我的奖品
+                fnOpenMyPrize() {
+                    api.openWin({
+                        name: 'myPrize_win',
+                        url: './myPrize_win.html',
+                        pageParam: {}
+                    });
+
+                }
+            }
+        })
+
+
+    }
+</script>

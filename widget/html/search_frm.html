@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        .title {
+            margin-top: 100px;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(153, 153, 153, 1);
+            text-align: center;
+        }
+
+        .keyBox {
+            margin: 30px auto;
+            width: 65%;
+            text-align: center;
+            overflow: hidden;
+            /*display: flex;
+            justify-content: space-around;*/
+        }
+
+        .keyBox div {
+            font-size: 13px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(0, 149, 197, 1);
+            float: left;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="title">
+            我们将为您搜索以下内容
+        </div>
+        <div class="keyBox">
+            <div v-for="(item,index) in list" @click="fnClickKey(item)">{{item}}</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    var app = new Vue({
+        el: '#app',
+        data: {
+            key: api.pageParam.key,
+            list: ["门","锁","成都","深圳"]
+        },
+        mounted: function() {
+
+        },
+        methods: {
+            fnClickKey:function(key){
+                api.openWin({
+                    name: 'searchResult_win',
+                    url: './searchResult_win.html',
+                    pageParam: {
+                        key: key
+                    }
+                });
+            }
+
+        }
+    })
+}
+</script>

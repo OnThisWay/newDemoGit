@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 27px;
+            background-color: #FFFFFF;
+        }
+
+        .phoneBox {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            padding: 10px 0;
+        }
+
+        .phoneBox img {
+            width: 21px;
+            height: 21px;
+            margin-right: 10px;
+            margin: auto;
+        }
+
+        .phoneBox input {
+            color: #919191;
+            font-size: 14px;
+            width: calc(100vw - 54px - 21px - 10px)
+        }
+
+        .codeBox {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            padding: 15px 0;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .codeBox input {
+            color: #919191;
+            font-size: 14px;
+            width: calc(100vw - 54px - 21px - 10px - 100px)
+        }
+
+        .codeBox span {
+            width: 100px;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 149, 197, 1);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #EEEEEE;
+        }
+
+        .r_btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border: 1px solid #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #0095C5;
+            background-color: white;
+        }
+
+        .hui {
+            color: #666!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="inputBox">
+            <!-- <p>手机验证通过，请输入新登录密码</p> -->
+            <div class="phoneBox" v-if="which=='setting'">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="oldPassword" placeholder="请设置您的登录密码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="newPassword" placeholder="请设置您的登录密码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="newPassword2" placeholder="请再次输入密码">
+            </div>
+
+        </div>
+        <div class="btn" @click='fnBth'>确定</div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var myInterval;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                which: api.pageParam.which, //根据which判断找回还是重设
+                oldPassword: '',
+                newPassword: '',
+                newPassword2: '',
+            },
+            mounted: function() {
+
+            },
+            methods: {
+
+                //立即注册
+                fnBth: function() {
+                    var _this = this;
+                    if (!this.oldPassword) {
+                        messageToast('请输入原密码')
+                    } else if (!this.newPassword) {
+                        messageToast('请输入新密码')
+                    } else if (!(/^[a-zA-Z0-9]{6,16}$/.test(this.newPassword))) {
+                        messageToast('密码6-16位数字或字母以及其组合')
+                    } else if (!this.newPassword2) {
+                        messageToast('请再次输入新密码')
+                    } else if (this.newPassword2 != this.newPassword) {
+                        messageToast('两次新密码不一致')
+                    } else {
+                        this.fnResetPwd();
+                    }
+                },
+                //注冊接口
+                fnResetPwd: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/resetPwd', {
+                        new_pwd: _this.newPassword,
+                        old_pwd: _this.oldPassword
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            messageToast('修改成功，已退出登录')
+                            api.removePrefs({
+                                key: 'token'
+                            });
+                            api.sendEvent({
+                                name: 'loginOut',
+                                extra: {}
+                            });
+                            setTimeout(function() {
+                                api.closeWin({
+                                    name:'setting_win'
+                                });
+                                api.closeWin({});
+                            }, 2000)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        console.log(JSON.stringify(res))
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+
+                fnOpenLoginWin: function() {
+                    api.closeWin({});
+                }
+            }
+        })
+    }
+</script>

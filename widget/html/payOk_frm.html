@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+
+        }
+
+        .imgBox {
+            width: 50px;
+            height: 50px;
+            margin: 30px auto;
+        }
+        .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+        .title{
+            font-size: 14px;
+            font-weight: bold;
+            color: #333333;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .orderNum{
+            font-size: 12px;
+            color: #666666;
+            text-align: center;
+            margin-top:20px;
+        }
+        .btnBox{
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+
+        }
+        .btnBox div{
+            height: 35px;
+            line-height: 35px;
+            border-radius: 8px;
+            border:1px solid rgba(151, 151, 141, 1);
+            text-align: center;
+            font-size: 12px;
+            color: #8D8D8D;
+            width: calc((100vw - 75px)/2);
+            margin: 15px;
+        }
+        .mess{
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            padding: 40px;
+            color: #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="imgBox">
+            <img src="../image/payOk.png" alt="">
+        </div>
+        <div class="title">
+            支付成功
+        </div>
+        <div class="orderNum">订单号：{{orderId}}</div>
+        <div class="btnBox">
+            <div @click='fnOpenOrderDetail'>查看订单</div>
+            <div @click="fnBackIndex">回到首页</div>
+        </div>
+        <div class="mess">田螺哥平台不会以任何理由要求您提供银行卡信息或支付额外费用，请谨防钓鱼链接或诈骗电话</div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                orderId: api.pageParam.orderId,
+                orderType: api.pageParam.orderType
+            },
+            mounted: function() {
+
+
+            },
+            methods: {
+                fnOpenOrderDetail:function(){
+                    if(this.orderType==1){
+                        api.openWin({
+                            name: 'supervisionServiceOrderDetail_win',
+                            url: './supervisionServiceOrderDetail_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }else if (this.orderType==2) {
+                        api.openWin({
+                            name: 'advisoryOrderOrderDetail_win',
+                            url: './advisoryOrderOrderDetail_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }else{
+                        api.openWin({
+                            name: 'testServiceOrderDetail_win',
+                            url: './testServiceOrderDetail_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }
+
+                },
+                fnBackIndex:function(){
+                    api.closeWin({
+                        name: 'submitOrder_win'
+                    });
+                    api.closeWin({
+                        name: 'supervisionService_win'
+                    });
+                    api.closeWin({
+                        name: 'supervisionServiceDetail_win'
+                    });
+                    api.closeWin({
+                    });
+                }
+            }
+        })
+
+
+    }
+</script>

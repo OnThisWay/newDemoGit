@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>田螺哥</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../font/iconfont.css" />
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding: 20px;
+        }
+
+        .listBox {
+            padding: 15px;
+            border-bottom: 1px solid #CECECE;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #FFFFFF;
+            font-weight: 400;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #FFFFFF;
+            font-size: 14px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .listBox .icon-right {
+            font-size: 14px;
+            color: #9A9A9A;
+        }
+
+        .value input {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            color: #9B9B9B;
+        }
+
+        .inputbox .value {
+            padding: 0 0 0 15px;
+        }
+
+        .mess {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            line-height: 28px;
+            text-align: right;
+        }
+
+        .loginOut {
+            line-height: 40px;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(238, 238, 238, 1);
+            width: calc(100vw - 40px);
+            margin: 30px auto;
+            background: #0096C8;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+
+        <div class="listBox inputbox border_b">
+            <div class="value"><input type="text" name="" v-model="name" placeholder="请输入昵称"></div>
+        </div>
+        <div class="mess">请输入昵称，英文+中文 不超过6位字符</div>
+        <div class="loginOut" @click="fnEditUserInfo">保存</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var name = api.pageParam.name;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                name: name
+            },
+            mounted: function() {
+
+            },
+            methods: {
+                fnEditUserInfo: function() {
+                    var _this = this;
+                    if (!(/^[a-zA-Z\u4e00-\u9fa5]{1,6}$/.test(_this.name))) {
+                        messageToast('格式有误')
+                    } else {
+                        showProgress();
+                        ajax('my/editUserInfo', {
+                            head_url: '',
+                            type: '2',
+                            nickname: _this.name
+                        }, function(res) {
+                            hideProgress();
+                            api.refreshHeaderLoadDone();
+                            if (res.code == 10000) {
+                                successToast('保存成功')
+                                api.sendEvent({
+                                    name: 'userInfoChaged',
+                                    extra: {
+
+                                    }
+                                });
+                                setTimeout(function() {
+                                    api.closeWin({});
+                                }, 1000)
+                                console.log(JSON.stringify(res));
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            api.refreshHeaderLoadDone();
+                            hideProgress();
+                            messageToast(ERRMSG)
+                        })
+                    }
+                }
+            }
+        })
+    }
+</script>
+
+</html>

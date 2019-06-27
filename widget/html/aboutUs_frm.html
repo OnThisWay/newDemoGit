@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak >
+        <div>
+            <img v-for="(item,index) in imgs" :src="item" alt="">
+        </div>
+
+
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                imgs:['../image/aboutUs/aboutUs_01.jpg','../image/aboutUs/aboutUs_02.jpg','../image/aboutUs/aboutUs_03.jpg','../image/aboutUs/aboutUs_04.jpg']
+            },
+            mounted: function() {
+
+            },
+            methods: {
+
+            }
+        })
+
+
+    }
+</script>

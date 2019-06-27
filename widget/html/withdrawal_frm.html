@@ -1,0 +1,440 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+
+        .top {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .top .inputBox {
+            display: -webkit-box;
+            border-bottom: 1px solid #E5E5E5;
+            padding: 10px 0;
+        }
+
+        .top .inputBox input {
+            height: 40px;
+            -webkit-box-flex: 1;
+            font-size: 14px;
+            color: #999999;
+        }
+
+        .top .inputBox span {
+            line-height: 40px;
+            color: #0096C8;
+            font-size: 13px;
+        }
+
+        .mess {
+            font-size: 12px;
+            text-align: right;
+            margin-top: 20px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+        }
+
+        .listBox {
+            padding: 15px;
+            background-color: #FFF;
+            border-bottom: 1px solid #F4F4F4;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #999999;
+            font-size: 14px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .listBox .icon-right {
+            font-size: 14px;
+            color: #9B9B9B;
+        }
+        .listBox  .icon-weixin {
+            color: #00C232;
+            font-size: 16px;
+        }
+
+        .listBox  .icon-zhifubao1 {
+            color: #00A2EC;
+            font-size: 16px;
+        }
+        .value input {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            text-align: right;
+            color: #9B9B9B;
+        }
+
+        .inputbox .value {
+            padding: 0 0 0 15px;
+        }
+
+        .btn {
+            width: calc(100vw - 60px);
+            line-height: 50px;
+            text-align: center;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            background-color: #0096C8;
+            margin: 50px auto;
+            border-radius: 8px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            line-height: 36px;
+        }
+
+        .cover {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99;
+        }
+
+        .con {
+            width: 100vw;
+            background: #f0f0f0;
+            border-radius: 8px 8px 0 0;
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            overflow: hidden;
+            min-height: 200px;
+            z-index: 999;
+        }
+
+        .head {
+            background: white;
+            padding: 15px;
+            display: flex;
+        }
+
+        .head div {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .head div:first-child {
+            margin-right: auto;
+        }
+
+        li {
+            padding: 10px 15px;
+            background: white;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        li>div:nth-child(2) {
+            padding: 0 10px;
+            margin-right: auto;
+        }
+
+        li .icon-weixin {
+            color: #00C232;
+            font-size: 40px;
+        }
+
+        li .icon-zhifubao1 {
+            color: #00A2EC;
+            font-size: 40px;
+        }
+
+        li>div:nth-child(2)>.tit {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        li>div:nth-child(2)>.count {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(154, 154, 154, 1);
+        }
+
+        .duiWei {
+            color: #00C232;
+        }
+
+        .duiZhi {
+            color: #00A2EC;
+        }
+
+        .sure {
+            line-height: 60px;
+            text-align: center;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 150, 200, 1);
+        }
+
+        .noBox {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            margin-right: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="top">
+            <div class="inputBox">
+                <input type="number" v-model="amount" @keyup="numberAmount(amount)" placeholder="请输入数量（兑换人民币比例200:1）">
+                <span @click='fnAll'>全部提现</span>
+            </div>
+            <div class="mess">剩余田螺币 {{balance?balance:'0.00'}}</div>
+        </div>
+        <div class="listBox" @click='fnOpenChooseType'>
+            <div class="name">提现方式</div>
+            <div class="value" v-if="type==1"><i class="iconfont icon-weixin"></i>{{data.weChat_account?data.weChat_account:"未设置"}}</div>
+            <div class="value" v-else-if="type==2"><i class="iconfont icon-zhifubao1"></i>{{data.alipay_account?data.alipay_account:"未设置"}}</div>
+            <div class="value" v-else>选择提现方式</div>
+            <i class="iconfont icon-right"></i>
+        </div>
+        <div class="btn" @click="fnApplyCash">立即提现</div>
+        <p>提现申请通过审核后24小时到账</p>
+
+        <div class="cover" v-show="showCover" @click='fnCancel'></div>
+        <div class="con" v-show="showCover">
+            <div class="head">
+                <div @click="fnCancel">取消</div>
+                <div @click="fnSure">确定</div>
+            </div>
+            <div class="box">
+                <ul>
+                    <li @click="fnChoseType(1)">
+                        <div><i class="iconfont icon-weixin"></i></div>
+                        <div>
+                            <div class="tit">微信账户</div>
+                            <div class="count">{{data.weChat_account?data.weChat_account:"未设置"}}</div>
+                        </div>
+                        <div>
+                            <i v-show="choseType==1" class="iconfont icon-dui duiWei"></i>
+                            <div v-show="choseType!=1" class="noBox"></div>
+                        </div>
+                    </li>
+                    <li @click="fnChoseType(2)">
+                        <div><i class="iconfont icon-zhifubao1"></i></div>
+                        <div>
+                            <div class="tit">支付宝账户</div>
+                            <div class="count">{{data.alipay_account?data.alipay_account:"未设置"}}</div>
+                        </div>
+                        <div>
+                            <i v-show="choseType==2" class="iconfont icon-dui duiZhi"></i>
+                            <div v-show="choseType!=2" class="noBox"></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="sure" @click="fnOpenWithdrawalMethods_win">提现账户管理</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var balance = api.pageParam.balance;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                balance: balance,
+                amount: "",
+                type:0,
+                choseType: 0,
+                showCover: false,
+                data: ''
+            },
+            mounted: function() {
+                this.fnCashTypeList();
+                var _this =this;
+                api.addEventListener({
+                    name: 'withdrawalAddSuccess'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnCashTypeList();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            },
+            methods: {
+                //过滤金额
+                numberAmount: function() {
+                    this.amount = this.amount.toString(); //先转换成字符串类型
+                    this.amount = this.amount.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符
+                    this.amount = this.amount.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的
+                    this.amount = this.amount.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+                    this.amount = this.amount.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
+                    //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+                    // if (this.amount.indexOf(".") < 0 && this.amount != "") {
+                    //
+                    // }
+                    this.amount = parseFloat(this.amount);
+                },
+                //查询
+                fnCashTypeList: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/cashTypeList', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.data = res.msg;
+                            _this.choseType = _this.type=res.msg.dft_account;
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //打开选择
+                fnOpenChooseType: function() {
+                    this.showCover = true;
+                },
+                //选择提现方式
+                fnChoseType: function(type) {
+                    var _this = this;
+                    if(type==1&&!this.data.weChat_account){
+                        messageToast("未设置");
+                        return;
+                    }else if(type==2&&!this.data.alipay_account){
+                        messageToast("未设置");
+                        return;
+                    }
+                    _this.choseType = type;
+
+                },
+                //全部提现
+                fnAll: function() {
+                    this.amount = this.balance
+                },
+                //立即提现
+                fnApplyCash: function() {
+                    var _this = this;
+                    if (!_this.amount) {
+                        messageToast('请输入提现金额')
+                    }  else if (_this.amount<25000) {
+                        messageToast('最低提现25000')
+                    } else if (_this.amount%200!=0) {
+                        messageToast('提现金额为200的整倍数')
+                    }else if (!_this.type) {
+                        messageToast('请选择提现方式')
+                    }  else {
+                        showProgress();
+                        ajax('my/applyCash', {
+                            amount: _this.amount,
+                            cash_type: _this.type,
+                        }, function(res) {
+                            hideProgress();
+                            if (res.code == 10000) {
+                                successToast('提现申请已提交');
+                                api.sendEvent({
+                                    name: 'withdrawalSuccess',
+                                    extra: {
+                                        key1: 'value1',
+                                        key2: 'value2'
+                                    }
+                                });
+
+                                setTimeout(function(){
+                                    api.closeWin({
+                                    });
+
+                                },1500)
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            console.log(JSON.stringify(res))
+                            hideProgress();
+                            messageToast(ERRMSG)
+                        })
+                    }
+                },
+                fnCancel: function() {
+                    this.showCover = false;
+                },
+                fnSure: function() {
+                    this.showCover = false;
+                    this.type = this.choseType;
+                },
+                //打开管理
+                fnOpenWithdrawalMethods_win:function(){
+                    api.openWin({
+                        name: 'withdrawalMethods_win',
+                        url: './withdrawalMethods_win.html',
+                        pageParam: {
+                            name: 'test'
+                        }
+                    });
+
+                }
+            }
+        })
+    }
+</script>

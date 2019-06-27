@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        .top {
+            padding: 15px;
+
+        }
+
+        .head {
+            line-height: 18px;
+            display: flex;
+        }
+
+        .type {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .time {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .con {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            line-height: 18px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="top">
+            <div class="head">
+                <span class="type">订单支付成功</span>
+                <span class="time">2018.03.13 11:14</span>
+            </div>
+            <div class="con">
+                您的商品已提交成功，我们会近期给您发送商品，请耐心等待会近期给您发.您的商品已提交成功，我们会近期给您发送商品，请耐心等待会近您的商品已提交成功，我们会近期给您发送商品，请耐心等待会近期给您发.您的商品已提交成功，我们会近期给您发送商品，请耐心等待会近
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                key: 5
+            },
+            mounted: function() {
+                api.addEventListener({
+                    name: 'searchRes'
+                }, function(ret, err) {
+                    if (ret) {
+                        alert(JSON.stringify(ret));
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            },
+            methods: {
+
+
+            }
+        })
+    }
+</script>

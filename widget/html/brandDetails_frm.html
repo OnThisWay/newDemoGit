@@ -1,0 +1,1056 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        .topImg {
+            width: 100vw;
+            height: 50vw;
+            position: relative;
+            overflow: hidden;
+            /*display: flex;
+            justify-content: center;
+            align-items: */
+        }
+
+        .topImg .bg {
+            width: 100%;
+            height: 100%;
+            /*-webkit-filter: blur(5px);
+            -moz-filter: blur(5px);
+            -o-filter: blur(5px);
+            filter: blur(5px);*/
+        }
+
+        .topImg .logo {
+            width: 50vw;
+            height: 25vw;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -25vw;
+            margin-top: -12.5vw;
+            border-radius: 8px;
+            /*box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.2);*/
+            border: 2px solid #c4c4c4;
+        }
+
+        .topImg .logo img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .empty>.con {
+            padding: 15px 15px 0 15px;
+            min-height: calc(100vh - 50vw);
+        }
+
+        .mess {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #DFDFDF;
+            min-height: 150px;
+            position: relative;
+        }
+
+        .mess .desc {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            line-height: 20px;
+            margin-bottom: 10px;
+        }
+
+        .commentBox {
+            padding: 15px 0 0 0;
+            border-bottom: 1px solid #DFDFDF;
+        }
+
+        .commentBox .top {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .commentBox .left {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .commentBox .top .right {
+            font-size: 12px;
+            color: #009ED7;
+        }
+
+        .commentList {
+            padding: 15px;
+            background-color: #F4F4F4;
+            border-radius: 8px;
+        }
+
+        .commentList li {
+            display: flex;
+        }
+
+        .commentList .left {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .commentList .left img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .right {
+            width: calc(100vw - 115px);
+            margin-left: auto;
+        }
+
+        .commentList .right>div:first-child {
+            display: flex;
+        }
+
+        .commentList .right .name {
+            font-size: 12px;
+            color: #666666;
+            margin-right: auto;
+        }
+
+        .commentList .right .time {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .commentList .right .content {
+            font-size: 12px;
+            color: #333333;
+            line-height: 18px;
+            margin: 10px 0;
+        }
+
+        .commentList .imgBox {
+            overflow: hidden;
+            width: calc(100vw - 165px);
+        }
+
+        .commentList .imgBox div {
+            float: left;
+            width: calc( (100vw - 185px)/3);
+            height: calc( (100vw - 185px)/3);
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .commentList .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .imgBox div:nth-child(3n+1) {
+            margin-left: 0px;
+        }
+
+        .storeBox {
+            padding: 15px 0;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .storeBox .top {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .storeBox .left {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .storeList li {
+            padding: 15px;
+            background-color: #F4F4F4;
+            border-radius: 8px;
+            display: -webkit-box;
+            margin-bottom: 10px;
+        }
+
+        .storeList .imgBox {
+            width: 60px;
+            height: 60px;
+        }
+
+        .storeList .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .storeList .middle {
+            -webkit-box-flex: 1;
+            padding: 0 0 0 10px;
+        }
+
+        .storeList .middle .name {
+            font-size: 12px;
+            color: #333333;
+            font-weight: bold;
+        }
+
+        .storeList .middle img {
+            width: 13px;
+            height: 13px;
+            margin-right: 10px;
+            position: relative;
+            top: 2px;
+        }
+
+        .storeList .middle .lei {
+            display: -webkit-box;
+            margin-top: 5px;
+        }
+
+        .storeList .middle .con {
+            font-size: 12px;
+            color: #666666;
+            -webkit-box-flex: 1;
+            padding: 0 10px 0 0;
+        }
+
+        .storeList .middle .right {
+            min-width: 100px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .storeList .middle .right span {
+            font-size: 12px;
+            color: #009ED3;
+        }
+
+        .btnCommont {
+            margin: 10px auto;
+            width: 120px;
+            line-height: 30px;
+            background: #589DD0;
+            text-align: center;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .commentBox .icon-pingjiaxingxing {
+            color: #E7E7E7;
+        }
+
+        .yes {
+            color: #FFDA45!important;
+        }
+
+        .left span {
+            font-size: 14px;
+            color: #FFDA45!important;
+            margin-left: 10px;
+        }
+
+        .noComment {
+            text-align: center;
+            line-height: 80px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .con1,
+        .con2,
+        .con3 {
+            min-height: calc(100vh - 50vw);
+            padding: 15px;
+            position: relative;
+        }
+
+        .con1 img,
+        .con2 img,
+        .con3 img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .con1 .tit,
+        .con2 .tit,
+        .con3 .tit {
+            font-size: 14px;
+            padding: 10px 20px;
+            color: #666;
+        }
+
+        .table1,
+        .table2 {
+            background-color: white;
+            padding: 5px 0;
+        }
+
+        .table2 {
+            width: 100%;
+            position: fixed!important;
+            background-color: #Fff;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 0 30px 2px #f0f0f0;
+            opacity: 0;
+        }
+
+        .show {
+            opacity: 1;
+        }
+        /*.aui-tab .aui-tab-item {
+            font-size: 14px;
+            background-color: white!important;
+            border-bottom: 2px solid #CECECE;
+            color: #888888;
+        }
+
+        .aui-active {
+            border-bottom: 2px solid #009ED3!important;
+            color: #009ED3!important;
+            font-weight: bold;
+        }*/
+
+        .videoBox>div {
+            width: 100%;
+            height: calc((100vw - 30px)/2);
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .videoBox>div>img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .videoBox .playCover {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+        }
+
+        .videoBox .playCover>img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .desc:first-child {
+            text-indent: 25px;
+        }
+
+        .domain_name {
+            color: #589DD0;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+        <div class="topImg">
+            <!-- <img class="bg" :src="brandDetails.brand_info[0].brand_cover+'?x-oss-process=image/format,jpg/interlace,1/quality,q_50'" alt=""> -->
+            <img class="bg" src="../image/con_bra_bg.jpg" alt="">
+            <img class="logo" :src="brandDetails.brand_info[0].brand_log+'?x-oss-process=image/format,jpg/interlace,1/quality,q_50'" @click="fnOpenWebsite(brandDetails.brand_info[0].domain_name)" alt="">
+        </div>
+        <div class="table2" :class="searchBarFixed == true ? 'show' :''">
+            <div class="aui-bar aui-bar-btn aui-bar-btn-round" style="width:80%">
+                <div class="aui-bar-btn-item" :class="activeIndex==0?'aui-active':''" @click="fnChangetable(0)">品牌简介</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==1?'aui-active':''" @click="fnChangetable(1)">品牌资质</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==2?'aui-active':''" @click="fnChangetable(2)">品牌案例</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==3?'aui-active':''" @click="fnChangetable(3)">品牌产品</div>
+            </div>
+        </div>
+        <div class="table1">
+            <div class="aui-bar aui-bar-btn aui-bar-btn-round" style="width:80%">
+                <div class="aui-bar-btn-item" :class="activeIndex==0?'aui-active':''" @click="fnChangetable(0)">品牌简介</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==1?'aui-active':''" @click="fnChangetable(1)">品牌资质</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==2?'aui-active':''" @click="fnChangetable(2)">品牌案例</div>
+                <div class="aui-bar-btn-item" :class="activeIndex==3?'aui-active':''" @click="fnChangetable(3)">品牌产品</div>
+            </div>
+        </div>
+        <div class="con" v-show="activeIndex==0">
+            <div class="mess">
+                <div class="desc" v-if="brandDetails.brand_info[0].domain_name" @click="fnOpenWebsite(brandDetails.brand_info[0].domain_name)">品牌主页：
+                    <sapn class="domain_name">{{brandDetails.brand_info[0].domain_name}}</sapn>
+                </div>
+                <div class="desc" v-html="brandDetails.brand_info[0].brand_desc?brandDetails.brand_info[0].brand_desc:''"></div>
+                <div v-if="!brandDetails.brand_info[0].brand_desc" class="noWin">
+                    <!-- <div><i class="iconfont icon-zanwushuju"></i></div> -->
+                    <div class="">
+                        <span>暂无简介</span>
+                    </div>
+                </div>
+                <div class="videoBox">
+                    <div v-for="(item,index) in brandDetails.brand_info[0].brand_video_info" @click="fnPlayVideo(index)">
+                        <img :src="item.video_cover+'?x-oss-process=image/format,jpg/interlace,1/quality,q_50'" alt="">
+                        <div class="playCover"><img src="../image/play.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commentBox">
+                <div class="top">
+                    <div class="left">品牌评价 <i v-for="(item,index) in 5" class="iconfont icon-pingjiaxingxing" :class="{yes : index<parseInt(brandDetails.brand_info[0].score)}"></i><span>{{brandDetails.brand_info[0].score.toFixed(1)}}</span></div>
+                    <div class="right" @click="fnOpenBrandComment_win">查看更多</div>
+                </div>
+                <ul class="commentList" v-if='brandDetails.comment_list.length'>
+                    <li v-for="(item,index) in brandDetails.comment_list">
+                        <div class="left">
+                            <img :src="item.head" alt="">
+                        </div>
+                        <div class="right">
+                            <div>
+                                <div class="name">{{item.nickname}}</div>
+                                <div class="time">{{fnClipSecond(item.created_time)}}</div>
+                            </div>
+                            <div class="content">{{item.cmt_cont}}</div>
+                            <div class="imgBox">
+                                <div v-for="(childItem,childIndex) in item.img" @click="fnOpenImg(index,childIndex)">
+                                    <img :src="childItem" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="noComment" v-if='!brandDetails.comment_list.length'>暂无评价</div>
+                <div class="btnCommont" @click="fnOpenComment_win">
+                    我要评价
+                </div>
+            </div>
+            <div class="storeBox">
+                <div class="top">
+                    <div class="left">本地门店({{list.length}})</div>
+                </div>
+                <ul class="storeList" v-if="list.length">
+                    <li v-for="(item,index) in list">
+                        <div class="imgBox">
+                            <img :src="item.store_logo+'?x-oss-process=image/format,jpg/interlace,1/quality,q_50'" alt="">
+                        </div>
+                        <div class="middle">
+                            <div class="name ellipsis_one">{{item.store_name}}</div>
+                            <div class="lei phone">
+                                <img src="../image/cell1.png" alt="">
+                                <div class="con">{{item.store_phone}}</div>
+                                <div class="right" @click="fnCall(item.store_phone)">
+                                    <!-- <img src="../image/index/search.png" alt=""> -->
+                                    <span>拨打电话</span>
+                                </div>
+                            </div>
+                            <div class="lei address">
+                                <img src="../image/address1.png" alt="">
+                                <div class="con">{{item.addr_detail}}</div>
+                                <div class="right" @click="fnOpenMap(item.lat,item.lng,item.addr_detail)">
+                                    <!-- <img src="../image/index/search.png" alt=""> -->
+                                    <span>地图导航</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div v-else class="noWin">
+                    <div><i class="iconfont icon-zanwushuju"></i></div>
+                    <div class="">
+                        <span>暂无门店</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="con1" v-show="activeIndex==1">
+            <div v-for="(item,index) in brandDetails.brand_info[0].aptitude" @click="fnOpenListImg(1,index)">
+                <img :src="item.content+'?x-oss-process=image/format,jpg/interlace,1/quality,q_70'" alt="">
+                <div class="tit">{{item.tilte}}</div>
+            </div>
+
+            <div v-if="!brandDetails.brand_info[0].aptitude.length" class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无资质数据</span>
+                </div>
+            </div>
+        </div>
+        <div class="con2" v-show="activeIndex==2">
+            <div v-for="(item,index) in brandDetails.brand_info[0].case" @click="fnOpenListImg(2,index)">
+                <img :src="item.content+'?x-oss-process=image/format,jpg/interlace,1/quality,q_80'" alt="">
+                <div class="tit">{{item.tilte}}</div>
+            </div>
+            <div v-if="!brandDetails.brand_info[0].case.length" class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无案例数据</span>
+                </div>
+            </div>
+        </div>
+        <div class="con3" v-show="activeIndex==3">
+            <div v-for="(item,index) in productTypeList" @click="fnOpenProductImgs_win(item.id)">
+                <img :src="item.img+'?x-oss-process=image/format,jpg/interlace,1/quality,q_80'" alt="">
+                <div class="tit">{{item.type_name}}</div>
+            </div>
+
+            <div v-if="!productTypeList.length" class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无产品数据</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div v-if="list.length>10" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div> -->
+    </template>
+
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var myInterval;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                activeIndex: 0,
+                bid: api.pageParam.bid,
+                searchBarFixed: false,
+                // bid: 1,
+                brandDetails: "",
+                productTypeList: [], //产品分类
+                list: [],
+                offset: 0,
+                limit: 20,
+                noMore: false,
+
+                offset_p: 0,
+                limit_p: 5,
+
+                second: 0
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.offset_p = 0;
+                    _this.fnGetDetail();
+                    _this.fnSecondAdd();
+                })
+                this.fnCustomRefresh();
+                this.fnUprequset();
+                this.fnGetDetail();
+                this.fnSecondAdd();
+                var _this = this;
+                api.addEventListener({
+                    name: 'commentYes'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetDetail();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                api.addEventListener({
+                    name: 'winClose'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnAddBrowse();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                window.addEventListener('scroll', this.handleScroll)
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    _this.offset = 0;
+                    _this.offset_p = 0;
+                    _this.fnGetDetail();
+                    _this.fnSecondAdd();
+                },
+                //增加访问时间
+                fnSecondAdd() {
+                    var _this = this;
+                    myInterval = setInterval(function() {
+                        _this.second += 1;
+                    }, 1000);
+                },
+                //确定访问时间
+                fnAddBrowse() {
+                    clearInterval(myInterval);
+                    var userInfo = api.getPrefs({
+                        sync: true,
+                        key: 'userInfo'
+                    });
+                    showProgress();
+                    var _this = this;
+                    var uid = userInfo ? JSON.parse(userInfo).id : api.deviceModel;
+                    ajax('home/addBrowse', {
+                        type: 2,
+                        id: _this.bid,
+                        uid: uid,
+                        second: _this.second,
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            api.closeWin({});
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        api.closeWin({});
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                handleScroll() {
+                    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                    let offsetTop = document.querySelector('.table1').offsetTop;
+                    scrollTop > offsetTop ? this.searchBarFixed = true : this.searchBarFixed = false;
+                },
+                //切欢table
+                fnChangetable: function(index) {
+                    this.activeIndex = index;
+                    this.offset_p = 0;
+                    if (index == 1 || index == 2) {
+                        this.fnGetListPhotoList(); //案列获取分类
+                    } else if (index == 3) {
+                        this.fnGetProductTypeList(); //产品获取分类
+                    }
+
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset_p = 0;
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetDetail();
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        if (_this.activeIndex == 0) {
+                            if (_this.list.length > 10) {
+                                _this.fnGetList("up");
+                            }
+                        } else {
+                            _this.fnGetListPhotoList("up"); //详情获取成功后在获取图片
+                        }
+                    });
+                },
+                //获取详情
+                fnGetDetail: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/storeList', {
+                        bid: _this.bid,
+                        city: 0
+                    }, function(res) {
+                        hideProgress();
+                        console.log(JSON.stringify(res));
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.brandDetails = res.msg;
+                            _this.list = res.msg.store_list;
+                            _this.offset = res.msg.store_list.length;
+                            _this.fnGetListPhotoList(); //详情获取成功后在获取图片
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //获取产品分类
+                fnGetProductTypeList: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/brandProductTypeList', {
+                        bid: _this.bid,
+                    }, function(res) {
+                        hideProgress();
+                        // console.log(JSON.stringify(res));
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.productTypeList = res.msg;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //获取图片
+                fnGetListPhotoList(rType) {
+                    var _this = this;
+                    var c_type = _this.activeIndex == 0 ? 1 : _this.activeIndex;
+                    rType && c_type ? "" : showProgress();
+                    ajax('home/companyDetailInfo', {
+                        type: 2, //1=>品牌 2=>品牌
+                        c_type: c_type, //1=>资质 2=>案例 3=>产品
+                        bid: _this.bid,
+                        city: 0,
+                        offset: _this.offset_p,
+                        limit: _this.limit_p
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        // console.log(JSON.stringify(res));
+                        if (res.code == 10000) {
+                            if (rType == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset_p = _this.offset_p + res.msg.length;
+                                    if (c_type == 1) {
+                                        _this.brandDetails.brand_info[0].aptitude = _this.brandDetails.brand_info[0].aptitude.concat(res.msg);
+                                    } else if (c_type == 2) {
+                                        _this.brandDetails.brand_info[0].case = _this.brandDetails.brand_info[0].case.concat(res.msg);
+                                    } else {
+                                        _this.brandDetails.brand_info[0].product = _this.brandDetails.brand_info[0].product.concat(res.msg);
+                                    }
+
+                                } else {
+                                    messageToast('没有了')
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset_p = _this.offset_p + res.msg.length;
+                                if (c_type == 1) {
+                                    _this.brandDetails.brand_info[0].aptitude = res.msg;
+                                } else if (c_type == 2) {
+                                    _this.brandDetails.brand_info[0].case = res.msg;
+                                } else {
+                                    _this.brandDetails.brand_info[0].product = res.msg;
+                                }
+                                // _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('home/brandStoreList', {
+                        bid: _this.bid,
+                        city: 0,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //拨打电话
+                fnCall: function(phone) {
+                    api.call({
+                        type: 'tel_prompt',
+                        number: phone
+                    });
+                },
+                //打开地图
+                fnOpenMap: function(lat, lng, address) {
+                    var systemType = api.systemType;
+                    var buttons = (systemType == "ios" ? ['百度地图', '苹果地图'] : ['百度地图'])
+                    api.actionSheet({
+                        cancelTitle: '取消',
+                        buttons: buttons
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (systemType == "ios") {
+                                if (ret.buttonIndex == 1) {
+                                    api.openApp({
+                                        iosUrl: 'baidumap://map/marker',
+                                        appParam: {
+                                            location: lat + "," + lng,
+                                            // title: '312312',
+                                            content: address,
+                                        }
+                                    });
+                                } else if (ret.buttonIndex == 2) {
+                                    api.openApp({
+                                        iosUrl: 'http://maps.apple.com/',
+                                        appParam: {
+                                            daddr: address,
+                                        }
+                                    });
+                                }
+                            } else {
+                                if (ret.buttonIndex == 1) {
+                                    var center = lat + "," + lng
+                                    api.openApp({
+                                        androidPkg: 'com.baidu.BaiduMap',
+                                        mimeType: 'text/html',
+                                        uri: 'baidumap://map/show?center=' + center + '&zoom=11&traffic=on&bounds=37.8608310000,112.5963090000,42.1942670000,118.9491260000&src=andr.baidu.openAPIdemo'
+                                    }, function(ret, err) {
+                                        if (ret) {
+                                            alert(JSON.stringify(ret));
+                                        } else {
+                                            alert(JSON.stringify(err));
+                                        }
+                                    });
+                                }
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                fnOpenBrandComment_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'brandComment_win',
+                        url: './brandComment_win.html',
+                        pageParam: {
+                            bid: _this.bid
+                        }
+                    });
+
+                },
+                //我要评价
+                fnOpenComment_win: function() {
+                    var token = api.getPrefs({
+                        sync: true,
+                        key: 'token'
+                    })
+                    if (!token) {
+                        api.openWin({
+                            name: 'login_win',
+                            url: './login_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                        return;
+                    }
+                    var _this = this;
+                    api.openWin({
+                        name: 'comment_win',
+                        url: './comment_win.html',
+                        pageParam: {
+                            bid: _this.bid,
+                            type: "brand"
+                        }
+                    });
+                },
+                fnOpenImg: function(index, childIndex) {
+                    var _this = this;
+                    fnOpenPhotoBrowser(_this.brandDetails.comment_list[index].img, childIndex)
+                },
+                fnOpenListImg: function(type, index) {
+                    var _this = this;
+                    var imageUrls;
+                    if (type == 1) {
+                        imageUrls = this.brandDetails.brand_info[0].aptitude;
+                    } else if (type == 2) {
+                        imageUrls = this.brandDetails.brand_info[0].case;
+                    } else {
+                        imageUrls = this.brandDetails.brand_info[0].product;
+                    }
+                    var imageUrls = imageUrls.map(item => {
+                        return item.content;
+                    })
+                    fnOpenPhotoBrowser(imageUrls, index)
+
+                },
+                //打开视频
+                fnPlayVideo: function(index) {
+                    var _this = this;
+                    var videoPlayer = api.require('videoPlayer');
+                    videoPlayer.play({
+                        texts: {
+                            head: {
+                                title: _this.brandDetails.brand_info[0].brand_video_info[index].video_title
+                            }
+                        },
+                        styles: {
+                            head: {
+                                bg: 'rgba(0.5,0.5,0.5,0.7)',
+                                height: 40,
+                                titleSize: 16,
+                                titleColor: '#fff',
+                                backSize: 20,
+                                backImg: 'fs://img/back.png',
+                                setSize: 20,
+                                setImg: 'fs://img/set.png'
+                            },
+                            foot: {
+                                bg: 'rgba(0.5,0.5,0.5,0.7)',
+                                height: 30,
+                                playSize: 20,
+                                playImg: 'fs://img/back.png',
+                                pauseImg: 'fs://img/back.png',
+                                nextSize: 20,
+                                nextImg: 'fs://img/back.png',
+                                timeSize: 14,
+                                timeColor: '#fff',
+                                sliderImg: 'fs://img/slder.png',
+                                progressColor: '#696969',
+                                progressSelected: '#76EE00'
+                            }
+                        },
+                        path: _this.brandDetails.brand_info[0].brand_video_info[index].video_url, //（可选项）字符串类型；文档的路径，支持网络和本地（fs://）路径；默认：未传值时不播放
+                        //在 android 平台上不支持 widget://
+                        autoPlay: true //（可选项）布尔类型；打开时是否自动播放；默认：true（自动播放）
+                    }, function(ret, err) {
+                        if (ret) {
+                            // alert(JSON.stringify(ret));
+                        } else {
+                            // alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                // 打开官网
+                fnOpenWebsite(url) {
+                    if (url) {
+                        api.openWin({
+                            name: 'website_win',
+                            url: './website_win.html',
+                            pageParam: {
+                                url: url
+                            }
+                        });
+                    }
+                },
+                //打开分类图片列表
+                fnOpenProductImgs_win(id) {
+                    api.openWin({
+                        name: 'productImgs_win',
+                        url: './productImgs_win.html',
+                        pageParam: {
+                            pid: id,
+                            pType: 2
+                        }
+                    });
+                }
+            }
+        })
+    }
+</script>

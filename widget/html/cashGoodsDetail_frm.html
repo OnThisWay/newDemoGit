@@ -1,0 +1,338 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+            padding-top: 100vw;
+        }
+
+        .messBox {
+            padding: 15px;
+            background-color: white;
+        }
+
+        .messBox .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .messBox .top .left {
+            width: calc(100vw - 30px - 50px);
+            display: flex;
+        }
+
+        .messBox .top .left .name {
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .messBox .top .right {
+            width: 50px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+        }
+
+        .messBox .intagral {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .messBox .intagral .num {
+            font-size: 18px;
+            font-family: Arial-BoldMT;
+            font-weight: bold;
+            color: #FF0C34;
+        }
+
+        .messBox .intagral .t {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #FF0C34;
+            margin-left: 5px;
+            text-decoration: line-through;
+        }
+
+        .messBox .intagral .bra {
+            display: inline-block;
+            padding: 0 10px;
+            line-height: 20px;
+            font-size: 12px;
+            border-radius: 10px;
+            font-family: SimHei;
+            font-weight: 400;
+            background-color: #0096C8;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+            margin-left: 10px;
+        }
+
+        .messBox .mess {
+            font-size: 12px;
+            font-family: SimHei;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .detail {}
+
+        .detail .top {
+            text-align: center;
+            line-height: 40px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+        }
+
+        .detail .imgs {
+            width: 100%;
+        }
+
+        .detail .imgs img {
+            width: 100%;
+        }
+
+        .skuBox {
+            border-top: 1px solid #f0f0f0;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        .skuBox .tit {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #999;
+        }
+
+        .skuBox .skuList {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .skuBox .skuList>div {
+            padding: 5px 10px;
+            background: #f0f0f0;
+            font-size: 12px;
+            color: #333;
+            border-radius: 3px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #f0f0f0;
+        }
+        .skuBox .skuList>.activeSku{
+            border: 1px solid #0096C8!important;
+            color: #0096C8!important;
+            background-color: white!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-if="detail" v-cloak>
+        <template v-if="network">
+        <div class="messBox">
+            <div class="top">
+                <div class="left"><span class="name">{{detail.g_name}}</span></div>
+                <div class="right" v-if="detail.stock<10"><span>仅剩{{detail.sku_list[activeSkuIndex].stock}}件</span></div>
+            </div>
+            <div class="intagral">
+                <sapn class="num">￥{{detail.sku_list[activeSkuIndex].ruling_price}}</sapn>
+                <sapn class="t">￥{{detail.sku_list[activeSkuIndex].old_price}}</span>
+                <span class="bra">剩余{{detail.sku_list[activeSkuIndex].stock}}件</span>
+            </div>
+            <div class="mess">{{detail.desc}}</div>
+            <div class="skuBox">
+                <div class="tit">选择型号</div>
+                <div class="skuList">
+                    <div  v-for="(item,index) in detail.sku_list" :class="activeSkuIndex==index?'activeSku':''" @click="fnChooseSku(index)">
+                        {{item.s_name}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="detail">
+            <div class="top">宝贝详情</div>
+            <div class="imgs">
+                <img v-for="(item,index) in detail.img_details" :src="item" alt="">
+            </div>
+        </div>
+        </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                gid: api.pageParam.gid,
+                detail: '',
+                activeSkuIndex: 0,
+                img: ["https://gd3.alicdn.com/imgextra/i3/197826767/O1CN01qSbhcq1zrKh4QOO37_!!197826767.jpg", "https://gd3.alicdn.com/imgextra/i3/197826767/O1CN01qSbhcq1zrKh4QOO37_!!197826767.jpg"]
+            },
+            mounted: function() {
+                var _this = this;
+                this.fnGetDetail();
+                this.fnCustomRefresh();
+                api.addEventListener({
+                    name: 'openCashGoodsOrderSure_frm'
+                }, function(ret, err) {
+                    if (ret) {
+                        if (_this.detail) {
+                            api.openWin({
+                                name: 'cashGoodsOrderSure_win',
+                                url: './cashGoodsOrderSure_win.html',
+                                pageParam: {
+                                    g_name:_this.detail.g_name,
+                                    imgCover: _this.detail.g_cover,
+                                    sku:_this.detail.sku_list[_this.activeSkuIndex]
+                                }
+                            });
+                        }
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                })
+
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                },
+                //获取详情
+                fnGetDetail(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('cashGoods/goodsList', {
+                        gid: _this.gid
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.detail = res.msg[0];
+                            _this.fnUIScrollPicture(res.msg[0].img_details);
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                fnUIScrollPicture(iamges) {
+                    var UIScrollPicture = api.require('UIScrollPicture');
+                    UIScrollPicture.open({
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: api.winWidth,
+                            h: api.winWidth
+                        },
+                        data: {
+                            paths: iamges
+
+                        },
+                        styles: {
+                            indicator: {
+                                align: 'center',
+                                color: '#FFFFFF',
+                                activeColor: '#DA70D6'
+                            }
+                        },
+                        contentMode: 'scaleAspectFit',
+                        interval: 3,
+                        fixedOn: api.frameName,
+                        loop: true,
+                        fixed: false
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.eventType == 'click') {
+                                fnOpenPhotoBrowser(iamges, 0)
+                            }
+                        } else {
+                            // alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                // 切换SKU
+                fnChooseSku(index){
+                    this.activeSkuIndex = index;
+                }
+            }
+        })
+
+
+    }
+</script>

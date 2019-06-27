@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../font/iconfont.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+
+    <style>
+        .aui-list-item-media {
+            position: relative;
+        }
+
+        .badge {
+            background: red;
+            position: absolute;
+            right: 0;
+            font-size: 10px;
+            /*padding: 3px;*/
+            text-align: center;
+            line-height: 15px;
+            top: 0;
+            color: white;
+            border-radius: 50%;
+            min-width: 15px;
+            min-height: 15px
+        }
+
+        .noMess {
+            width: 60px;
+            height: 60px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-left: -30px;
+            margin-top: -30px;
+            text-align: center;
+        }
+
+        .noMess>img {
+            width: 100%;
+            height: 100;
+        }
+
+        .noMess p {
+            font-size: 14px;
+            color: #333;
+        }
+        .aui-card-list-content{
+            min-height: 100vh
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="aui-card-list">
+            <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                    <!-- <li class="aui-list-item aui-list-item-middle" @click="fnOpenAdvisorytest_win">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media" style="width: 3rem;">
+                                <img src="../image/system.png" class="aui-img-round">
+                                <div class="badge" v-if='systemUnreadNum!=0'>{{systemUnreadNum}}</div>
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                订单通知
+                            </div>
+                        </div>
+                    </li> -->
+                    <li class="aui-list-item aui-list-item-middle" v-for="(item,index) in conversationList" @click="fnOpenAdvisoryOrderOrderDetail_win(index)">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media" style="width: 3rem;">
+                                <img :src="myUserId==item.senderUserId?JSON.parse(item.latestMessage.extra).receive_head:JSON.parse(item.latestMessage.extra).release_head" class="aui-img-round">
+                                <div class="badge" v-if="item.unreadMessageCount!=0">{{item.unreadMessageCount}}</div>
+                            </div>
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14">{{myUserId==item.senderUserId?JSON.parse(item.latestMessage.extra).receive_name:JSON.parse(item.latestMessage.extra).release_name}}</div>
+                                    <div class="aui-list-item-right">{{timestampToTime(item.sentTime/1000)}}</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    {{item.latestMessage.text}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div v-if="conversationList.length==0" class="noWin">
+                    <div><i class="iconfont icon-zanwushuju"></i></div>
+                    <div class="">
+                        <span>暂无消息</span>
+                    </div>
+                </div>
+                <!-- <div class="noMess" v-if="conversationList.length==0"><img :src="noMessImg" alt="">
+                    <p>暂无消息</p>
+                    </sp>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var rong = api.require('rongCloud2');
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        });
+        var userInfo = JSON.parse(api.getPrefs({
+            sync: true,
+            key: 'userInfo'
+        }));
+        var app = new Vue({
+            el: '#app',
+            data: {
+                myUserId: userInfo.id,
+                noMessImg: '../image/wechat2.png',
+                conversationList: [], //历史消息列表
+                // conversationIdList: [], //现有会话消息ID
+                systemUnreadNum: 0
+            },
+            mounted: function() {
+                var _this = this;
+                this.fnCustomRefresh()
+                    //获取列表
+                this.fnGetConversationList();
+                //监听有新的消息
+                rong.setOnReceiveMessageListener(function(ret, err) {
+                        _this.fnGetConversationList();
+                    })
+                    // 监听消息读取清除纬度状态
+                api.addEventListener({
+                    name: 'messRead'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetConversationList();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+                //监听清空聊天列表
+                api.addEventListener({
+                    name: 'clearConversations'
+                }, function(ret, err) {
+                    if (ret) {
+                        api.confirm({
+                            title: '提示',
+                            msg: '清空所有聊天记录',
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            if (ret) {
+                                if (ret.buttonIndex == 1) {
+                                    rong.clearConversations({
+                                        conversationTypes: ['PRIVATE', 'SYSTEM']
+                                    }, function(ret, err) {
+                                        _this.fnGetConversationList();
+                                        api.sendEvent({
+                                            name: 'clearAll',
+                                            extra: {
+                                                key1: 'value1',
+                                                key2: 'value2'
+                                            }
+                                        });
+                                    })
+                                }
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+
+
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+                //监听自己发送了消息
+                api.addEventListener({
+                    name: 'meSend'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.conversationList = []; //历史消息列表
+                        _this.conversationIdList = []; //现有会话消息ID
+                        getRongCloudToken(myUserId, myName, myHead)
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+
+
+            },
+            methods: {
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetConversationList("down");
+                    });
+                },
+                //获取会还列表
+                fnGetConversationList: function() {
+                    var rong = api.require('rongCloud2');
+                    var _this = this;
+                    //获取会话列表
+                    rong.getConversationList(function(ret, err) {
+                        api.refreshHeaderLoadDone();
+                        if (ret.status == "success") {
+                            _this.conversationList = ret.result;
+                        } else {
+                            messageToast('获取对话列表错误')
+                        }
+                    })
+                },
+
+                //打开会话
+                fnOpenAdvisoryOrderOrderDetail_win: function(index) {
+                    var data = JSON.parse(this.conversationList[index].latestMessage.extra);
+                    if (this.conversationList[index].senderUserId == this.myUserId) {
+                        var name = data.receive_name;
+                        var head = data.receive_head;
+                    } else {
+                        var name = data.release_name;
+                        var head = data.release_head;
+                    }
+                    api.openWin({
+                        name: 'advisoryOrderOrderDetail_win',
+                        url: './advisoryOrderOrderDetail_win.html',
+                        pageParam: {
+                            targetId: this.conversationList[index].targetId,
+                            name: name,
+                            head: head,
+                        }
+                    });
+                },
+                fnOpenAdvisorytest_win: function() {
+                    api.openWin({
+                        name: 'advisoryOrderOrderDetail_win',
+                        url: './advisoryOrderOrderDetail_win.html',
+                        pageParam: {
+                            targetId: '100019',
+                            name: "移动的羊驼",
+                            head: "http://thirdwx.qlogo.cn/mmopen/vi_32/8snNJc7o5mMA5icVKCGIoJcqRUQagTBjuEhlyKic7X6M5rIXwuH8GZuicYp6ynXWqEeoHZphibUKDx2ANSI7CPa10w/132",
+                        }
+                    });
+                },
+                fnOpenOrderNotificationWin: function() {
+                    this.systemUnreadNum = 0;
+                    api.openWin({
+                        name: 'orderNotification_win',
+                        url: './orderNotification_win.html',
+                        pageParam: {
+
+                        }
+                    });
+                },
+                //退出登录
+                fnLoginOut: function() {
+
+                    api.removePrefs({
+                        key: 'token'
+                    });
+                    api.removePrefs({
+                        key: 'userId'
+                    });
+                    api.removePrefs({
+                        key: 'head'
+                    });
+                    api.removePrefs({
+                        key: 'nickname'
+                    });
+                    api.removePrefs({
+                        key: 'role'
+                    });
+                    //断开融云通讯
+                    var rong = api.require('rongCloud2');
+                    rong.disconnect({
+                        isReceivePush: false
+                    }, function(ret, err) {
+                        if ('success' == ret.status) {
+
+                            // api.toast({ msg: '会话已断开!' });
+                        }
+                    });
+                    api.openWin({
+                        name: 'login_frm',
+                        url: './login_frm.html',
+                        pageParam: {
+                            name: 'otherLogin'
+                        },
+                        slidBackEnabled: false
+                    });
+
+                },
+            }
+        })
+    }
+</script>
+
+</html>

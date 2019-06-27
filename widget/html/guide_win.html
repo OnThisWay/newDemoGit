@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>积分订单</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <div id="main" class="flex-con">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    var guideImg = ['widget://image/guideImg/1.png', 'widget://image/guideImg/2.jpg', 'widget://image/guideImg/3.jpg', 'widget://image/guideImg/4.jpg'];
+    apiready = function() {
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                return;
+                api.closeWidget({});
+            });
+            var frames = [];
+
+            for (var i = 0; i < guideImg.length; i++) {
+                frames.push({
+                    name: 'guide_frm' + i,
+                    url: 'guide_frm' + i + '.html',
+                    bounces: false,
+                    bgColor: guideImg[i]
+                })
+            }
+            api.openFrameGroup({
+                name: 'guide_frm_group',
+                background: '#FFFFFF',
+                scrollEnabled: true,
+                bounces: true,
+                fixedOn: 'guide_win',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: "auto",
+                    h: 'auto'
+                },
+                index: api.pageParam.index,
+                frames: frames,
+            }, function(ret, err) {
+            });
+
+        }
+
+</script>

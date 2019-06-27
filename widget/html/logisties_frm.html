@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>物流信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+        .titleTop {
+          width: 100%;
+          padding: 10px 20px;
+          display: flex;
+          display: -webkit-flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: stretch;
+          background: #fff;
+        }
+
+        .titleTop view {
+          font-size: 14px;
+          color: #333;
+          line-height: 60px;
+        }
+        .titleTop .iconfont{
+          float: right;
+          font-size: 12px;
+        }
+        .titleTop view:nth-child(2) {
+          margin: 10px 0;
+        }
+        .Logistics_list {
+            width: 100%;
+            background: #fff;
+            margin-top: 10px;
+        }
+
+        .Logistics_list .item_list {
+            padding: 0 15px;
+            width: 100%;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-between;
+            align-items: stretch;
+            position: relative;
+        }
+
+        .Logistics_list .item_list::after {
+            height: 1px;
+            background-color: #f0f0f0;
+            display: block;
+            content: '';
+            position: absolute;
+            top: auto;
+            right: 0;
+            bottom: 0;
+            left: 35px;
+            z-index: 2;
+            -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+            pointer-events: none;
+        }
+
+        .Logistics_list .item_list:last-child::after {
+            display: none;
+        }
+
+        .leftLine {
+            width: 10px;
+            padding: 10px 0;
+            margin-right: 10px;
+            display: -webkit-flex;
+            display: flex;
+            position: relative;
+        }
+
+        .leftLine::after {
+            background-color: #f0f0f0;
+            display: block;
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            left: 50%;
+            margin-left: -1px;
+            z-index: 2;
+            -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+            pointer-events: none;
+        }
+
+        .Logistics_list .item_list:last-child .leftLine::after {
+            bottom: 15px;
+        }
+
+        .Logistics_list .item_list:first-child .leftLine::after {
+            top: 15px;
+        }
+
+        .leftLine span {
+            margin: auto;
+            margin-top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff6666;
+            position: relative;
+            z-index: 9
+        }
+
+        .Logistics_list .item_list.active .leftLine span {
+            width: 10px;
+            height: 10px;
+            background: #ff6666;
+        }
+
+        .right_box {
+            flex: 1;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .right_box div {
+            font-size: 14px;
+            line-height: 20px;
+            color: #666;
+            white-space: normal;
+            text-align: justify;
+        }
+
+        .right_box span {
+            font-size: 14px;
+            color: #999;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+            <div v-if="data.status==0">
+                <div class='titleTop' >
+                  <div>物流名称：<span>{{data.result.expName}}</span> </div>
+                  <div>运单编号：<span>{{data.result.number}}</span> <span class='iconfont icon-xiangqingjieshao' ></span></div>
+                  <div>联系物流：<span>{{data.result.expPhone}}</span> <span class='iconfont icon-002dianhua'></span></div>
+                  <div>物流官网：<span>{{data.result.expSite}}</span><span class='iconfont icon-xiangqingjieshao'></span> </div>
+                </div>
+                <div class='Logistics_list'>
+                    <div  class="item_list" v-for="(item,index) in data.result.list">
+                        <div class='leftLine'>
+                            <span></span>
+                        </div>
+                        <div class='right_box'>
+                            <div>{{item.status}}</div>
+                            <span>{{item.time}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="data&&data.status!=0" class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>物流信息有误</span>
+                </div>
+            </div>
+        </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                no: api.pageParam.no,
+                data: "",
+            },
+            mounted: function() {
+                this.fnCustomRefresh();
+                this.fnGetList();
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetList();
+                })
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetList("down");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/logistics', {
+                        no: _this.no
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.data = JSON.parse(res.msg) ;
+                            console.log(_this.data.status)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                }
+
+            }
+        })
+    }
+</script>

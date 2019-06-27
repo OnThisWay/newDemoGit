@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>田螺哥</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+
+        .myBox {
+            padding: 40px 0;
+            background-color: #F4F4F4;
+            border-bottom: 1px solid #CECECE;
+        }
+
+        .myBox .headBox {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: auto;
+            position: relative;
+        }
+
+        .myBox .headBox img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .myBox .headBox .addBox {
+            width: 26px;
+            height: 26px;
+            background: #137696;
+            border-radius: 50%;
+            position: absolute;
+            left: 60px;
+            top: 64px;
+            font-size: 16px;
+            color: #B5B9C3;
+            text-align: center;
+            line-height: 26px;
+        }
+
+        .listBox {
+            padding: 15px;
+            background-color: white;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #333333;
+            font-weight: 400;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #9A9A9A;
+            font-size: 14px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .listBox .icon-you {
+            font-size: 14px;
+            color: #9A9A9A;
+        }
+
+        .border_b {
+            border-bottom: 1px solid #F4F4F4;
+        }
+
+        .margin_t {
+            margin-top: 15px;
+        }
+
+        .loginOut {
+            line-height: 40px;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: #fff;
+            width: calc(100vw - 40px);
+            margin: 30px auto;
+            background: #0096C8;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        * {
+            -webkit-user-select: auto !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="myBox">
+            <div class="headBox" @click="fnOpenXiangCe">
+                <img :src="head?head:'../image/touxiang.png'" alt="">
+                <div class="addBox">+</div>
+            </div>
+            <!-- <div class="name">
+                18999999999
+            </div> -->
+        </div>
+        <div class="listBox border_b" @click='fnOpenSettingName_win'>
+            <div class="name">用户昵称</div>
+            <div class="value">{{name}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox border_b" @click="fnOpenSettingPhoneOld_win">
+            <div class="name">手机号码</div>
+            <div class="value">{{phone}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox " @click="fnOpenSettingPwd_win">
+            <div class="name">密码设置</div>
+            <div class="value"></div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox border_b margin_t" @click="fnOpenContactUs_win">
+            <div class="name">客服电话</div>
+            <div class="value">{{contact}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <!-- <div class="listBox ">
+            <div class="name">关于我们</div>
+            <div class="value"></div>
+            <i class="iconfont icon-you"></i>
+        </div> -->
+
+        <div class="listBox border_b" @click="edition">
+            <div class="name">当前版本</div>
+            <div class="value">{{version}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="loginOut" @click="fnLoginOut">退出登录</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                name: "",
+                phone: '',
+                head: '',
+                contact: '400-687-8088',
+                version: ''
+            },
+            mounted: function() {
+                this.version = api.appVersion;
+                this.fnGetUserInfo();
+                var _this = this;
+                api.addEventListener({
+                    name: 'userInfoChaged'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnGetUserInfo();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            },
+            methods: {
+                //获取个人信息
+                fnGetUserInfo: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('getUserInfo', {}, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.name = res.msg.name;
+                            _this.phone = res.msg.phone;
+                            _this.head = res.msg.head_url;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //打开相册
+                fnOpenXiangCe: function() {
+                    var _this = this;
+                    api.actionSheet({
+                        title: '选取照片',
+                        cancelTitle: '取消',
+                        buttons: ['拍照', '相册选择']
+                    }, function(ret, err) {
+                        if (ret) {
+                            var index = ret.buttonIndex;
+                            if (index == 1) {
+                                api.getPicture({
+                                    sourceType: 'camera',
+                                    encodingType: 'jpg',
+                                    mediaValue: 'pic',
+                                    destinationType: 'url',
+                                    allowEdit: true,
+                                    quality: 50,
+                                    // targetWidth: 100,
+                                    // targetHeight: 100,
+                                    saveToPhotoAlbum: false
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        var _img = ret.data;
+                                        _this.fnUpImg(_img)
+                                    } else {
+
+                                    }
+                                });
+                            } else if (index == 2) {
+                                var UIMediaScanner = api.require('UIMediaScanner');
+                                UIMediaScanner.open({
+                                    type: 'picture',
+                                    column: 4,
+                                    classify: true,
+                                    max: 5,
+                                    sort: {
+                                        key: 'time',
+                                        order: 'asc'
+                                    },
+                                    texts: {
+                                        stateText: '已选择*项',
+                                        cancelText: '取消',
+                                        finishText: '完成'
+                                    },
+                                    styles: {
+                                        bg: '#fff',
+                                        mark: {
+                                            icon: '',
+                                            position: 'bottom_left',
+                                            size: 20
+                                        },
+                                        nav: {
+                                            bg: '#eee',
+                                            stateColor: '#000',
+                                            stateSize: 18,
+                                            cancelBg: 'rgba(0,0,0,0)',
+                                            cancelColor: '#000',
+                                            cancelSize: 18,
+                                            finishBg: 'rgba(0,0,0,0)',
+                                            finishColor: '#000',
+                                            finishSize: 18
+                                        }
+                                    },
+                                    scrollToBottom: {
+                                        intervalTime: 3,
+                                        anim: true
+                                    },
+                                    exchange: true,
+                                    rotation: true
+                                }, function(ret) {
+                                    if (ret) {
+                                        if (ret.eventType == "confirm") {
+                                            var img = ret.list.map(function(item) {
+                                                return item.path
+                                            })
+                                            _this.fnUpImg(img)
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                //上传图片到阿里云
+                fnUpImg: function(img) {
+                    var _this = this;
+                    showProgress();
+                    api.ajax({
+                        url: URL + 'uploadImg',
+                        method: 'post',
+                        headers: {
+                            'Authorization': 'Bearer ' + api.getPrefs({
+                                sync: true,
+                                key: 'token'
+                            }),
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        data: {
+                            values: {},
+                            files: {
+                                file: img
+                            }
+                        }
+                    }, function(ret, err) {
+                        hideProgress();
+                        if (ret) {
+                            if (ret.code == 10000) {
+                                _this.fnEditUserInfo(ret.msg)
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        } else {
+                            console.log("err:---" + JSON.stringify(err));
+                        }
+                    });
+                },
+                //修改头像
+                fnEditUserInfo: function(head_url) {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/editUserInfo', {
+                        head_url: head_url,
+                        type: 1,
+                        nickname: ''
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            successToast('上传成功')
+                            _this.head = head_url;
+                            api.sendEvent({
+                                name: 'userInfoChaged',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast('-----服务器忙，请重试')
+                    })
+                },
+                //退出登录
+                fnLoginOut: function() {
+                    var _this = this;
+                    api.confirm({
+                        title: '提示',
+                        msg: '请确认是否退出账号？',
+                        buttons: ['确定', '取消']
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.buttonIndex == 1) {
+                                showProgress();
+                                ajax('logout', {}, function(res) {
+                                    hideProgress();
+                                    api.refreshHeaderLoadDone();
+                                    if (res.code == 10000) {
+                                        successToast('退出成功');
+                                        api.removePrefs({
+                                            key: 'token'
+                                        });
+                                        api.removePrefs({
+                                            key: 'userInfo'
+                                        });
+                                        api.sendEvent({
+                                            name: 'loginOut',
+                                            extra: {}
+                                        });
+                                        setTimeout(function() {
+                                            api.closeWin({});
+                                        }, 2000)
+
+                                    } else {
+                                        messageToast(res.errMsg)
+                                    }
+                                }, function(res) {
+                                    console.log(JSON.stringify(res));
+                                    api.refreshHeaderLoadDone();
+                                    hideProgress();
+                                    messageToast(ERRMSG)
+                                })
+                                api.removePrefs({
+                                    key: 'token'
+                                });
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                fnOpenSettingName_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'settingName_win',
+                        url: './settingName_win.html',
+                        pageParam: {
+                            name: _this.name
+                        }
+                    });
+
+                },
+                fnOpenSettingPhoneOld_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'settingPhoneOld_win',
+                        url: './settingPhoneOld_win.html',
+                        pageParam: {
+                            phone: _this.phone
+                        }
+                    });
+
+                },
+                //设置密码
+                fnOpenSettingPwd_win: function() {
+                    api.openWin({
+                        name: 'settingPwd_win',
+                        url: './settingPwd_win.html',
+                        pageParam: {
+                            which: 'setting'
+                        }
+                    });
+                },
+                //联系我们
+                fnOpenContactUs_win: function() {
+                    api.call({
+                        type: 'tel_prompt',
+                        number: '4006878088'
+                    });
+                },
+                //检查版本
+                edition: function() {
+                    var appVersion = api.appVersion;
+                    showProgress();
+                    ajax("home/app_set",{}, function(data) {
+                            hideProgress();
+                            if (data.code == 10000) {
+                                if (api.systemType == "android" && checkPlugin(appVersion, data.msg[0].version_and)) {
+                                    var str = '新版本型号:' + data.msg[0].version_and + ';更新提示语:' + data.msg[0].updated_desc_and;
+                                    var forced = data.msg[0].and_forced_update?'(强制更新)':",是否下载并安装";
+                                    api.confirm({
+                                        title: `有新的版本${forced}`,
+                                        msg: str,
+                                        buttons: ['确定', '取消']
+                                    }, function(ret, err) {
+                                        if (ret.buttonIndex == 1) {
+                                            api.download({
+                                                url: data.msg[0].a_down_url,
+                                                report: true
+                                            }, function(ret, err) {
+                                                if (ret && 0 == ret.state) { /* 下载进度 */
+                                                    api.showProgress({
+                                                        title:  '下载应用',
+                                                        text: "进度:"+ ret.percent + "%",
+                                                        modal: true
+                                                    });
+                                                }
+                                                if (ret && 1 == ret.state) { /* 下载完成 */
+                                                    api.hideProgress();
+                                                    var savePath = ret.savePath;
+                                                    api.installApp({
+                                                        appUri: savePath
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            if (data.msg[0].and_forced_update) {
+                                                api.closeWidget({
+                                                    id: 'A6093595445405',
+                                                    retData: {
+                                                        name: 'closeWidget'
+                                                    },
+                                                    silent:true,
+                                                    animation: {
+                                                        type: 'flip',
+                                                        subType: 'from_bottom',
+                                                        duration: 500
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else if (api.systemType == "ios" && checkPlugin(appVersion, data.msg[0].version_ios)) {
+                                    var str = '新版本型号:' + data.msg[0].version_ios + ';更新提示语:' + data.msg[0].updated_desc_ios;
+                                    var forced = data.msg[0].ios_forced_update?'(强制更新)':",是否下载并安装";
+                                    api.confirm({
+                                        title: `有新的版本${forced}`,
+                                        msg: str,
+                                        buttons: ['确定', '取消']
+                                    }, function(ret, err) {
+                                        if (ret.buttonIndex == 1) {
+                                            api.installApp({
+                                                appUri: data.msg[0].i_down_url
+                                            });
+                                        } else {
+                                            if (data.msg[0].ios_forced_update) {
+                                                api.closeWidget({
+                                                    id: 'A6093595445405',
+                                                    retData: {
+                                                        name: 'closeWidget'
+                                                    },
+                                                    silent:true,
+                                                    animation: {
+                                                        type: 'flip',
+                                                        subType: 'from_bottom',
+                                                        duration: 500
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                messageToast(data.errMsg)
+                            }
+                        },function error() {
+                            hideProgress();
+                            messageToast('服务器错误')
+
+                    })
+
+                }
+            }
+        })
+    }
+</script>
+
+</html>

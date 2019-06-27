@@ -1,0 +1,919 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+            -webkit-user-select:all;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding-bottom: 10px;
+        }
+
+        .title {
+            padding: 10px 15px;
+            color: #666666;
+            font-size: 12px;
+            background: #F4F4F4;
+        }
+
+        .listBox {
+            padding: 15px;
+            background-color: #FFF;
+            border-bottom: 1px solid #F4F4F4;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #999999;
+            font-size: 14px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .listBox .icon-you {
+            font-size: 14px;
+            color: #9B9B9B;
+        }
+
+        .value input {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            text-align: right;
+            color: #9B9B9B;
+        }
+
+        .inputbox .value {
+            padding: 0 0 0 15px;
+        }
+
+        .danwei {
+            color: #9B9B9B;
+            font-size: 14px;
+        }
+
+        .twoMoney {
+            padding: 15px;
+            border-bottom: 1px solid #F4F4F4;
+            background-color: #FFF;
+        }
+
+        .twoMoney>div {
+            display: flex;
+        }
+
+        .twoMoney>div:first-child {
+            margin-bottom: 10px;
+        }
+
+        .twoMoney>div>div:first-child {
+            font-size: 14px;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .twoMoney>div>div:last-child {
+            font-size: 14px;
+            color: #999999;
+        }
+
+        .total {
+            background-color: #FFF;
+            padding: 15px;
+            display: flex;
+        }
+
+        .total>div {
+            font-size: 16px;
+        }
+
+        .total>div:first-child {
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .total>div:last-child {
+            font-weight: bold;
+            color: #FF0C34;
+        }
+
+        .payBox {
+            background-color: #FFF;
+            padding: 15px;
+            display: -webkit-box;
+            justify-content: center;
+
+        }
+
+        .payBox .imgBox {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .payBox .imgBox i {
+            font-size: 28px;
+        }
+
+        .icon-weixin {
+            color: #00C232
+        }
+
+        .icon-zhifubao1 {
+            color: #00A2EC
+        }
+
+        .icon-13 {
+            color: #d81e06;
+        }
+
+        .payBox .checkBox {
+            width: 15px;
+            height: 15px;
+            margin-top: 10px;
+            /*background-color: #DDDDDD;*/
+            border-radius: 50%;
+            /*overflow: hidden;*/
+        }
+
+        .duiWei {
+            color: #00C232;
+        }
+
+        .duiZhi {
+            color: #00A2EC;
+        }
+
+        .duiTi {
+            color: #d81e06
+        }
+
+        .payBox .middle {
+            -webkit-box-flex: 1;
+            color: #333333;
+            padding-left: 15px;
+            line-height: 40px;
+        }
+
+        .border_b {
+            border-bottom: 1px solid #F4F4F4;
+        }
+
+        .btn {
+            margin: 20px auto;
+            line-height: 50px;
+            background-color: #2D2D2D;
+            text-align: center;
+            color: #D6D6D6;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btntrue {
+            background-color: #0097CB;
+            color: white;
+        }
+
+        .ziMess {
+            text-align: center;
+            font-size: 14px;
+            margin: 50px 0;
+        }
+
+        .yingsi {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .yingsi span {
+            color: #0095C5;
+        }
+        .payBox input{
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            padding:  0 15px;
+            font-size: 14px;
+        }
+        .listBox img{
+            width: 15px;
+            height: 15px;
+            margin-left: 10px;
+            margin-top: 2px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="orderType==1||orderType==3">
+        <div class="title">
+            填写信息
+        </div>
+        <div class="listBox" @click='fnopenUIActionSelector()'>
+            <div class="name">所在城市</div>
+            <div class="value">{{city?city:'请选择'}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox"  @click="fnopenSearchHouse()">
+            <div class="name">小区名称</div>
+            <div class="value">{{houseName?houseName:'点击搜索选择小区名称'}}</div>
+            <!-- <div class="value"><input type="text" name="" v-model="houseName" placeholder="请填写小区名称"></div> -->
+            <!-- <img @click="fnopenSearchHouse()" src="../image/address1.png" alt=""> -->
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox inputbox">
+            <div class="name">小区地址</div>
+            <div class="value"><input type="text" name="" v-model="houseAddress" placeholder="请填写地址"></div>
+        </div>
+        <div class="listBox inputbox">
+            <div class="name">户型</div>
+            <div class="value"><input type="text" name="" v-model="serveName" placeholder="请填写户型(如：三室两厅)"></div>
+        </div>
+        <div class="listBox" @click='fnChooseStyle'>
+            <div class="name">装修风格</div>
+            <div class="value">{{style?style:'请选择'}}</div>
+            <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox inputbox">
+            <div class="name">联系人</div>
+            <div class="value"><input type="text" name="" v-model="name" placeholder="请填写联系人"></div>
+        </div>
+        <div class="listBox inputbox">
+            <div class="name">联系电话</div>
+            <div class="value"><input type="number" name="" v-model="phone" placeholder="请填写联系电话"></div>
+        </div>
+        <div class="listBox" v-if="orderType==1" @click='fnChooseServiceName()'>
+            <div class="name">服务类型</div>
+            <div class="value">{{serviceNameArr[serviceChooseIndex]?serviceNameArr[serviceChooseIndex]:"请选择服务类型"}}</div>
+             <i class="iconfont icon-you"></i>
+        </div>
+        <div class="listBox inputbox" v-if="orderType==1">
+            <div class="name">面积(m²)</div>
+            <div class="value"><input type="number" name="" v-model="houseArea" placeholder="请输入面积"></div>
+        </div>
+        <div class="title">
+            费用概算
+        </div>
+    </template>
+
+        <template id="" v-if="orderType==2">
+        <div class="ziMess">您正在提交监理咨询订单</div>
+    </template>
+        <div class="total" v-if="orderType==1">
+            <div>订单单价（￥/m²）</div>
+            <div>{{servicePriceArr[serviceChooseIndex]?servicePriceArr[serviceChooseIndex]:'请选择服务类型'}}</div>
+        </div>
+        <div class="total" v-if="orderType==1">
+            <div>订单总价￥</div>
+            <div>{{servicePriceArr[serviceChooseIndex]?servicePriceArr[serviceChooseIndex]*houseArea:'请选择服务类型'}}</div>
+        </div>
+        <div class="total" v-if="orderType!=1">
+            <div>订单总价</div>
+            <div>￥{{price}}</div>
+        </div>
+        <div class="title">
+            选择支付方式
+        </div>
+        <div class="payBox border_b" @click='fnChoosePayType(1)'>
+            <div class="imgBox">
+                <i class="iconfont icon-weixin"></i>
+            </div>
+            <div class="middle">
+                <div>微信支付</div>
+            </div>
+            <div class="checkBox">
+                <i v-show="payType==1" class="iconfont icon-dui duiWei"></i>
+                <!-- <img v-show="payType==1" src="../image/yes.jpg" alt=""> -->
+            </div>
+        </div>
+        <div class="payBox border_b" @click='fnChoosePayType(2)'>
+            <div class="imgBox">
+                <i class="iconfont icon-zhifubao1"></i>
+            </div>
+            <div class="middle">
+                <div>支付宝支付</div>
+            </div>
+            <div class="checkBox">
+                <i v-show="payType==2" class="iconfont icon-dui duiZhi"></i>
+                <!-- <img v-show="payType==2" src="../image/yes.jpg" alt=""> -->
+            </div>
+        </div>
+        <div class="payBox border_b" v-if="orderType!=2" @click='fnChoosePayType(3)'>
+            <div class="imgBox">
+                <i class="iconfont icon-13"></i>
+            </div>
+            <div class="middle">
+                <div><span>体验码支付</span> <input v-if="payType==3" type="text" placeholder="请输入体验码" name="" v-model="experienceCode"></div>
+            </div>
+            <div class="checkBox">
+                <i v-show="payType==3" class="iconfont icon-dui duiTi"></i>
+                <!-- <img v-show="payType==2" src="../image/yes.jpg" alt=""> -->
+            </div>
+        </div>
+        <div class="title">
+            <span style="opacity:0">费用概算（首付款多退少补）</span>
+        </div>
+        <div class="yingsi" v-if="orderType==1"><input type="checkbox" v-model="checked" class="checked"> 我已阅读并同意<span @click="fnOpenPrivacyProtocol_win">《 田螺哥管家服务协议
+》</span></div>
+        <div class="yingsi" v-if="orderType==2"><input type="checkbox" v-model="checked" class="checked"> 我已阅读并同意<span @click="fnOpenPrivacyProtocol_win">《 田螺哥咨询服务协议
+》</span></div>
+        <div class="yingsi" v-if="orderType==3"><input type="checkbox" v-model="checked" class="checked"> 我已阅读并同意<span @click="fnOpenPrivacyProtocol_win">《 田螺哥验房服务协议
+》</span></div>
+        <div class="btn btntrue" @click='fnPayNow'>
+            立即支付
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=csmkAoPZZt55QqG4FZMyoWuveMQnRdnW"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+        // var serveName = api.pageParam.name;
+        var price = api.pageParam.money;
+        var serveId = api.pageParam.serveId;
+        var orderType = api.pageParam.orderType; //下单类型
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                checked: true,
+                orderType: orderType,
+                serveName: '',
+                serveId: serveId,
+                city: '', //城市
+                houseName: '', //小区名字
+                houseAddress: '', //小区详细地址
+                lat: "",
+                lon: '',
+                style: '', //装修风格
+                name: '', //联系人
+                phone: '', //电话
+                houseArea: "", //房屋面积
+                payType: 1, //支付方式
+                styleArr: [],
+                serviceChooseIndex: "",
+                serviceNameArr: [],
+                servicePriceArr: [],
+                serviceIdArr: [],
+                price: price,
+                point: "",
+                experienceCode: '' //体验码
+            },
+            mounted: function() {
+                var _this = this;
+                _this.fnGetStyleList();
+                if (orderType == 1) {
+                    _this.fnGetSupervisionServiceList();
+                }
+                api.addEventListener({
+                    name: 'chooseHouse'
+                }, function(ret, err) {
+                    if (ret) {
+                        // alert(JSON.stringify(ret))
+                        _this.houseName = ret.value.houseName; //小区名字
+                        _this.houseAddress = ret.value.houseAddress; //小区详细地址
+                        _this.lat = ret.value.lat;
+                        _this.lon = ret.value.lon;
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            },
+            methods: {
+                //获取风格
+                fnGetStyleList: function(open) {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/styleList', {}, function(res) {
+                        hideProgress();
+                        console.log(JSON.stringify(res))
+                        if (res.code == 10000) {
+                            var arr = res.msg.map(function(item) {
+                                return item.name;
+                            })
+                            _this.styleArr = arr;
+                            if(open){
+                                _this.fnChooseStyle();
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        console.log(JSON.stringify(res))
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //查询监理服务分类
+                fnGetSupervisionServiceList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/serveList', {
+                        type: 1
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.serviceNameArr = res.msg.map(item => {
+                                return item.serve_name
+                            })
+                            _this.servicePriceArr = res.msg.map(item => {
+                                return item.serve_price
+                            })
+                            _this.serviceIdArr = res.msg.map(item => {
+                                return item.serve_id
+                            })
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //选择服务类型
+                fnChooseServiceName() {
+                    var _this = this;
+                    api.actionSheet({
+                        title: '选择监理服务类型',
+                        buttons: _this.serviceNameArr
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.buttonIndex < _this.styleArr.length + 1) {
+                                _this.serviceChooseIndex = ret.buttonIndex - 1
+                            } else {
+                                _this.serviceChooseIndex = 0
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                // 选择支付方式
+                fnChoosePayType: function(type) {
+                    this.payType = type;
+                },
+                //支付成功
+                fnOpenPayOk_win: function(orderId) {
+                    var _this = this;
+                    api.openWin({
+                        name: 'payOk_win',
+                        url: './payOk_win.html',
+                        pageParam: {
+                            orderId: orderId,
+                            orderType: _this.orderType
+                        }
+                    });
+                },
+                //打开城市选择
+                fnopenUIActionSelector: function() {
+                    var _this = this;
+                    var UIActionSelector = api.require('UIActionSelector');
+                    UIActionSelector.open({
+                        datas: 'widget://res/city_subOrder.json',
+                        layout: {
+                            row: 7,
+                            col: 2,
+                            height: 30,
+                            size: 12,
+                            sizeActive: 14,
+                            rowSpacing: 5,
+                            colSpacing: 10,
+                            maskBg: 'rgba(0,0,0,0.2)',
+                            bg: '#fff',
+                            color: '#9B9B9B',
+                            colorActive: '#f00',
+                            colorSelected: '#0097CB'
+                        },
+                        actives:[1,0],
+                        animation: true,
+                        cancel: {
+                            text: '取消',
+                            size: 12,
+                            w: 90,
+                            h: 35,
+                            bg: '#fff',
+                            bgActive: '#ccc',
+                            color: '#888',
+                            colorActive: '#fff'
+                        },
+                        ok: {
+                            text: '确定',
+                            size: 12,
+                            w: 90,
+                            h: 35,
+                            bg: '#fff',
+                            bgActive: '#ccc',
+                            color: '#888',
+                            colorActive: '#fff'
+                        },
+                        title: {
+                            text: '请选择',
+                            size: 12,
+                            h: 44,
+                            bg: '#eee',
+                            color: '#888'
+                        },
+                        fixedOn: api.frameName
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.eventType == "ok") {
+                                if (ret.level2 != '全国') {
+                                    var value;
+                                    if (ret.level2 == "市辖区" || ret.level2 == "县") {
+                                        value = ret.level1;
+                                    } else {
+                                        value = ret.level2;
+                                    }
+                                    _this.city = value;
+                                    // 创建地址解析器实例
+                                    // var myGeo = new BMap.Geocoder();
+                                    // 将地址解析结果显示在地图上，并调整地图视野
+                                    // myGeo.getPoint(_this.city, function(point) {
+                                    //     if (point) {
+                                    //         _this.point = point;
+                                    //         console.log(JSON.stringify(point))
+                                    //     }
+                                    // }, ret.level1);
+                                } else {
+                                    messageToast('请选择城市')
+                                }
+
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                //打开小区搜索
+                fnopenSearchHouse: function() {
+                    var _this = this;
+                    if (this.city) {
+                        api.openWin({
+                            name: 'searchHouse_win',
+                            url: './searchHouse_win.html',
+                            pageParam: {
+                                city: _this.city,
+                            }
+                        });
+
+                    } else {
+                        messageToast('请选择所在城市')
+                    }
+                },
+                // 选择风格
+                fnChooseStyle: function() {
+                    var _this = this;
+                    if(_this.styleArr.length){
+                        api.actionSheet({
+                            title: '选择装修风格',
+                            buttons: _this.styleArr
+                        }, function(ret, err) {
+                            if (ret) {
+                                if (ret.buttonIndex < _this.styleArr.length + 1) {
+                                    _this.style = _this.styleArr[ret.buttonIndex - 1]
+                                }
+
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+                    }else{
+                        this.fnGetStyleList(1)
+                    }
+
+                },
+                //打开协议
+                fnOpenPrivacyProtocol_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'privacyProtocol_JL_win',
+                        url: './privacyProtocol_JL_win.html',
+                        pageParam: {
+                            orderType: _this.orderType,
+                            name: 'test'
+                        }
+                    });
+
+                },
+
+                // 选择面积
+                // fnChooseHouseArea: function() {
+                //     var _this = this;
+                //     api.actionSheet({
+                //         title: '选择装修面积',
+                //         buttons: _this.areaArr
+                //     }, function(ret, err) {
+                //         if (ret) {
+                //             if(ret.buttonIndex<3){
+                //             _this.houseArea = _this.areaArr[ret.buttonIndex - 1]
+                //         }
+                //         } else {
+                //             alert(JSON.stringify(err));
+                //         }
+                //     });
+                //
+                // },
+
+                //立即支付
+                fnPayNow: function() {
+                    var _this = this;
+                    if (this.orderType == 1) { //监理服务订单
+                        if (!_this.city) {
+                            messageToast('请选择所在城市')
+                        } else if (!_this.houseName) {
+                            messageToast('请选择小区名字')
+                        } else if (!_this.houseAddress) {
+                            messageToast('请输入小区地址')
+                        } else if (!_this.style) {
+                            messageToast('请选择装修风格')
+                        }else if (!_this.serveName) {
+                            messageToast('请输入户型')
+                        } else if (!_this.name) {
+                            messageToast('请输入联系人')
+                        } else if (!_this.phone) {
+                            messageToast('请输入联系电话')
+                        } else if (!(/^1(3|4|5|7|8)[\d]{9}$/.test(_this.phone))) {
+                            messageToast('电话号码格式有误')
+                        } else if (!(_this.serviceChooseIndex + '')) {
+                            messageToast('请选择服务类型')
+                        } else if (!_this.houseArea) {
+                            messageToast('请输入面积')
+                        } else if (!_this.experienceCode && _this.payType == 3) {
+                            messageToast('请输入体验码')
+                        } else if (!this.checked) {
+                            messageToast('请同意田螺哥服务协议')
+                        } else {
+                            showProgress();
+                            ajax('order/servePreOrder', {
+                                order_city: _this.city,
+                                serve_id: _this.serviceIdArr[_this.serviceChooseIndex],
+                                house_area: _this.houseArea,
+                                initial_area: _this.houseArea,
+                                house_type: _this.serveName,
+                                house_style: _this.style,
+                                cmy_addr: _this.houseAddress,
+                                lat: _this.lat,
+                                lon: _this.lon,
+                                pay_type: _this.payType,
+                                type: 2,
+                                down_pay_type: _this.payType,
+                                cmy_name: _this.houseName,
+                                contact: _this.name,
+                                phone: _this.phone,
+                                experience_code: _this.experienceCode,
+                                remark: ''
+                            }, function(res) {
+                                hideProgress();
+                                console.log(JSON.stringify(res))
+                                if (res.code == 10000) {
+                                    if (_this.payType == 1) {
+                                        _this.fnWeiPay(res)
+                                    } else if (_this.payType == 2) {
+                                        _this.fnAliPayNow(res)
+                                    } else if (_this.payType == 3) {
+                                        successToast('支付成功');
+                                        setTimeout(function() {
+                                            _this.fnOpenPayOk_win(res.order_id);
+                                        }, 1500)
+                                    }
+                                } else {
+                                    messageToast(res.errMsg)
+                                }
+                            }, function(res) {
+                                hideProgress();
+                                messageToast(ERRMSG)
+                            })
+                        }
+                    } else if (this.orderType == 2) { //咨询㐏订单
+                        if (!this.checked) {
+                            messageToast('请同意田螺哥服务协议')
+                        } else if (!_this.experienceCode && _this.payType == 3) {
+                            messageToast('请输入体验码')
+                        } else {
+                            var _this = this;
+                            showProgress();
+                            ajax('order/serveAdvOrder', {
+                                serve_id: _this.serveId,
+                                type: 2,
+                                pay_type: _this.payType,
+                                experience_code: _this.experienceCode
+                            }, function(res) {
+                                hideProgress();
+                                if (res.code == 10000) {
+                                    if (_this.payType == 1) {
+                                        _this.fnWeiPay(res)
+                                    } else if (_this.payType == 2) {
+                                        _this.fnAliPayNow(res)
+                                    } else if (_this.payType == 3) {
+                                        successToast('支付成功');
+                                        setTimeout(function() {
+                                            _this.fnOpenPayOk_win(res.order_id);
+                                        }, 1500)
+                                    }
+                                } else {
+                                    messageToast(res.errMsg)
+                                }
+                            }, function(res) {
+                                console.log(JSON.stringify(res))
+                                hideProgress();
+                                messageToast(ERRMSG)
+                            })
+                        }
+
+                    } else {
+                        if (!_this.city) {
+                            messageToast('请选择所在城市')
+                        } else if (!_this.houseName) {
+                            messageToast('请选择小区名字')
+                        } else if (!_this.houseAddress) {
+                            messageToast('请输入小区地址')
+                        } else if (!_this.serveName) {
+                            messageToast('请输入户型')
+                        } else if (!_this.style) {
+                            messageToast('请选择装修风格')
+                        } else if (!_this.name) {
+                            messageToast('请输入联系人')
+                        } else if (!_this.phone) {
+                            messageToast('请输入联系电话')
+                        } else if (!(/^1(3|4|5|7|8)[\d]{9}$/.test(_this.phone))) {
+                            messageToast('电话号码格式有误')
+                        } else if (!_this.experienceCode && _this.payType == 3) {
+                            messageToast('请输入体验码')
+                        } else if (!this.checked) {
+                            messageToast('请同意田螺哥服务协议')
+                        } else {
+                            var _this = this;
+                            showProgress();
+                            ajax('order/serveInspectionOrder', {
+                                order_city: _this.city,
+                                serve_id: _this.serveId,
+                                house_area: _this.houseArea,
+                                initial_area: _this.houseArea,
+                                house_type: _this.serveName,
+                                house_style: _this.style,
+                                cmy_addr: _this.houseAddress,
+                                pay_type: _this.payType,
+                                lat: _this.lat,
+                                lon: _this.lon,
+                                type: 2,
+                                phone: _this.phone,
+                                cmy_name: _this.houseName,
+                                contact: _this.name,
+                                experience_code: _this.experienceCode,
+                                remark: ''
+                            }, function(res) {
+                                // console.log(JSON.stringify(res));
+                                hideProgress();
+                                if (res.code == 10000) {
+                                    if (_this.payType == 1) {
+                                        _this.fnWeiPay(res)
+                                    } else if (_this.payType == 2) {
+                                        _this.fnAliPayNow(res)
+                                    } else if (_this.payType == 3) {
+                                        successToast('支付成功');
+                                        setTimeout(function() {
+                                            _this.fnOpenPayOk_win(res.order_id);
+                                        }, 1500)
+                                    }
+                                } else {
+                                    messageToast(res.errMsg)
+                                }
+                            }, function(res) {
+                                // console.log(JSON.stringify("-----------"+res));
+                                hideProgress();
+                                messageToast(ERRMSG)
+                            })
+                        }
+                    }
+                },
+
+                // 微信支付
+                fnWeiPay: function(res) {
+                    var wxPay = api.require('wxPay');
+                    var _this = this;
+                    var orderId = res.order_id;
+                    wxPay.payOrder({
+                        apiKey: 'wxb1090e2b51807019',
+                        orderId: res.msg.prepayid,
+                        mchId: '1525914701',
+                        nonceStr: res.msg.noncestr,
+                        timeStamp: res.msg.timestamp,
+                        package: res.msg.package,
+                        sign: res.msg.sign
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            successToast('支付成功');
+                            setTimeout(function() {
+                                _this.fnOpenPayOk_win(orderId);
+                            }, 1500)
+                        } else {
+                            if (err.code) {
+                                messageToast('支付已取消');
+                            } else {
+                                messageToast('未知错误');
+                            }
+                        }
+                    });
+                },
+                //支付宝支付
+                fnAliPayNow: function(res) {
+                    var _this = this;
+                    var aliPayPlus = api.require('aliPayPlus');
+                    var orderId = res.order_id;
+                    aliPayPlus.payOrder({
+                        orderInfo: res.msg
+                    }, function(ret, err) {
+                        if (ret.code == 9000) {
+                            successToast('支付成功');
+                            setTimeout(function() {
+                                _this.fnOpenPayOk_win(orderId);
+                            }, 1500)
+
+                        } else {
+                            _this.fnAliPayErrCode(ret.code)
+                        }
+                    });
+                },
+                //阿里errCode提示
+                fnAliPayErrCode: function(code) {
+                    switch (code) {
+                        case '9000':
+                            successToast('支付成功');
+                            break;
+                        case '8000':
+                            messageToast('正在处理中');
+                            break;
+                        case '4000':
+                            messageToast('订单支付失败');
+                            break;
+                        case '5000':
+                            messageToast('重复请求');
+                            break;
+                        case '6001':
+                            messageToast('操作已取消');
+                            break;
+                        case '6002':
+                            messageToast('网络连接出错');
+                            break;
+                        case '0001':
+                            messageToast('缺少商户配置信息（商户id，支付公钥，支付密钥）');
+                            break;
+                        case '0002':
+                            messageToast('缺少参数（subject、body、amount、tradeNO）');
+                            break;
+                        case '0003':
+                            messageToast('签名错误（公钥私钥错误）');
+                            break;
+                        default:
+                            messageToast('未知错误');
+                    }
+                },
+            }
+        })
+
+
+    }
+</script>

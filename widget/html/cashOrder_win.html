@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>现金订单</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        header {
+            background-color: #137696;
+            position: relative;
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        header ul li:nth-child(4) {
+            height: 90px;
+        }
+
+        header .title {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+        }
+
+        header .left {
+            position: absolute;
+            margin-left: 15px;
+            color: #FFFFFF;
+            display: flex;
+            opacity: 0.6;
+            font-weight: bolder;
+            width: 50px;
+        }
+
+        header .left img {
+            width: 26px;
+            margin: auto;
+        }
+
+        header .right {
+            height: 50px;
+            top: 0;
+            position: absolute;
+            float: right;
+            right: 15px;
+            color: #FFFFFF;
+            display: flex;
+            opacity: 0.6;
+            font-weight: bolder;
+        }
+
+        header .right img {
+            width: 26px;
+            height: 26px;
+            margin: auto 4px;
+        }
+
+        .aui-tab .aui-tab-item {
+            background-color: white!important;
+            border-bottom: 2px solid #CECECE;
+            color: #888888;
+        }
+
+        .aui-active {
+            border-bottom: 2px solid #009ED3!important;
+            color: #009ED3!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="">
+                    <div class="left" tapmode="hover" onclick="fnCloseWin()">
+                        <i class="iconfont icon-left"></i>
+                    </div>
+                    <div class="title">
+                        <span>现金商城订单</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="aui-tab">
+                <div class="aui-tab-item tapmode aui-active" tapmode="hover" onclick="fnClickTab(0)">全部</div>
+                <div class="aui-tab-item tapmode" tapmode="hover" onclick="fnClickTab(1)">待发货</div>
+                <div class="aui-tab-item tapmode" tapmode="hover" onclick="fnClickTab(2)">已发货</div>
+                <div class="aui-tab-item tapmode" tapmode="hover" onclick="fnClickTab(3)">已完成</div>
+            </div>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+
+    apiready = function() {
+            api.closeWin({
+                name: 'integralGoodsExchange_win'
+            });
+            var tabs = $api.domAll('.tapmode');
+            $api.fixStatusBar($api.dom('header'));
+            var frames = [];
+            for (var i = 0; i < tabs.length; i++) {
+                frames.push({
+                    name: 'cashOrder_frm' + i,
+                    url: 'cashOrder_frm' + i + '.html',
+                    bounces: true,
+                    bgColor: '#fff',
+                })
+            }
+            api.openFrameGroup({
+                name: 'cashOrder_frm_group',
+                background: '#FFFFFF',
+                scrollEnabled: true,
+                bounces: true,
+                fixedOn: 'cashOrder_win',
+                preload: 3,
+                rect: {
+                    x: 0,
+                    y: $api.dom('header').offsetHeight,
+                    w: "auto",
+                    h: 'auto'
+                },
+                index: api.pageParam.index,
+                frames: frames,
+            }, function(ret, err) {
+                fnselectNav(ret.index);
+            });
+        }
+        //滑动切换
+    function fnselectNav(index) {
+        var tabs = $api.domAll('.tapmode');
+        api.parseTapmode();
+        for (var i = 0; i < tabs.length; i++) {
+            if (index == i) {
+                $api.addCls(tabs[i], "aui-active");
+            } else {
+                $api.removeCls(tabs[i], 'aui-active');
+
+            }
+        }
+    }
+
+    //点击按钮切换
+    function fnClickTab(index) {
+        var tabs = $api.domAll('.tapmode');
+        for (var i = 0; i < tabs.length; i++) {
+            if (index == i) {
+                $api.addCls(tabs[i], "aui-active");
+            } else {
+                $api.removeCls(tabs[i], 'aui-active');
+            }
+        }
+        api.setFrameGroupIndex({
+            name: 'cashOrder_frm_group',
+            index: index,
+            scroll: true
+        });
+
+    }
+
+    function fnCloseWin() {
+        api.closeWin({});
+    }
+</script>

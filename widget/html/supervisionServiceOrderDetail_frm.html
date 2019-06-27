@@ -1,0 +1,737 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding-bottom: 20px;
+        }
+
+        .section {
+            padding: 15px;
+        }
+
+        .banner {
+            height: calc(100vw/2);
+            position: relative;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner .cover {
+            width: 88px;
+            height: 88px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -44px;
+            margin-top: -44px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover>div:first-child {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            /*margin-top: 20px;
+            margin-bottom: 10px;*/
+        }
+        /*.cover>div:last-child {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+        }*/
+
+        .address {
+            padding: 15px 15px 0 15px;
+            background: #F4F4F4;
+        }
+
+        .address div {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            color: #999999;
+            line-height: 40px;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .address .name {
+            font-size: 14px!important;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        .address div span {
+            display: inline-block;
+        }
+
+        .address div:last-child {
+            border-bottom: 0px solid #9A9A9A;
+        }
+
+        .order {
+            padding: 15px 15px 0 15px;
+            background: #fff;
+        }
+
+        .order div {
+            display: flex;
+            color: #9A9A9A;
+            line-height: 40px;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .order .name {
+            font-size: 14px!important;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        .order div span {
+            display: inline-block;
+            color: #666666;
+        }
+
+        .order div:last-child {
+            border-bottom: 0px solid #9A9A9A;
+        }
+
+        .supervision {
+            padding: 15px 15px 0 15px;
+            background: #F4F4F4;
+        }
+
+        .supervision .name {
+            font-size: 14px!important;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        ul {
+            display: flex;
+            overflow: auto;
+            margin-top: 15px;
+        }
+
+        .supervision li {
+            width: calc((100vw - 75px)/3);
+            margin-right: 15px;
+        }
+
+        .imgBox img {
+            border-radius: 10px;
+            width: 68px;
+            /*height: 68px;*/
+            /*max-width: none;*/
+        }
+
+        .supervision li div {
+            /*text-align: center;*/
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #666666;
+            line-height: 32px;
+        }
+
+        .node {
+            padding: 15px 15px 0 15px;
+            background: #fff;
+        }
+
+        .node>div:first-child {
+            border-bottom: 1px solid #CECECE;
+        }
+
+        .node .name {
+            font-size: 14px!important;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+            padding-bottom: 15px;
+        }
+
+        .aui-timeline .aui-timeline-item-inner {
+            margin-right: 0;
+        }
+
+        .aui-timeline .aui-timeline-item-inner>div {
+            padding: 15px 0;
+            display: -webkit-box;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .aui-timeline-item-inner .title {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+            line-height: 23px;
+            margin-bottom: 10px;
+        }
+
+        .aui-timeline-item-inner .time {
+            font-size: 12px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            line-height: 22px;
+        }
+
+        .aui-timeline .aui-timeline-item-inner .left {
+            -webkit-box-flex: 1;
+        }
+
+        .aui-timeline .aui-timeline-item-inner .right {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 158, 211, 1);
+            text-align: right;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .aui-timeline .aui-timeline-item {
+            margin-bottom: 0
+        }
+
+        .aui-bg-danger {
+            background-color: #4FA10F !important;
+        }
+
+        .aui-bg-no {
+            background-color: #666 !important;
+        }
+
+        .aui-timeline .aui-timeline-item-label-icon {
+            color: white;
+        }
+
+        .btn {
+            margin: 20px auto;
+            line-height: 50px;
+            background-color: #2D2D2D;
+            text-align: center;
+            color: #D6D6D6;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btntrue {
+            background-color: #0097CB;
+            color: white;
+        }
+
+        .no {
+            line-height: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .aui-timeline .aui-timeline-item-label-icon {
+            width: 1rem;
+            height: 1rem;
+            font-size: 0.2rem;
+            line-height: 1rem;
+            background-color: #ececec;
+            position: absolute;
+            border-radius: 50%;
+            text-align: center;
+            left: 1.4rem;
+            top: 14px;
+        }
+
+        .aui-iconfont {
+            font-size: 0.4rem
+        }
+
+        .expBox {
+            padding: 10px 15px;
+            display: flex;
+            background-color: white;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .expBox .left {
+            font-size: 14px;
+            color: #0097CB;
+            font-weight: bold;
+        }
+
+        .expBox .goOn {
+            padding: 5px 10px;
+            background-color: #0097CB;
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+        <template v-if="detail">
+
+
+        <div class="banner" @click="fnOpenRenovationPhotos_win">
+            <img :src="detail.banner" alt="">
+            <div class="cover">
+                <div>装修日志</div>
+                <!-- <div>{{detail.photo_count}}张</div> -->
+            </div>
+        </div>
+        <div class="expBox" v-if="detail.orderInfo.order_type==2">
+            <div class="left">
+                体验订单{{detail.orderInfo.order_state==4?'：已关闭':''}}
+            </div>
+            <div class="goOn" @click="fnPayGoOn" v-if="detail.orderInfo.diff_price!='0.00'&&detail.orderInfo.diff_price_state==1">立即续费（￥{{detail.orderInfo.diff_price}}）</div>
+            <div class="goOn" v-if="detail.orderInfo.diff_price_state==2">已续费（￥{{detail.orderInfo.diff_price}}）</div>
+        </div>
+        <div class="address">
+            <div>
+                <span class="name">{{detail.orderInfo.cmy_name}}</span>
+                <span>{{fnClipSecond(detail.orderInfo.created_time)}}</span>
+            </div>
+            <div class="">
+                <span>面积：{{detail.orderInfo.house_area}}平方 </span>
+                <span>户型：{{detail.orderInfo.house_type}}</span>
+                <span>风格：{{detail.orderInfo.house_style}}</span>
+            </div>
+            <div class="">
+                <span>地址：{{detail.orderInfo.order_city}}{{detail.orderInfo.cmy_addr}}</span>
+            </div>
+        </div>
+
+
+        <div class="order">
+            <div>
+                <span class="name">订单信息</span>
+            </div>
+            <div class="">
+                <span>订单号： {{detail.orderInfo.oid}}</span>
+            </div>
+            <div class="">
+                <span>订单金额：￥{{detail.orderInfo.down_pay_total}}</span>
+            </div>
+            <div class="">
+                <span>下单时间：{{fnClipSecond(detail.orderInfo.created_time)}}</span>
+            </div>
+            <div class="">
+                <span>支付方式：{{payTypeArr[detail.orderInfo.down_pay_type]}}</span>
+            </div>
+
+        </div>
+        <div class="supervision">
+            <div>
+                <span class="name">监理人员</span>
+            </div>
+            <ul v-if="detail.supervisor.uncle&&detail.supervisor.brother">
+                <li v-if="detail.supervisor.uncle">
+                    <div class="imgBox"><img :src="detail.supervisor.uncle.head" alt=""></div>
+                    <div>{{detail.supervisor.uncle.real_name}}</div>
+                </li>
+                <li v-if="detail.supervisor.brother">
+                    <div class="imgBox"><img :src="detail.supervisor.brother.head" alt=""></div>
+                    <div>{{detail.supervisor.brother.real_name}}</div>
+                </li>
+            </ul>
+            <div v-else class="no">暂未指派监理人员</div>
+        </div>
+        <div class="node">
+            <div>
+                <span class="name">节点管理</span>
+            </div>
+            <div class="aui-timeline" v-for="(item,index) in detail.process">
+                <div class="aui-timeline-item">
+                    <div class="aui-timeline-item-label-icon " :class="!item.state?'aui-bg-no':'aui-bg-danger'">
+                        <i class="aui-iconfont aui-icon-correct text-light "></i>
+                    </div>
+                    <div class="aui-timeline-item-inner">
+                        <div>
+                            <div class="left">
+                                <div class="title">{{item.node}}</div>
+                                <div class="time" v-if="item.state==0">未开始</div>
+                                <div class="time" v-if="item.state==1">{{fnClipSecond(item.begin_time)}}</div>
+                                <div class="time" v-if="item.state==2">{{fnClipSecond(item.end_time)}}</div>
+                            </div>
+                            <div class="right" v-if="item.state==1&&item.snail_review_state==1" @click="fnOpenNodeDetail_win(item.id,item.state)">验收节点</div>
+                            <div class="right" v-else @click="fnOpenNodeDetail_win(item.id,item.state)">查看节点</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn btntrue" @click='' v-if="detail.orderInfo.order_state==0">
+            已退款
+        </div>
+        <div class="btn btntrue" @click='fnSureOver' v-if="detail.orderInfo.order_state==2">
+            确认完成
+        </div>
+        <div class="btn btntrue" @click='' v-if="detail.orderInfo.order_state==1">
+            暂未开始
+        </div>
+        <div class="btn btntrue" @click='fnOpenComment_win' v-if="detail.orderInfo.order_state==3">
+            已完成{{commentStatus?"":'(评论获得200积分)'}}
+        </div>
+        </template>
+        <div v-else class="noWin">
+            <div><i class="iconfont icon-zanwushuju"></i></div>
+            <div class="">
+                <span>没有监理订单</span>
+            </div>
+        </div>
+        </template>
+
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                detail: '',
+                payTypeArr: ['', '微信支付', '支付宝支付', '体验券支付'],
+                payTypeBtns: ['微信支付', '支付宝支付'],
+                oid: api.pageParam.oid || "",
+                commentStatus:true
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetDetail();
+                })
+                this.fnCustomRefresh();
+                this.fnGetDetail();
+                api.addEventListener({
+                    name: 'commentYes'
+                }, function(ret, err){
+                    if( ret ){
+                         _this.fnGetDetail();
+                    }else{
+                         alert( JSON.stringify( err ) );
+                    }
+                });
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                    api.addEventListener({
+                        name: 'newRequest'
+                    }, function(ret, err) {
+                        if (ret) {
+                            _this.oid = ret.value.oid;
+                            _this.fnGetDetail();
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                //获取详情
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+
+                    ajax('order/orderDetail', {
+                        oid: _this.oid
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        console.log("---------------------" + JSON.stringify(res.msg))
+                        if (res.code == 10000) {
+                            _this.detail = res.msg;
+                            _this.commentStatus = res.msg.comment_status;
+                            _this.oid = res.msg.orderInfo.oid;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //确认完成
+                fnSureOver: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/householderHandle', {
+                        type: 2,
+                        oid: _this.oid
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            successToast('验收成功')
+                            setTimeout(function() {
+                                _this.fnGetDetail();
+                            }, 1500)
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //立即评价
+                fnOpenComment_win: function() {
+                    if(this.commentStatus) return;
+                    var _this = this;
+                    api.openWin({
+                        name: 'comment_win',
+                        url: './comment_win.html',
+                        pageParam: {
+                            sid: _this.detail.orderInfo.serve_id,
+                            oid:_this.oid,
+                            type: "order"
+                        }
+                    });
+                },
+                fnOpenBrandComment_win: function() {
+                    api.openWin({
+                        name: 'brandComment_win',
+                        url: './brandComment_win.html',
+                        pageParam: {
+                            name: 'test',
+                        }
+                    });
+                },
+                fnOpenRenovationPhotos_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'renovationPhotos_win',
+                        url: './renovationPhotos_win.html',
+                        pageParam: {
+                            oid: _this.oid
+                        }
+                    });
+                },
+                //打开节点详情
+                fnOpenNodeDetail_win: function(id, state) {
+                    if (state) {
+                        api.openWin({
+                            name: 'nodeDetail_win',
+                            url: './nodeDetail_win.html',
+                            pageParam: {
+                                id: id
+                            }
+                        });
+                    } else {
+                        messageToast('当前节点未开始')
+                    }
+                },
+                //体验订单续费
+                fnPayGoOn() {
+                    var _this = this;
+                    api.actionSheet({
+                        title: '选择支付方式',
+                        buttons: _this.payTypeBtns
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.buttonIndex < _this.payTypeBtns.length + 1) {
+                                _this.fnPay(ret.buttonIndex)
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                //下单接口
+                fnPay(pay_type) {
+                    var _this = this;
+                    showProgress();
+                    ajax('order/diffPrice', {
+                        pay_type: pay_type,
+                        type: 1, // 1=>监理 2=>验房
+                        oid: _this.oid
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            if (pay_type == 1) {
+                                _this.fnWeiPay(res)
+                            } else if (pay_type == 2) {
+                                _this.fnAliPayNow(res)
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                // 微信支付
+                fnWeiPay: function(res) {
+                    var wxPay = api.require('wxPay');
+                    var _this = this;
+                    var orderId = res.order_id;
+                    wxPay.payOrder({
+                        apiKey: 'wxb1090e2b51807019',
+                        orderId: res.msg.prepayid,
+                        mchId: '1525914701',
+                        nonceStr: res.msg.noncestr,
+                        timeStamp: res.msg.timestamp,
+                        package: res.msg.package,
+                        sign: res.msg.sign
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            successToast('续费成功');
+                            setTimeout(function() {
+                                _this.fnGetDetail();
+                            }, 1500)
+                        } else {
+                            if (err.code) {
+                                messageToast('支付已取消');
+                            } else {
+                                messageToast('未知错误');
+                            }
+                        }
+                    });
+                },
+                //支付宝支付
+                fnAliPayNow: function(res) {
+                    var _this = this;
+                    var aliPayPlus = api.require('aliPayPlus');
+                    var orderId = res.order_id;
+                    aliPayPlus.payOrder({
+                        orderInfo: res.msg
+                    }, function(ret, err) {
+                        if (ret.code == 9000) {
+                            successToast('续费成功');
+                            setTimeout(function() {
+                                _this.fnGetDetail();
+                            }, 1500)
+
+                        } else {
+                            _this.fnAliPayErrCode(ret.code)
+                        }
+                    });
+                },
+                //阿里errCode提示
+                fnAliPayErrCode: function(code) {
+                    switch (code) {
+                        case '9000':
+                            successToast('支付成功');
+                            break;
+                        case '8000':
+                            messageToast('正在处理中');
+                            break;
+                        case '4000':
+                            messageToast('订单支付失败');
+                            break;
+                        case '5000':
+                            messageToast('重复请求');
+                            break;
+                        case '6001':
+                            messageToast('操作已取消');
+                            break;
+                        case '6002':
+                            messageToast('网络连接出错');
+                            break;
+                        case '0001':
+                            messageToast('缺少商户配置信息（商户id，支付公钥，支付密钥）');
+                            break;
+                        case '0002':
+                            messageToast('缺少参数（subject、body、amount、tradeNO）');
+                            break;
+                        case '0003':
+                            messageToast('签名错误（公钥私钥错误）');
+                            break;
+                        default:
+                            messageToast('未知错误');
+                    }
+                }
+
+            }
+        })
+
+
+    }
+</script>

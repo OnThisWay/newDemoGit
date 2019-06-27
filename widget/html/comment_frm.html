@@ -1,0 +1,440 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #EFEEF4;
+            height: auto;
+            min-height: 100vh;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #EFEEF4;
+        }
+
+        .top {
+            background: white;
+            padding: 15px;
+        }
+
+        .num {
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(54, 54, 54, 1);
+            line-height: 40px;
+            border-bottom: 1px solid #EFEEF4;
+        }
+
+        .textBox {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        textarea {
+            height: 200px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .imgBox {
+            border-top: 1px solid #EFEEF4;
+            padding: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: flex-start;
+        }
+
+        .imgBox>div {
+            width: calc((100vw - 30px - 40px)/5);
+            height: calc((100vw - 30px - 40px)/5);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .imgBox div img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .imgBox .add {
+            border: 1px dashed #f0f0f0;
+        }
+
+        .tbn {
+            width: calc(100vw - 30px);
+            line-height: 50px;
+            border-radius: 25px;
+            text-align: center;
+            background: #0096C8;
+            font-size: 14px;
+            color: white;
+            margin: 50px auto;
+        }
+
+        .del {
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            line-height: 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            right: -7.5px;
+            top: -7.5px;
+            border-radius: 50%;
+            background: #0096C8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="top">
+            <!-- <div class="num" v-if="type==1">订单号：</div> -->
+            <div class="textBox">
+                <textarea name="name" rows="8" cols="80" placeholder="请输入评价内容" v-model="text"></textarea>
+            </div>
+            <div class="imgBox">
+                <div class="" v-for="(item,index) in imgs">
+                    <img :src="item" alt="" @click="fnOpenImg(index)">
+                    <div class="del" @click="fnDel(index)">×</div>
+                </div>
+                <div v-if="imgs.length<9" class="add" @click="fnOpenXiangCe">
+                    <img src="../image/addImg.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="tbn" @click="fnSubmit">提交评价</div>
+
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                oid:api.pageParam.oid,
+                bid: api.pageParam.bid,
+                sid: api.pageParam.sid,
+                type: api.pageParam.type,
+                text: '',
+                detail: '',
+                imgs: []
+            },
+            mounted: function() {
+                // this.fnGetDetail();
+                // this.fnCustomRefresh();
+                var _this = this;
+
+            },
+            methods: {
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        // _this.fnGetDetail("down");
+                    });
+                },
+                //打开相册
+                fnOpenXiangCe: function() {
+                    var _this = this;
+                    api.actionSheet({
+                        title: '选取照片',
+                        cancelTitle: '取消',
+                        buttons: ['拍照', '相册选择']
+                    }, function(ret, err) {
+                        if (ret) {
+                            var index = ret.buttonIndex;
+                            if (index == 1) {
+                                api.getPicture({
+                                    sourceType: 'camera',
+                                    encodingType: 'jpg',
+                                    mediaValue: 'pic',
+                                    destinationType: 'url',
+                                    allowEdit: true,
+                                    quality: 50,
+                                    // targetWidth: 100,
+                                    // targetHeight: 100,
+                                    saveToPhotoAlbum: false
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        var _img = ret.data;
+                                            _this.fnUpImg(_img);
+                                    } else {
+
+                                    }
+                                });
+                            } else if (index == 2) {
+                                var UIMediaScanner = api.require('UIMediaScanner');
+                                UIMediaScanner.open({
+                                    type: 'picture',
+                                    column: 4,
+                                    classify: true,
+                                    max: 9 - _this.imgs.length,
+                                    sort: {
+                                        key: 'time',
+                                        order: 'asc'
+                                    },
+                                    texts: {
+                                        stateText: '已选择*项',
+                                        cancelText: '取消',
+                                        finishText: '完成'
+                                    },
+                                    styles: {
+                                        bg: '#fff',
+                                        mark: {
+                                            icon: '',
+                                            position: 'bottom_left',
+                                            size: 20
+                                        },
+                                        nav: {
+                                            bg: '#eee',
+                                            stateColor: '#000',
+                                            stateSize: 18,
+                                            cancelBg: 'rgba(0,0,0,0)',
+                                            cancelColor: '#000',
+                                            cancelSize: 18,
+                                            finishBg: 'rgba(0,0,0,0)',
+                                            finishColor: '#000',
+                                            finishSize: 18
+                                        }
+                                    },
+                                    scrollToBottom: {
+                                        intervalTime: 3,
+                                        anim: true
+                                    },
+                                    exchange: true,
+                                    rotation: true
+                                }, function(ret) {
+                                    if (ret) {
+                                        if (ret.eventType == "confirm") {
+
+                                            for (var i = 0; i < ret.list.length; i++) {
+                                                UIMediaScanner.transPath({
+                                                    path: ret.list[i].path,
+                                                    scale: {
+                                                        untreated: true
+                                                    }
+                                                }, function(ret, err) {
+                                                    if (ret) {
+                                                        // _this.descImg = _this.descImg.concat([ret.path]);
+                                                        _this.fnUpImg(ret.path)
+                                                    } else {
+                                                        alert(JSON.stringify(err));
+                                                    }
+                                                });
+                                            }
+
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                //上传图片到阿里云
+                fnUpImg: function(img) {
+                    var _this = this;
+                    showProgress();
+                    api.ajax({
+                        url: URL + 'uploadImg',
+                        // url: 'https://www.win1128.com/api/commend/har_request',
+                        method: 'post',
+                        headers: {
+                            'Authorization': 'Bearer ' + api.getPrefs({
+                                sync: true,
+                                key: 'token'
+                            }),
+                            'Accept': 'application/json'
+                        },
+                        data: {
+                            values: {
+                                name:'test'
+                            },
+                            files: {
+                                file: img
+                            }
+                        }
+                    }, function(ret, err) {
+                        hideProgress();
+                        if (ret) {
+                            if (ret.code == 10000) {
+                                _this.imgs.push(ret.msg);
+                            } else {
+                                messageToast(ret.errMsg)
+                            }
+                        } else {
+                            console.log("err:---" + JSON.stringify(err));
+                        }
+                    });
+                },
+                fnOpenImg: function(index) {
+                    var _this = this;
+                    fnOpenPhotoBrowser( _this.imgs,index)
+                },
+                // 删除
+                fnDel: function(index) {
+                    this.imgs.splice(index, 1)
+                },
+                //提交品牌
+                fnSubmit: function() {
+                    if (!this.text && !this.imgs.length) {
+                        messageToast('请输入内容或上传图片')
+                    } else {
+                        if (this.type == "order") {
+                            this.fnCommontGoods();
+                        } else if (this.type == "brand") {
+                            this.fnCommontPro();
+                        } else {
+                            this.fnCommontCompany();
+                        }
+
+                    }
+                },
+                //评价商品
+                fnCommontGoods: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('order/goodsComment', {
+                        img_url: _this.imgs.toString(),
+                        txt: _this.text,
+                        sid: _this.sid,
+                        oid:_this.oid
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            successToast('评论成功')
+                            api.sendEvent({
+                                name: 'commentYes',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+                            api.sendEvent({
+                                name: 'myIntegralChanged',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+
+                            setTimeout(function() {
+                                api.closeWin({});
+                            }, 1500)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                    })
+                },
+                //评价品牌
+                fnCommontPro: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/addCmt', {
+                        img_url: _this.imgs.toString(),
+                        txt: _this.text,
+                        bid: _this.bid
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            successToast('评论成功')
+                            api.sendEvent({
+                                name: 'commentYes',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+                            setTimeout(function() {
+                                api.closeWin({});
+                            }, 1500)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                    })
+                },
+                //评价公司
+                fnCommontCompany: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/commentCompany', {
+                        img_url: _this.imgs.toString(),
+                        txt: _this.text,
+                        bid: _this.bid
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        if (res.code == 10000) {
+                            successToast('评论成功')
+                            api.sendEvent({
+                                name: 'commentYes',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+                            setTimeout(function() {
+                                api.closeWin({});
+                            }, 1500)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                    })
+                }
+            }
+
+        })
+    }
+</script>

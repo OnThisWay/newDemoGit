@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        .title {
+            border-bottom: 1px solid #EFEFEF;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .title>.tit {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .closeBtn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 999;
+            font-size: 16px;
+            width: 50px;
+        }
+
+        .keyBox {
+            margin-top: 15px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            line-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="title">
+            <div class="tit">帮助</div>
+            <div class='closeBtn' tapmode onclick="fnCloseWin()"> <span>×</span></div>
+        </div>
+        <div class="keyBox">
+            田螺币是一种奖励虚拟货币，您可以点击“我的二维码”，将二维码图片保存到手机相册后，推荐给同样需要田螺哥服务的朋友。您的朋友成功注册后，您可以获得1000田螺币，田螺币可以兑换成少量现金。
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+
+    }
+
+    function fnCloseWin() {
+        api.closeFrame({
+            name: 'screenCover_frm'
+        });
+        api.closeFrame({
+
+        });
+    }
+</script>

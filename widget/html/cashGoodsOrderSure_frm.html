@@ -1,0 +1,587 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+            padding-bottom: 15px;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+
+        .listBox {
+            padding: 15px;
+            background-color: #FFF;
+            border-bottom: 1px solid #EDEDED;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #333;
+            font-size: 14px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .listBox .icon-you {
+            font-size: 14px;
+            color: #9B9B9B;
+        }
+
+        .messBox .name {
+            color: #989898;
+        }
+
+        .messBox .value {
+            color: #666666;
+        }
+
+        .money {
+            color: #FF0C34!important;
+            font-size: 15px!important;
+        }
+
+        .value input {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            text-align: right;
+            color: #9B9B9B;
+        }
+
+        .inputbox .value {
+            padding: 0 0 0 15px;
+        }
+
+        .titMess {
+            padding: 15px 0;
+            font-size: 12px;
+            color: #999999;
+            text-align: center;
+        }
+
+        .btn {
+            width: calc(100vw - 60px);
+            height: 49px;
+            line-height: 49px;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            background: #0096C8;
+            margin: auto;
+            margin-top: 15px;
+        }
+
+        .doBox {
+            display: flex;
+            ;
+            justify-content: center;
+            align-items: center;
+            /*margin-left: auto;*/
+        }
+
+        .numBox {
+            padding: 15px;
+            background-color: #FFF;
+            border-bottom: 1px solid #EDEDED;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doBox .jian,
+        .doBox .jia {
+            width: 25px;
+            height: 25px;
+        }
+
+        .doBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .doBox .num {
+            padding: 0 15px;
+        }
+
+        .payBox {
+            background-color: #FFF;
+            padding: 10px 15px;
+            display: -webkit-box;
+            justify-content: center;
+        }
+
+        .payBox .imgBox {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .payBox .imgBox i {
+            font-size: 28px;
+        }
+
+        .icon-weixin {
+            color: #00C232
+        }
+
+        .icon-zhifubao1 {
+            color: #00A2EC
+        }
+
+        .icon-13 {
+            color: #d81e06;
+        }
+
+        .payBox .checkBox {
+            width: 15px;
+            height: 15px;
+            margin-top: 10px;
+            /*background-color: #DDDDDD;*/
+            border-radius: 50%;
+            /*overflow: hidden;*/
+        }
+
+        .duiWei {
+            color: #00C232;
+        }
+
+        .duiZhi {
+            color: #00A2EC;
+        }
+
+        .duiTi {
+            color: #d81e06
+        }
+
+        .payBox .middle {
+            -webkit-box-flex: 1;
+            color: #333333;
+            padding-left: 15px;
+            line-height: 40px;
+        }
+
+        .border_b {
+            border-bottom: 1px solid #F4F4F4;
+        }
+
+        .btn {
+            margin: 20px auto;
+            line-height: 50px;
+            background-color: #2D2D2D;
+            text-align: center;
+            color: #D6D6D6;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btntrue {
+            background-color: #0097CB;
+            color: white;
+        }
+
+        .ziMess {
+            text-align: center;
+            font-size: 14px;
+            margin: 50px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <!-- <template v-if="network"> -->
+        <div class="imgBox">
+            <img :src="imgCover" alt="">
+        </div>
+        <div class="messBox">
+            <div class="listBox inputbox">
+                <div class="name">商品名称</div>
+                <div class="value">
+                    {{g_name}}
+                </div>
+            </div>
+            <div class="listBox inputbox">
+                <div class="name">所选型号</div>
+                <div class="value">
+                    {{sku.s_name}}
+                </div>
+            </div>
+            <div class="numBox">
+                <div class="name">购买数量</div>
+                <div class="doBox">
+                    <div class="jian" @click="fnReduce">
+                        <img v-if="num==1" src="../image/reduce2.png" alt="">
+                        <img v-if="num!=1" src="../image/reduce3.png" alt="">
+                    </div>
+                    <div class="num">{{num}}</div>
+                    <div class="jia" @click="fnAdd">
+                        <img v-if="num<sku.stock" src="../image/add3.png" alt="">
+                        <img v-else src="../image/add2.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="listBox inputbox" v-if="sku.ruling_price">
+                <div class="name">支付金额</div>
+                <div class="value money">
+                    ￥{{sku.ruling_price*num}}
+                </div>
+            </div>
+        </div>
+        <div class="titMess">
+            选择支付方式
+        </div>
+        <div class="payBox border_b" @click='fnChoosePayType(1)'>
+            <div class="imgBox">
+                <i class="iconfont icon-weixin"></i>
+            </div>
+            <div class="middle">
+                <div>微信支付</div>
+            </div>
+            <div class="checkBox">
+                <i v-show="payType==1" class="iconfont icon-dui duiWei"></i>
+                <!-- <img v-show="payType==1" src="../image/yes.jpg" alt=""> -->
+            </div>
+        </div>
+        <div class="payBox border_b" @click='fnChoosePayType(2)'>
+            <div class="imgBox">
+                <i class="iconfont icon-zhifubao1"></i>
+            </div>
+            <div class="middle">
+                <div>支付宝支付</div>
+            </div>
+            <div class="checkBox">
+                <i v-show="payType==2" class="iconfont icon-dui duiZhi"></i>
+                <!-- <img v-show="payType==2" src="../image/yes.jpg" alt=""> -->
+            </div>
+        </div>
+        <div class="titMess">完善收货信息</div>
+        <div class="subBox">
+            <div class="listBox inputbox">
+                <div class="name">收货人姓名</div>
+                <div class="value"><input type="text" name="" v-model="contact" placeholder="请填写联系姓名"></div>
+            </div>
+            <div class="listBox inputbox">
+                <div class="name">联系电话</div>
+                <div class="value"><input type="number" name="" v-model="phone" placeholder="请填写联系电话"></div>
+            </div>
+            <div class="listBox" @click='fnChooseAddr'>
+                <div class="name">收货地区</div>
+                <div class="value">{{addr?addr:'请选择'}}</div>
+                <i class="iconfont icon-you"></i>
+            </div>
+            <div class="listBox inputbox">
+                <div class="name">详细地址</div>
+                <div class="value"><input type="text" name="" v-model="detailAddr" placeholder="请输入详细地址"></div>
+            </div>
+        </div>
+        <div class="btn" @click="fnSub">确认支付</div>
+        <!-- </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div> -->
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                g_name: api.pageParam.g_name,
+                imgCover: api.pageParam.imgCover,
+                sku: api.pageParam.sku,
+                num: 1,
+                payType: 1,
+                contact: '曾',
+                phone: '18227100513',
+                addr: '北京东城区',
+                detailAddr: '天安门'
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                })
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+
+                //点击提交
+                fnSub() {
+                    if (!this.contact) {
+                        messageToast('请填写收货人姓名')
+                    } else if (!this.phone) {
+                        messageToast('请输入电话号码')
+                    } else if (!(/^1(3|4|5|7|8|9)[\d]{9}$/.test(this.phone))) {
+                        messageToast('电话号码格式有误')
+                    } else if (!this.addr) {
+                        messageToast('请选择收货地区')
+                    } else if (!this.detailAddr) {
+                        messageToast('请输入详细地址')
+                    } else {
+                        var _this = this;
+                        showProgress()
+                        ajax('cashGoods/unifiedorder', {
+                            sid: _this.sku.sid,
+                            num: _this.num,
+                            address: _this.addr + _this.detailAddr,
+                            contacts: _this.contact,
+                            phone: _this.phone,
+                            pay_type: _this.payType
+                        }, function(res) {
+                            hideProgress();
+                            if (res.code == 10000) {
+                                if (_this.payType == 1) {
+                                    _this.fnWeiPay(res)
+                                } else if (_this.payType == 2) {
+                                    _this.fnAliPayNow(res)
+                                }
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            console.log(JSON.stringify(res))
+                            api.refreshHeaderLoadDone();
+                            hideProgress();
+                            messageToast(ERRMSG)
+                        }, function(res) {
+                            hideProgress();
+                            api.refreshHeaderLoadDone();
+                            _this.network = false;
+                        })
+
+                    }
+                },
+
+                // 微信支付
+                fnWeiPay: function(res) {
+                    var wxPay = api.require('wxPay');
+                    var _this = this;
+                    var orderId = res.order_id;
+                    wxPay.payOrder({
+                        apiKey: 'wxb1090e2b51807019',
+                        orderId: res.msg.prepayid,
+                        mchId: '1525914701',
+                        nonceStr: res.msg.noncestr,
+                        timeStamp: res.msg.timestamp,
+                        package: res.msg.package,
+                        sign: res.msg.sign
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            successToast('支付成功');
+                            setTimeout(function() {
+                                _this.fnOpenPayOk_win(orderId);
+                            }, 1500)
+                        } else {
+                            if (err.code) {
+                                messageToast('支付已取消');
+                            } else {
+                                messageToast('未知错误');
+                            }
+                        }
+                    });
+                },
+                //支付宝支付
+                fnAliPayNow: function(res) {
+                    var _this = this;
+                    var aliPayPlus = api.require('aliPayPlus');
+                    var orderId = res.order_id;
+                    aliPayPlus.payOrder({
+                        orderInfo: res.msg
+                    }, function(ret, err) {
+                        if (ret.code == 9000) {
+                            successToast('支付成功');
+                            setTimeout(function() {
+                                _this.fnOpenPayOk_win(orderId);
+                            }, 1500)
+
+                        } else {
+                            _this.fnAliPayErrCode(ret.code)
+                        }
+                    });
+                },
+                //支付成功
+                fnOpenPayOk_win() {
+                    api.confirm({
+                        title: '提示',
+                        msg: '购买成功，查看我的现金订单',
+                        buttons: ['查看', '返回']
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.buttonIndex == 1) {
+                                api.openWin({
+                                    name: 'cashOrder_win',
+                                    url: './cashOrder_win.html',
+                                    pageParam: {}
+                                });
+                            } else {
+                                api.closeWin({});
+                            }
+
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                },
+                //阿里errCode提示
+                fnAliPayErrCode: function(code) {
+                    switch (code) {
+                        case '9000':
+                            successToast('支付成功');
+                            break;
+                        case '8000':
+                            messageToast('正在处理中');
+                            break;
+                        case '4000':
+                            messageToast('订单支付失败');
+                            break;
+                        case '5000':
+                            messageToast('重复请求');
+                            break;
+                        case '6001':
+                            messageToast('操作已取消');
+                            break;
+                        case '6002':
+                            messageToast('网络连接出错');
+                            break;
+                        case '0001':
+                            messageToast('缺少商户配置信息（商户id，支付公钥，支付密钥）');
+                            break;
+                        case '0002':
+                            messageToast('缺少参数（subject、body、amount、tradeNO）');
+                            break;
+                        case '0003':
+                            messageToast('签名错误（公钥私钥错误）');
+                            break;
+                        default:
+                            messageToast('未知错误');
+                    }
+                },
+                //选择地址
+                fnChooseAddr() {
+                    //打开城市选择
+                    var _this = this;
+                    var UIActionSelector = api.require('UIActionSelector');
+                    UIActionSelector.open({
+                        datas: 'widget://res/city_subOrder.json',
+                        layout: {
+                            row: 7,
+                            col: 3,
+                            height: 30,
+                            size: 12,
+                            sizeActive: 14,
+                            rowSpacing: 5,
+                            colSpacing: 10,
+                            maskBg: 'rgba(0,0,0,0.2)',
+                            bg: '#fff',
+                            color: '#9B9B9B',
+                            colorActive: '#f00',
+                            colorSelected: '#0097CB'
+                        },
+                        actives: [0, 0],
+                        animation: true,
+                        cancel: {
+                            text: '取消',
+                            size: 12,
+                            w: 90,
+                            h: 35,
+                            bg: '#fff',
+                            bgActive: '#ccc',
+                            color: '#888',
+                            colorActive: '#fff'
+                        },
+                        ok: {
+                            text: '确定',
+                            size: 12,
+                            w: 90,
+                            h: 35,
+                            bg: '#fff',
+                            bgActive: '#ccc',
+                            color: '#888',
+                            colorActive: '#fff'
+                        },
+                        title: {
+                            text: '请选择',
+                            size: 12,
+                            h: 44,
+                            bg: '#eee',
+                            color: '#888'
+                        },
+                        fixedOn: api.frameName
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.eventType == "ok") {
+                                var value;
+                                if (ret.level2 == "市辖区" || ret.level2 == "县") {
+                                    value = ret.level1;
+                                } else {
+                                    value = ret.level2;
+                                }
+                                _this.addr = value + ret.level3;
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                fnReduce() {
+                    if (this.num == 1) return;
+                    this.num -= 1
+                },
+                fnAdd() {
+                    if (this.num < this.sku.stock) {
+                        this.num += 1
+                    }
+                },
+                // 选择支付方式
+                fnChoosePayType: function(type) {
+                    this.payType = type;
+                },
+            }
+        })
+
+
+    }
+</script>

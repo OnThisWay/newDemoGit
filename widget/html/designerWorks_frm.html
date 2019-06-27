@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 10px 0 10px 10px;
+            background-color: #FFFFFF;
+        }
+
+        .con {
+            min-height: 100vh;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        ul li {
+            float: left;
+            width: calc((100vw - 25px)/2);
+            height: calc((100vw - 25px)/4);
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        /*ul li div {
+            width: 100%;
+            height: calc((100vw - 25px)/4);
+            margin-bottom: 5px;
+        }*/
+
+        ul li  img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+        <div class="con">
+            <ul v-if="list.length">
+                <li v-for="(item,index) in list" tapmode="hover" @click="fnOpenDesignerIndex_win(item.uid)">
+                    <!-- <div > -->
+                        <img :src="item.cover+'/format,jpg/interlace,1/quality,q_50/resize,m_fill,w_600,h_300,limit_0'" alt="">
+                    <!-- </div> -->
+                </li>
+                <!-- <li>
+                    <div v-for="(item,index) in list"v-if="index%2==1"  tapmode="hover" @click="fnOpenDesignerIndex_win(item.uid)">
+                        <img :src="item.cover?item.cover+'/format,jpg/interlace,1/quality,q_30':'../image/designerImgHolder.png'" alt="">
+                    </div>
+                </li> -->
+            </ul>
+            <div v-else class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无数据</span>
+                </div>
+            </div>
+        </div>
+        <div v-if="list.length" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div>
+    </template>
+
+    <div v-if="!network" class="noNetWork">
+        <div><i class="iconfont icon-duankailianjie"></i></div>
+        <div class="">
+            <span>网络连接已断开</span>
+        </div>
+        <div class="refBtn" @click="fnClickRefresh">刷新</div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var requedtFlag = false;
+        var n = 0;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                sid: api.pageParam.sid,
+                list: [],
+                offset: 0,
+                limit:20,
+                noMore: false
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetList("down");
+                })
+                this.fnCustomRefresh();
+                this.fnUprequset();
+                this.fnGetList();
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    if (requedtFlag) {
+                        return;
+                    }
+                    requedtFlag = true;
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('home/workList', {
+                        //4.25修改为直接查询设计师所有推荐作品
+                        // sid: _this.sid,
+                        // tid: _this.tid,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        requedtFlag = false;
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                fnOpenDesignerIndex_win: function(uid) {
+                    var _this = this;
+                    api.openWin({
+                        name: 'designerIndex_win',
+                        url: './designerIndex_win.html',
+                        pageParam: {
+                            uid: uid
+                        }
+                    });
+                }
+            }
+        })
+    }
+</script>

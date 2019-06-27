@@ -1,0 +1,472 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+
+        }
+        section {
+            padding-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <section class="aui-chat">
+            <p class="noHistory" v-if="showNoHistory">没有啦...</p>
+            <div v-for="(item,index) in content" class="aui-chat-item " v-bind:class="item.messageDirection=='RECEIVE'?'aui-chat-left':'aui-chat-right'">
+                <div class="aui-chat-header">{{timestampToTime(item.sentTime/1000)}}</div>
+                <div class="aui-chat-media">
+                    <img :src="item.messageDirection=='RECEIVE'?JSON.parse(item.content.extra).receive_head:JSON.parse(item.content.extra).release_head" />
+                </div>
+                <div class="aui-chat-inner">
+                    <div class="aui-chat-content" v-if="item.objectName == 'RC:TxtMsg'">
+                        <div class="aui-chat-arrow"></div>
+                        {{item.content.text}}
+                    </div>
+                    <div class="aui-chat-content" v-else="item.objectName == 'RC:ImgMsg'">
+                        <div class="aui-chat-arrow"></div>
+                        <img @click='openImage(JSON.parse(item.content.text).PicUrl)' :src="JSON.parse(item.content.text).PicUrl" />
+                    </div>
+                    <div class="aui-chat-status" v-if="!item.messageDirection">
+                        <i class="aui-iconfont aui-icon-info aui-text-danger"></i>
+                    </div>
+                </div>
+                <p class="danger" v-if="!item.messageDirection">发送失败！由于微信限制，不能连续发送超过5条消息。待用户回复后再发送。</p>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var rong = api.require('rongCloud2');
+        var UIChatBox = api.require('UIChatBox');
+        var headerH = api.pageParam.headerH;
+        var winH = api.winHeight;
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        });
+        var userInfo = JSON.parse(api.getPrefs({
+            sync: true,
+            key: 'userInfo'
+        }));
+
+        // console.log(userInfo.name)
+        var myHead = userInfo.head_url;
+        var myName = userInfo.name;
+        var myUserId = userInfo.id;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                content: [],
+                oldid: '',
+                showNoHistory: false,
+                targetId: api.pageParam.targetId,
+                targetHead: api.pageParam.head,
+                targetName: api.pageParam.name,
+            },
+            mounted: function() {
+                var _this = this;
+                //获取最近会话
+                this.getLatestMessages();
+
+                rong.clearMessagesUnreadStatus({
+                        conversationType: 'PRIVATE',
+                        targetId: _this.targetId + ''
+                    }, function(ret, err) {
+                        api.sendEvent({
+                            name: 'messRead',
+                            extra: {
+                                targetId: _this.targetId
+                            }
+                        });
+                    })
+                    //监听有新的消息
+                rong.setOnReceiveMessageListener(function(ret, err) {
+                    _this.getLatestMessages();
+                })
+                // api.addEventListener({
+                //     name: 'newMessage'
+                // }, function(ret, err) {
+                //     if (ret) {
+                //         // console.log(ret.value.result.result.message.senderUserId);
+                //         if (ret.value.result.result.message.senderUserId == _this.targetId) {
+                //             _this.content = _this.content.concat(ret.value.result.result.message);
+                //             pageDown(50);
+                //             api.sendEvent({
+                //                 name: 'messRead',
+                //                 extra: {
+                //                     targetId: _this.targetId
+                //                 }
+                //             });
+                //         }
+                //
+                //     }
+                // })
+
+                api.setCustomRefreshHeaderInfo({
+                    image: {
+                        pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png', 'widget://image/8.png'],
+                        load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png', 'widget://image/11.png']
+                    },
+                    bgColor: '#f0f0f0',
+                }, function() {
+                    _this.getHistoryMessages(_this.targetId);
+                });
+
+                UIChatBox.open({
+                    placeholder: '',
+                    maxRows: 4,
+                    emotionPath: 'widget://res/ChatBox/emotion',
+
+                    styles: {
+                        inputBar: {
+                            borderColor: '#ececec',
+                            bgColor: '#fbfbfb'
+                        },
+                        inputBox: {
+                            borderColor: '#B3B3B3',
+                            bgColor: '#FFFFFF'
+                        },
+
+                        extrasBtn: {
+                            normalImg: 'widget://res/ChatBox/add1.png'
+                        },
+                        keyboardBtn: {
+                            normalImg: 'widget://res/ChatBox/key1.png'
+                        },
+                        recordBtn: {
+                            normalBg: '#ffffff',
+                            activeBg: '#F4F4F4',
+                            color: '#5D5D5D',
+                            size: 14
+                        },
+                        indicator: {
+                            target: 'both',
+                            color: '#c4c4c4',
+                            activeColor: '#9e9e9e'
+                        },
+                        sendBtn: {
+                            titleColor: '#ffffff',
+                            bg: '#12b7f5',
+                            activeBg: '#1ba1d4',
+                            titleSize: 14
+                        }
+                    },
+                    extras: {
+                        titleSize: 16,
+                        titleColor: '#a3a3a3',
+                        btns: [{
+                            title: '相册图片',
+                            normalImg: 'widget://res/ChatBox/img1.png',
+                            activeImg: 'widget://res/ChatBox/img2.png'
+                        }, {
+                            title: '相机拍照',
+                            normalImg: 'widget://res/ChatBox/cam1.png',
+                            activeImg: 'widget://res/ChatBox/cam2.png'
+                        }]
+                    }
+                }, function(ret, err) {
+                    var eventType = ret.eventType;
+                    var msg = ret.msg;
+                    if (eventType == 'clickExtras') {
+                        if (ret.index == 0) {
+                            _this.getPicture('library')
+                            pageDown(50);
+                        } else if (ret.index == 1) {
+
+                            _this.getPicture('camera')
+                            pageDown(50);
+                        }
+                    }
+                    if (eventType == 'send') {
+                        if ($api.trimAll(ret.msg) == '') {
+                            api.toast({
+                                msg: '不能发送空白消息',
+                                duration: 1000,
+                                location: 'center'
+                            });
+                        } else {
+                            var extra = {
+                                    release_name: myUserId,
+                                    release_id: myName,
+                                    release_head: myHead,
+                                    receive_id: _this.targetName,
+                                    receive_name: _this.targetId,
+                                    receive_head: _this.targetHead
+                                }
+                                // console.log("extra-----"+JSON.stringify(extra))
+                            rong.sendTextMessage({ //发送消息
+                                conversationType: 'PRIVATE',
+                                targetId: _this.targetId + '',
+                                text: msg,
+                                extra: JSON.stringify(extra)
+                            }, function(ret, err) {
+                                api.sendEvent({
+                                    name: 'newMessage',
+                                    extra: {
+                                        // targetId: _this.targetId
+                                    }
+                                });
+                                if (ret.status == 'success') {
+                                    // messageToast('发送成功');
+                                } else {
+                                    // messageToast('发送失败');
+                                }
+
+                                _this.getLatestMessages();
+                                pageDown(50);
+                            })
+                        }
+                    }
+                });
+
+
+                UIChatBox.addEventListener({
+                    target: 'inputBar',
+                    name: 'move'
+                }, function(ret, err) {
+                    if (ret) {
+                        var frameH = winH - api.pageParam.headerH - ret.inputBarHeight - ret.panelHeight;
+                        api.setFrameAttr({
+                            name: 'message_frm',
+                            rect: {
+                                x: 0,
+                                y: headerH,
+                                w: 'auto',
+                                h: frameH
+                            },
+                        });
+                        pageDown(50);
+                    }
+                });
+            },
+            methods: {
+                //获取手机相片
+                getPicture: function(type) {
+                    var _this = this;
+                    api.getPicture({
+                        sourceType: type,
+                        encodingType: 'jpg',
+                        mediaValue: 'pic',
+                        destinationType: 'url',
+                        allowEdit: false,
+                        quality: 50,
+                        saveToPhotoAlbum: false
+                    }, function(ret, err) {
+
+                        if (ret) {
+                            // 创建自定义数据
+                            showProgress("");
+                            api.ajax({
+                                url: UP_URL,
+                                method: 'post',
+                                data: {
+                                    values: {
+                                        name: 'chatImg'
+                                    },
+                                    files: {
+                                        file: ret.data
+                                    }
+                                }
+                            }, function(ret, err) {
+                                if (ret) {
+                                    // 把上传好的图片发给后台
+                                    $.ajax({  
+                                        type: "POST",
+                                        url: SEND_URL + "WeChatApi/ReplySms",
+                                        dataType: "json",
+                                        data:  {
+                                            token: token,
+                                            user_id: _this.toUserId,
+                                            msgType: 'image',
+                                            picUrl: ret.filepath
+                                        },
+                                        success: function(data) {
+
+                                            var sendStatus;
+                                            if (data.code == 10000) {
+                                                sendStatus = true;
+                                            } else if (data.code == 10001) {
+                                                sendStatus = false;
+
+                                            } else {
+                                                sendStatus = false;
+                                            }
+                                            // 往data里追加数据
+                                            var text = {
+                                                MsgType: 'image',
+                                                PicUrl: ret.filepath,
+                                            }
+                                            var extra = {
+                                                release_name: _this.targetName,
+                                                release_id: _this.toUserId,
+                                                release_head: _this.targetHead,
+
+                                                receive_id: myUserId,
+                                                receive_name: myName,
+                                                receive_head: myHead
+                                            }
+                                            var model = {
+                                                    "content": {
+                                                        "extra": JSON.stringify(extra),
+                                                        "text": JSON.stringify(text)
+                                                    },
+                                                    "conversationType": "PRIVATE",
+                                                    "extra": "",
+                                                    "messageDirection": true,
+                                                    "messageId": '',
+                                                    "objectName": "RC:TxtMsg",
+                                                    "receivedTime": '',
+                                                    "senderUserId": myUserId,
+                                                    "sentStatus": "SENT",
+                                                    "sentTime": new Date().getTime(),
+                                                    "targetId": _this.toUserId
+                                                }
+                                                // alert(JSON.stringify(model))
+                                            _this.content = _this.content.concat([model]);
+                                            UIChatBox.closeBoard();
+                                            hideProgress();
+                                            pageDown(5);
+                                            // 推送到融云
+                                            rong.sendTextMessage({ //发送消息
+                                                conversationType: 'PRIVATE',
+                                                targetId: _this.toUserId + '',
+                                                text: JSON.stringify(text),
+                                                extra: JSON.stringify(extra)
+                                            }, function(ret, err) {
+                                                if (ret.status = 'success') {
+                                                    // api.sendEvent({
+                                                    //     name: 'meSend',
+                                                    //     extra: {
+                                                    //         key1: 'value1',
+                                                    //         key2: 'value2'
+                                                    //     }
+                                                    // });
+                                                } else {
+                                                    messageToast('发送失败');
+                                                }
+                                            })
+                                            hideProgress();
+                                        },
+                                        error: function() {
+                                            hideProgress();
+                                            messageToast('服务器错误')
+                                        }
+                                    });
+                                } else {
+                                    hideProgress();
+                                }
+                            })
+                        }
+                    })
+                },
+
+                // 获取最后一段会话
+                getLatestMessages: function(targetId) {
+                    var rong = api.require('rongCloud2');
+                    var _this = this;
+                    rong.getLatestMessages({
+                        conversationType: 'PRIVATE',
+                        targetId: _this.targetId + '',
+                        count: 10
+                    }, function(ret, err) {
+                        console.log(JSON.stringify(ret));
+                        if (ret.status == 'success') {
+                            if (ret.result.length != 0) {
+                                _this.content = ret.result.reverse();
+                                // console.log(_this.content[0].messageId)
+                                // console.log(_this.content[_this.content.length -1].messageId)
+                                if (_this.content != 0) {
+                                    _this.oldid = _this.content[0].messageId
+                                } else {
+
+                                }
+
+                                pageDown(50);
+                                //清除本段对话的未读状态
+                                rong.clearMessagesUnreadStatus({
+                                    conversationType: 'PRIVATE',
+                                    targetId: _this.targetId + ''
+                                }, function(ret, err) {
+                                    api.sendEvent({
+                                        name: 'messRead',
+                                        extra: {
+                                            key1: 'value1',
+                                            key2: 'value2'
+                                        }
+                                    });
+                                })
+                            }
+
+                        }
+                    })
+                },
+                //拉取历史记录
+                getHistoryMessages: function(targetId) {
+                    if (this.content != 0) {
+                        var rong = api.require('rongCloud2');
+                        var _this = this;
+                        // console.log(_this.oldid)
+                        rong.getHistoryMessages({
+                            conversationType: 'PRIVATE',
+                            targetId: targetId + '',
+                            oldestMessageId: _this.oldid,
+                            count: 30
+                        }, function(ret, err) {
+                            // console.log(JSON.stringify(ret));
+                            api.refreshHeaderLoadDone();
+                            if (ret.status == 'success') {
+                                if (ret.result.length != 0) {
+                                    var historyListArr = ret.result.reverse();
+                                    _this.oldid = historyListArr[0].messageId;
+                                    _this.content = historyListArr.concat(_this.content);
+                                } else {
+                                    _this.showNoHistory = true;
+                                }
+
+                            } else {
+
+                            }
+                        })
+                    } else {
+                        api.refreshHeaderLoadDone();
+                    }
+                },
+                //打开图像
+                openImage: function(path) {
+                    fnOpenPhotoBrowser([path],0)
+                }
+            }
+        })
+    }
+</script>

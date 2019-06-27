@@ -1,0 +1,77 @@
+<!doctype html>
+<htmli>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+        <link rel="stylesheet" href="../font/iconfont.css">
+        <style>
+            html,
+            body {
+                min-width: 100%;
+                min-height: 100%;
+                background: rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+            }
+
+            div.con {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                height: 100%;
+                width: 100%;
+                /*opacity: 0;*/
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class='con' tapmode onclick="closeframe()">
+        </div>
+    </body>
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var h = api.winHeight;
+            $api.css($api.dom('body'), 'height:' + h + 'px');
+            api.openFrame({
+                name: 'help_frm',
+                url: 'help_frm.html',
+                rect: {
+                    x: 0,
+                    y: api.winHeight - 500,
+                    w: 'auto',
+                    h: 'auto'
+                },
+                pageParam: {
+
+                },
+                animation: {
+                    type: "movein",
+                    subType: "from_bottom",
+                    duration: 300
+                },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+        }
+
+        function closeframe() {
+            api.closeFrame({
+                name: 'help_frm'
+            });
+            api.closeFrame({
+
+            });
+        }
+    </script>
+
+    </html>

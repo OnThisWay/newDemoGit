@@ -1,0 +1,413 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+
+        }
+
+        .empty {
+            padding: 15px;
+            min-height: 100vh;
+            background-color: #F4F4F4;
+            border-radius: 8px;
+        }
+
+        .top {
+            background: #FFFFFF;
+            box-shadow: 0px 0px 10px 0px rgba(109, 109, 109, 0.5);
+            border-radius: 8px;
+        }
+
+        .top .head {
+            padding: 10px 15px;
+            border-bottom: 1px solid #E5E5E5;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 500;
+            color: #333333;
+        }
+
+        .top .con {
+            padding: 15px 0;
+            border-bottom: 1px solid #E5E5E5;
+        }
+
+        .top .con div {
+            margin: auto;
+        }
+
+        .top .money {
+            text-align: center;
+            margin: 10px auto;
+            font-size: 30px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: #137696;
+        }
+
+        .top .btn {
+            margin: 10px auto;
+            width: 100px;
+            line-height: 27px;
+            border-radius: 13.5px;
+            text-align: center;
+            background-color: #0096C8;
+            color: white;
+            font-size: 12px;
+        }
+
+        .ul {
+            width: calc(100vw - 30px);
+            border-radius: 8px;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 999;
+        }
+
+        .ul .li {
+            width: 50%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .ul .li div {
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .ul .li:last-child div {
+            border-right: 0px solid #f0f0f0;
+        }
+
+        .ul .li .num {
+            font-size: 14px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: #999999;
+        }
+
+        .ul .li .title {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        .box {
+            background: #FFFFFF;
+            box-shadow: 0px 0px 10px 0px rgba(109, 109, 109, 0.5);
+            border-radius: 8px;
+            margin-top: 10px;
+            min-height: calc(100vh - 244px);
+            position: relative;
+        }
+
+        .box>.head {
+            padding: 10px 15px;
+            border-bottom: 1px solid #E5E5E5;
+            display: flex;
+            align-items: center;
+        }
+
+        .box>.head>.left {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 500;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .box>.head>.right {
+            display: flex;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            align-items: center;
+        }
+
+        .box>.head>.right>img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .box li {
+            display: flex;
+            padding: 10px 15px;
+            border-bottom: 1px solid #E5E5E5;
+            align-items: center;
+        }
+
+        .box li .left {
+            margin-right: auto;
+        }
+
+        .box .left .type {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .box .left .time {
+            font-size: 10px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .box .right {
+            font-size: 12px;
+        }
+
+        .green {
+            color: #00BD6D
+        }
+
+        .red {
+            color: #FF0000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak v-if="data">
+        <template id="" v-if="network">
+        <div class="top">
+            <div class="head">当前积分</div>
+            <div class="con">
+                <div class="money">{{parseInt(data.current_integral)}}</div>
+                <div class="btn" @click="fnOpenIntegralSmall_win(data.current_integral)">积分商城</div>
+            </div>
+            <div class="ul">
+                <div class='li'>
+                    <div>
+                        <div class='num'>我获得的积分</div>
+                        <div class='title'>{{parseInt(data.history_integral)}}</div>
+                    </div>
+                </div>
+                <div class='li'>
+                    <div>
+                        <div class='num'>我消耗的积分</div>
+                        <div class='title'>{{parseInt(data.consume_integral)}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="head">
+                <div class="left">
+                    积分明细
+                </div>
+                <!-- <div class="right">
+                    <span>全部</span>
+                    <img src="../image/xia.png" alt="">
+                </div> -->
+            </div>
+            <ul v-if="list.length">
+                <li v-for="(item,index) in list">
+                    <div class="left">
+                        <div class="type">{{item.remake}}</div>
+                        <div class="time">{{fnClipSecond(item.created_time)}}</div>
+                    </div>
+                    <div class="right" :class="item.type==1?'red':'green'">{{item.type==1?'-':'+'}}{{parseInt(item.amount)}}</div>
+                </li>
+            </ul>
+            <div class="noWin"v-if="!list.length">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无明细</span>
+                </div>
+            </div>
+        </div>
+        <div v-if="list.length" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div>
+        </template>
+
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var requedtFlag = false;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                data: "",
+                list: [],
+                offset: 0,
+                limit: 10,
+                noMore: false
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetIntegralInfo();
+                })
+                this.fnGetIntegralInfo();
+                this.fnUprequset();
+                api.setCustomRefreshHeaderInfo({
+                    image: {
+                        pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                            'widget://image/8.png'
+                        ],
+                        load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                            'widget://image/11.png'
+                        ]
+                    },
+                    bgColor: '#f5f5f5',
+                }, function() {
+                    _this.fnGetIntegralInfo("down");
+                });
+                api.addEventListener({
+                    name: 'myIntegralChanged'
+                }, function(ret, err){
+                    if( ret ){
+                        _this.fnGetIntegralInfo("down");
+                    }else{
+                    }
+                });
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetIntegralInfo();
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取积分信息
+                fnGetIntegralInfo: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('my/integralInfo', {}, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.fnGetList();
+                        if (res.code == 10000) {
+                            _this.data = res.msg;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+
+
+                //获取列表
+                fnGetList: function(type) {
+                    if (requedtFlag) {
+                        return;
+                    }
+                    requedtFlag = true;
+                    var _this = this;
+                    ajax('my/integralRecord', {
+                        type:0,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        // console.log(JSON.stringify(res));
+                        if (res.code == 10000) {
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        requedtFlag = false;
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //打开积分商城
+                fnOpenIntegralSmall_win(data){
+                    api.openWin({
+                        name: 'integralSmall_win',
+                        url: './integralSmall_win.html',
+                        // singleInstance: false,
+                        pageParam: {
+                            integral:data
+                        }
+                    });
+                },
+                fnOpenNo() {
+                    messageToast('暂未开放')
+                }
+            }
+        })
+
+
+    }
+</script>

@@ -1,0 +1,517 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        section {
+            padding-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <section v-if="network" class="aui-chat">
+            <p class="noHistory" v-if="noHistory">没有啦...</p>
+            <div v-for="(item,index) in newslist" class="aui-chat-item " v-bind:class="item.fromid != userInfo.id?'aui-chat-left':'aui-chat-right'">
+                <div class="aui-chat-header">{{fnClipSecond(item.time)}}</div>
+                <div class="aui-chat-media">
+                    <img :src="item.fromHead" />
+                </div>
+                <div class="aui-chat-inner">
+                    <div class="aui-chat-content" v-if="fnJSONparse(item.content).msg_type=='txt'">
+                        <div class="aui-chat-arrow"></div>
+                        {{fnJSONparse(item.content).msg_cont}}
+                    </div>
+                    <div class="aui-chat-content" v-else="fnJSONparse(item.content).msg_type== 'img'">
+                        <div class="aui-chat-arrow"></div>
+                        <img style="min-height:100px;min-width:50px" @click='openImage(fnJSONparse(item.content).msg_cont)' :src="fnJSONparse(item.content).msg_cont" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var myWebSocket = api.require('myWebSocket');
+        var UIChatBox = api.require('UIChatBox');
+        var headerH = api.pageParam.headerH;
+        var winH = api.winHeight;
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        });
+        var userInfo = JSON.parse(api.getPrefs({
+            sync: true,
+            key: 'userInfo'
+        }));
+
+        // console.log(userInfo.name)
+        var myHead = userInfo.head_url;
+        var myName = userInfo.name;
+        var myUserId = userInfo.id;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                newslist: [],
+                userInfo: userInfo,
+                noHistory: false,
+                toName: api.pageParam.toName,
+                toId: api.pageParam.toId,
+                toHead: api.pageParam.toHead,
+                lastMsgId: '',
+                limit: 10
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetLastConversition();
+                })
+                this.fnUIChatBox();
+                //获取最近会话
+                this.fnGetLastConversition();
+                //清空消息未读状态
+                this.fnClearReadStatus();
+                //下拉获取历史消息
+                api.setCustomRefreshHeaderInfo({
+                    image: {
+                        pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png', 'widget://image/8.png'],
+                        load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png', 'widget://image/11.png']
+                    },
+                    bgColor: '#ffffff',
+                }, function() {
+                    _this.fnGetLastConversition('down');
+                });
+                //androd 通过方法监听
+                // api.systemType == "android" ? this.fnbindWebSocket() : "";
+                //ios通过首页监听新消息
+                api.addEventListener({
+                    name: 'newMessage'
+                }, function(ret, err) {
+                    if (ret) {
+                        var data = ret.value.message;
+                        _this.newslist = _this.newslist.concat([data]);
+                        pageDown(50);
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetLastConversition("down");
+                },
+                // 打开输入框
+                fnUIChatBox: function() {
+                    var _this = this;
+                    UIChatBox.open({
+                        placeholder: '',
+                        maxRows: 4,
+                        emotionPath: 'widget://res/ChatBox/emotion',
+                        styles: {
+                            inputBar: {
+                                borderColor: '#ececec',
+                                bgColor: '#fbfbfb'
+                            },
+                            inputBox: {
+                                borderColor: '#B3B3B3',
+                                bgColor: '#FFFFFF'
+                            },
+                            extrasBtn: {
+                                normalImg: 'widget://res/ChatBox/add1.png'
+                            },
+                            keyboardBtn: {
+                                normalImg: 'widget://res/ChatBox/key1.png'
+                            },
+                            recordBtn: {
+                                normalBg: '#ffffff',
+                                activeBg: '#F4F4F4',
+                                color: '#5D5D5D',
+                                size: 14
+                            },
+                            indicator: {
+                                target: 'both',
+                                color: '#c4c4c4',
+                                activeColor: '#9e9e9e'
+                            },
+                            sendBtn: {
+                                titleColor: '#ffffff',
+                                bg: '#12b7f5',
+                                activeBg: '#1ba1d4',
+                                titleSize: 14
+                            }
+                        },
+                        extras: {
+                            titleSize: 16,
+                            titleColor: '#a3a3a3',
+                            btns: [{
+                                title: '相册图片',
+                                normalImg: 'widget://res/ChatBox/img1.png',
+                                activeImg: 'widget://res/ChatBox/img2.png'
+                            }, {
+                                title: '相机拍照',
+                                normalImg: 'widget://res/ChatBox/cam1.png',
+                                activeImg: 'widget://res/ChatBox/cam2.png'
+                            }]
+                        }
+                    }, function(ret, err) {
+                        var eventType = ret.eventType;
+                        var msg = ret.msg;
+                        if (eventType == 'clickExtras') {
+                            if (ret.index == 0) {
+                                _this.getPicture('library')
+                                pageDown(500);
+                            } else if (ret.index == 1) {
+                                _this.getPicture('camera')
+                                pageDown(500);
+                            }
+                        }
+                        if (eventType == 'send') {
+                            if ($api.trimAll(ret.msg) == '') {
+                                api.toast({
+                                    msg: '不能发送空白消息',
+                                    duration: 1000,
+                                    location: 'center'
+                                });
+                            } else {
+                                UIChatBox.value({
+                                    msg: ''
+                                });
+                                _this.fnSendMessage('txt', ret.msg);
+                            }
+                        }
+                    });
+                    UIChatBox.addEventListener({
+                        target: 'inputBar',
+                        name: 'move'
+                    }, function(ret, err) {
+                        if (ret) {
+                            var frameH = winH - api.pageParam.headerH - ret.inputBarHeight - ret.panelHeight;
+                            api.setFrameAttr({
+                                name: 'advisoryOrderOrderDetail_webSocket_frm',
+                                rect: {
+                                    x: 0,
+                                    y: headerH,
+                                    w: 'auto',
+                                    h: frameH
+                                },
+                            });
+                            pageDown(50);
+                        }
+                    });
+                },
+                //相片
+                getPicture: function(type) {
+                    var _this = this;
+                    if (type == 'camera') {
+                        api.getPicture({
+                            sourceType: type,
+                            encodingType: 'jpg',
+                            mediaValue: 'pic',
+                            destinationType: 'url',
+                            allowEdit: false,
+                            quality: 50,
+                            saveToPhotoAlbum: false
+                        }, function(ret, err) {
+                            if (ret) {
+                                // 创建自定义数据
+                                var _img = ret.data;
+                                _this.fnUpImg(_img);
+                            }
+                        })
+                    } else {
+                        var UIMediaScanner = api.require('UIMediaScanner');
+                        UIMediaScanner.open({
+                            type: 'picture',
+                            column: 4,
+                            classify: true,
+                            max: 4,
+                            sort: {
+                                key: 'time',
+                                order: 'asc'
+                            },
+                            texts: {
+                                stateText: '已选择*项',
+                                cancelText: '取消',
+                                finishText: '完成'
+                            },
+                            styles: {
+                                bg: '#fff',
+                                mark: {
+                                    icon: '',
+                                    position: 'bottom_left',
+                                    size: 20
+                                },
+                                nav: {
+                                    bg: '#eee',
+                                    stateColor: '#000',
+                                    stateSize: 18,
+                                    cancelBg: 'rgba(0,0,0,0)',
+                                    cancelColor: '#000',
+                                    cancelSize: 18,
+                                    finishBg: 'rgba(0,0,0,0)',
+                                    finishColor: '#000',
+                                    finishSize: 18
+                                }
+                            },
+                            scrollToBottom: {
+                                intervalTime: 3,
+                                anim: true
+                            },
+                            exchange: true,
+                            rotation: true
+                        }, function(ret) {
+                            if (ret) {
+                                if (ret.eventType == "confirm") {
+
+                                    for (var i = 0; i < ret.list.length; i++) {
+                                        UIMediaScanner.transPath({
+                                            path: ret.list[i].path,
+                                            scale: {
+                                                untreated: true
+                                            }
+                                        }, function(ret, err) {
+                                            if (ret) {
+                                                // _this.descImg = _this.descImg.concat([ret.path]);
+                                                _this.fnUpImg(ret.path)
+                                            } else {
+                                                alert(JSON.stringify(err));
+                                            }
+                                        });
+                                    }
+
+                                }
+                            }
+                        });
+                    }
+                },
+                //上传图片到阿里云
+                fnUpImg: function(img) {
+                    var _this = this;
+                    showProgress();
+                    api.ajax({
+                        url: URL + 'uploadImg',
+                        method: 'post',
+                        headers: {
+                            'Authorization': 'Bearer ' + api.getPrefs({
+                                sync: true,
+                                key: 'token'
+                            }),
+                            'Accept': 'application/json;charset=utf-8'
+                        },
+                        data: {
+                            values: {
+                                name: 'test'
+                            },
+                            files: {
+                                file: img
+                            }
+                        }
+                    }, function(ret, err) {
+                        hideProgress();
+                        if (ret) {
+                            if (ret.code == 10000) {
+                                _this.fnSendMessage('img', ret.msg);
+                            } else {
+                                messageToast(ret.errMsg)
+                            }
+                        } else {
+                            console.log("err:---" + JSON.stringify(err));
+                        }
+                    });
+                },
+                //打开图像
+                openImage: function(path) {
+                    fnOpenPhotoBrowser([path], 0)
+                },
+                //监听消息
+                fnbindWebSocket: function() {
+                    var myWebSocket = api.require('myWebSocket');
+                    var _this = this;
+                    myWebSocket.bindEvent(function(ret, err) {
+                        var type = ret.type;
+                        var str = ret.data;
+                        switch (type) {
+                            case 'opened':
+                                //登录...
+                                break;
+                            case 'receive':
+                                //接收到消息后刷新列表
+                                var data = JSON.parse(str)
+                                _this.newslist = _this.newslist.concat([data]);
+                                pageDown(50);
+                                break;
+                            case 'closed':
+                                //do something ...
+                                alert("连接已断开");
+                                //打印关闭的log
+                                // console.log(str)
+                                break;
+                        }
+                    });
+                },
+                //保存消息
+                fnSaveMsg: function(data) {
+                    var _this = this;
+                    ajax('websocket/saveMsg',
+                        data,
+                        function(res) {
+                            // console.log(JSON.stringify(res));
+                            if (res.code == 10000) {
+                                // app.showToast('保存成功')
+                            } else {
+                                // messageToast(res.errMsg)
+                            }
+                        },
+                        function(res) {
+                            messageToast(ERRMSG)
+                        })
+                },
+                //发送消息
+                fnSendMessage: function(msg_type, msg_cont) {
+                    var time = timestampToTime(Date.parse(new Date()));
+                    var _this = this;
+                    var data = {
+                        type: "information",
+                        fromid: _this.userInfo.id,
+                        fromName: _this.userInfo.name,
+                        toid: _this.toId,
+                        fromHead: _this.userInfo.head_url,
+                        isread: 0,
+                        time: time,
+                        content: {
+                            msg_type: msg_type,
+                            msg_cont: msg_cont
+                        }
+                    }
+                    myWebSocket.send({
+                            msg: JSON.stringify(data)
+                        })
+                        // if (api.systemType == "ios") {
+                        //     _this.newslist = _this.newslist.concat([data]);
+                        //     pageDown(50);
+                        // }
+                    _this.fnSaveMsg(JSON.stringify(data));
+                    api.sendEvent({
+                        name: 'messRead',
+                        extra: {
+                            key1: 'value1',
+                            key2: 'value2'
+                        }
+                    });
+
+                },
+                //获取最后一段聊天记录
+                fnGetLastConversition: function(type) {
+                    var _this = this;
+                    ajax('websocket/getChatRecord', {
+                        fromid: myUserId,
+                        toid: _this.toId,
+                        id: _this.lastMsgId,
+                        limit: _this.limit
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.fnClearReadStatus();
+                            if (res.msg.length) {
+                                var list = _this.newslist;
+                                list = res.msg.concat(list);
+                                _this.newslist = list;
+                                _this.lastMsgId = res.msg[0].id;
+                                _this.noHistory = false
+                                type ? "" : pageDown(500);
+                            } else {
+                                _this.showNoHistory = true
+                            }
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //清除消息未读状态
+                fnClearReadStatus: function() {
+                    var _this = this;
+                    ajax('websocket/chengIsRead', {
+                        fromid: myUserId,
+                        toid: _this.toId,
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        console.log('-----------' + JSON.stringify(res))
+                        if (res.code == 10000) {
+                            api.sendEvent({
+                                name: 'messRead',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+
+                        } else {
+                            // messageToast('-----------'+res.errMsg)
+                        }
+                    }, function(res) {
+                        // console.log('-----------' + JSON.stringify(res))
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+            }
+        })
+    }
+</script>

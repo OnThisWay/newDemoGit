@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        header {
+            background-color: #137696;
+            color: white;
+            font-size: 16px;
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            display: none;
+            color: #fff;
+            position: relative;
+            font-size: 18px;
+            padding: 0 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .right {
+            line-height: 50px;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            margin-left: auto;
+            width: 60px;
+            text-align: right;
+        }
+
+        .inputBox {
+            margin: auto;
+            display: flex;
+            height: 34px;
+            width: calc( 100vw - 90px);
+            border-radius: 17px;
+            background: rgba(255, 255, 255, 0.2);
+            justify-content: center;
+        }
+
+        .inputBox form {
+            width: calc( 100vw - 156px);
+        }
+
+        .inputBox input {
+            font-size: 14px;
+            color: #FFFFFF;
+            height: 34px;
+        }
+
+        .inputBox img {
+            width: 26px;
+            height: 26px;
+            margin: auto 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="">
+                    <div class="inputBox">
+                        <img src="../image/Ic_search.png" alt="">
+                        <form class="input-kw-form" action="" onsubmit="return false;">
+                            <input class="input-kw" type="search" autocomplete="off" autofocus="autofocus" name="baike-search" placeholder="输入小区名字">
+                        </form>
+
+                    </div>
+                    <div class="right" tapmode onclick="fnCloseWin()">取消</div>
+                </li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.dom('.input-kw').focus();
+        $api.fixStatusBar($api.dom('header'));
+        api.openFrame({
+            name: 'searchHouse_frm',
+            url: './searchHouse_frm.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                provinc: api.pageParam.provinc,
+                city: api.pageParam.city,
+                latitude: api.pageParam.latitude,
+                longtitude: api.pageParam.longtitude
+            },
+            bounces: false,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+
+        document.querySelector('.input-kw').addEventListener('search', function(e) {
+            var value = this.value;
+            $api.dom('.input-kw').blur();
+            $api.val($api.dom('.input-kw'), value);
+            if (value) {
+                api.sendEvent({
+                    name: 'searchHouse',
+                    extra: {
+                        key: value
+                    }
+                });
+            } else {
+                messageToast('请输入搜索内容')
+            }
+        });
+    }
+
+    function fnCloseWin() {
+        api.closeWin({});
+    }
+</script>

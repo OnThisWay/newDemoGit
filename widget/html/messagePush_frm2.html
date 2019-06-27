@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        li {
+            background-color: #F4F4F4;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        li:first-child {
+            margin-top: 0
+        }
+
+        li .top {
+            padding: 15px;
+            border-bottom: 1px solid #CECECE;
+        }
+
+        li .head {
+            line-height: 18px;
+            display: flex;
+        }
+
+        li .type {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        li .time {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #999999;
+        }
+
+        li .con {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #666666;
+            line-height: 18px;
+            margin-top: 15px;
+        }
+
+        li .footer {
+            padding: 10px 15px;
+            text-align: right;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 157, 208, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+        <ul>
+            <li v-for="(item,index) in list" tapmode="hover"  @click="fnOpenActivityDetails_win(index)">
+                <div class="top">
+                    <div class="head">
+                        <span class="type">{{item.title}}</span>
+
+                    </div>
+                    <div class="con">
+                        {{item.describe}}
+                    </div>
+                </div>
+                <div class="footer">
+                    <span class="time">{{fnClipSecond(item.created_time)}}</span>
+                    <span class="right">活动详情</span>
+                </div>
+            </li>
+        </ul>
+        <div v-if="!list.length" class="noWin">
+            <div><i class="iconfont icon-zanwushuju"></i></div>
+            <div class="">
+                <span>暂无通知</span>
+            </div>
+        </div>
+    </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var requedtFlag = false;
+        var n = 0;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                list: [],
+                offset: 0,
+                limit: 10,
+                noMore: false
+            },
+            mounted: function() {
+                this.fnCustomRefresh();
+                this.fnUprequset();
+                this.fnGetList();
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetList();
+                })
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    if (requedtFlag) {
+                        return;
+                    }
+                    requedtFlag = true;
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('notice/activeNoticeList', {
+                        type: 3,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        requedtFlag = false;
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        requedtFlag = false;
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                fnOpenActivityDetails_win: function(index) {
+                    var _this = this;
+                    api.openWin({
+                        name: 'activityDetails_win',
+                        url: './activityDetails_win.html',
+                        pageParam: {
+                            aid: _this.list[index].id,
+                            articUrl: _this.list[index].content,
+                            articType: _this.list[index].c_type
+                        }
+                    });
+                },
+
+            }
+        })
+    }
+</script>

@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .empty .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            margin-bottom: 20px;
+        }
+
+        .title .center {
+            font-weight: bold;
+        }
+
+        ul {
+            overflow: hidden;
+        }
+
+        ul li {
+            float: left;
+            width: calc((100vw - 60px)/7);
+            height: calc((100vw - 60px)/7);
+            margin-left: 5px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            color: #137696;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .have {
+            background: #599DD0!important;
+            color: white;
+        }
+
+        ul li img {
+            width: 100%;
+            height: 100%;
+        }
+
+        ul li:nth-child(7n+1) {
+            margin-left: 0px;
+        }
+
+        .btn {
+            background-color: #599DD0;
+            color: white;
+            font-size: 12px;
+            padding: 5px 15px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .btnNo {
+            background-color: #f0f0f0!important;
+            color: #333!important;
+        }
+
+        .btn i {
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .no {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <template id="" v-if="network">
+            <div v-if="">
+        <div class="title">
+            <div class="btn" @click="fnPre"><i class="iconfont icon-left"></i>上一月</div>
+            <div class="center">{{list.month}}</div>
+            <div class="btn" :class="{btnNo:nowMonth==month}" @click="fnNext">下一月<i class="iconfont icon-you"></i></div>
+        </div>
+        <div class="list" >
+            <div>
+                <ul>
+                    <li v-for="(childitem,childIndex) in list.day" :class="{have:childitem.have}" @click="fnOpenRenovationPhotosDetails_win(childIndex)">
+                        <span>{{childitem.num}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                oid: api.pageParam.oid,
+                // oid: 'JL190429001802780247',
+                month: "",
+                nowMonth: '',
+                list: '',
+            },
+            mounted: function() {
+                // this.fnUprequset();
+                this.fnGetThisMonth();
+                this.fnGetList();
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetList();
+                })
+            },
+            computed: {
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+                //获取当前月份
+                fnGetThisMonth: function() {
+                    var date = new Date();
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    this.month = year + '-' + (month < 10 ? ('0' + month) : month);
+                    this.nowMonth = this.month;
+                },
+                fnPre() {
+                    this.fnGetPreMonth();
+                },
+                fnNext() {
+                    if (this.nowMonth == this.month) return;
+                    this.fnGetNextMonth();
+                },
+                //获取上一个月
+                fnGetPreMonth: function() {
+                    var date = this.month + '-01';
+                    var arr = date.split('-');
+                    var year = arr[0]; //获取当前日期的年份
+                    var month = arr[1]; //获取当前日期的月份
+                    var day = arr[2]; //获取当前日期的日
+                    var days = new Date(year, month, 0);
+                    days = days.getDate(); //获取当前日期中月的天数
+                    var year2 = year;
+                    var month2 = parseInt(month) - 1;
+                    if (month2 == 0) {
+                        year2 = parseInt(year2) - 1;
+                        month2 = 12;
+                    }
+                    var day2 = day;
+                    var days2 = new Date(year2, month2, 0);
+                    days2 = days2.getDate();
+                    if (day2 > days2) {
+                        day2 = days2;
+                    }
+                    if (month2 < 10) {
+                        month2 = '0' + month2;
+                    }
+                    var t2 = year2 + '-' + month2;
+                    this.month = t2;
+                    this.fnGetList();
+                },
+                //获取下一个月
+                fnGetNextMonth: function() {
+                    var date = this.month + '-01';
+                    var arr = date.split('-');
+                    var year = arr[0]; //获取当前日期的年份
+                    var month = arr[1]; //获取当前日期的月份
+                    var day = arr[2]; //获取当前日期的日
+                    var days = new Date(year, month, 0);
+                    days = days.getDate(); //获取当前日期中月的天数
+                    var year2 = year;
+                    var month2 = parseInt(month) + 1;
+                    if (month2 == 13) {
+                        year2 = parseInt(year2) + 1;
+                        month2 = 1;
+                    }
+                    var day2 = day;
+                    var days2 = new Date(year2, month2, 0);
+                    days2 = days2.getDate();
+                    if (day2 > days2) {
+                        day2 = days2;
+                    }
+                    if (month2 < 10) {
+                        month2 = '0' + month2;
+                    }
+                    var t2 = year2 + '-' + month2;
+                    this.month = t2;
+                    this.fnGetList();
+                },
+                //获取当前月份的天数
+                fnGetMonthHaveDays: function(data) {
+                    var data = this.month.split('-');
+                    var year = parseInt(data[0]);
+                    var month = parseInt(data[1]);
+                    switch (month) {
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 12:
+                            {
+                                return 31;
+                            }
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11:
+                            {
+                                return 30;
+                            }
+                        case 2:
+                            {
+                                if (year % 4) {
+                                    return 28;
+                                } else {
+                                    if (year % 100) {
+                                        return 29;
+                                    } else {
+                                        if (year % 400) {
+                                            return 28;
+                                        } else {
+                                            return 29;
+                                        }
+                                    }
+                                }
+                            }
+                        default:
+                            {
+                                return 0;
+                            }
+                    }
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetPreMonth();
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/selLogPhoto', {
+                        oid: _this.oid,
+                        month: _this.month
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            // if (res.msg.imgs.length) {
+                            var dayArr = [];
+                            for (var i = 1; i < _this.fnGetMonthHaveDays(_this.month) + 1; i++) {
+                                dayArr.push({
+                                    num: i,
+                                    have: ""
+                                });
+                            }
+                            if (res.msg.length) {
+                                dayArr.forEach((item, index) => {
+                                    res.msg.forEach((_item) => {
+                                        if (item.num == _item) {
+                                            dayArr[index].have = true
+                                        }
+                                    })
+                                })
+                            }
+                            // var list = _this.list;
+                            // list.push({
+                            //     month: _this.month,
+                            //     day: dayArr
+                            // })
+                            _this.list = {
+                                month: _this.month,
+                                day: dayArr
+                            };
+                            // console.log(JSON.stringify(_this.list))
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        _this.network = false;
+                    })
+                },
+                //打开相册详情
+                fnOpenRenovationPhotosDetails_win: function(childIndex) {
+                    var _this = this;
+                    if (this.list.day[childIndex].have) {
+                        //     messageToast('没有相册')
+                        // } else {
+
+                        var day = (parseInt(childIndex) + 1);
+                        day = day < 10 ? "0" + day : day;
+                        // console.log(this.list[index].month + "-" + day)
+                        api.openWin({
+                            name: 'logDetail_win',
+                            url: './logDetail_win.html',
+                            pageParam: {
+                                day: this.list.month + "-" + day,
+                                oid: _this.oid
+                            }
+                        });
+                    }
+
+                }
+            }
+        })
+
+
+    }
+</script>

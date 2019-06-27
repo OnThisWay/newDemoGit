@@ -1,0 +1,1215 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <style>
+        header {
+            background-color: #137696;
+            position: relative;
+        }
+        .all {
+            background: -webkit-linear-gradient(#137696, #137696);
+            /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(#137696, #137696);
+            /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(#137696, #137696);
+            /* Firefox 3.6 - 15 */
+            background: linear-gradient(#137696, #137696);
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            display: none;
+            position: relative;
+        }
+
+        header ul li:nth-child(4) {
+            height: 90px;
+        }
+
+        header ul li.active {
+            display: block;
+        }
+
+        header .title {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+        }
+
+        header .address {
+            position: absolute;
+            margin-left: 15px;
+            color: #FFFFFF;
+            display: flex;
+            font-weight: bolder;
+        }
+
+        header .address img {
+            width: 20px;
+            margin: auto;
+        }
+
+        header .right {
+            height: 50px;
+            top: 0;
+            position: absolute;
+            float: right;
+            right: 15px;
+            display: flex;
+            font-weight: bolder;
+            align-items: center;
+        }
+
+        header .right div {
+            position: relative;
+        }
+
+        header .right img {
+            width: 26px;
+            height: 26px;
+            margin: auto 4px;
+        }
+
+        .aui-tab {
+            background-color: white!important;
+            border-bottom: 1px solid #333333;
+        }
+
+        .aui-tab-item {
+            color: #888888!important;
+            height: 40px;
+            line-height: 40px;
+            font-size: 15px;
+            /*border-bottom: 1px solid #f0f0f0!important;*/
+            background-color: white!important;
+            border-bottom: 2px solid #CECECE!important;
+            color: #888888;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .aui-tab-item.aui-active {
+            color: #009ED3!important;
+        }
+
+        .aui-tab-item.aui-active span {
+            border-bottom: 2px solid #009ED3!important;
+        }
+
+        #footer {
+            background: white;
+        }
+
+        #footer ul li {
+            padding-top: 28px;
+            padding-bottom: 4px;
+            background: url() no-repeat center 2px;
+            background-size: auto 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+            position: relative;
+        }
+
+        #footer ul li.active {
+            color: #137696;
+        }
+
+        #footer ul li:nth-child(1) {
+            background-image: url(./image/home.png);
+        }
+
+        #footer ul li:nth-child(2) {
+            background-image: url(./image/huodong.png);
+        }
+
+        #footer ul li:nth-child(3) {
+            background: url() no-repeat center 5px;
+            background-image: url(./image/logo3.png);
+            background-size: auto 20px;
+        }
+
+        #footer ul li:nth-child(4) {
+            background-image: url(./image/school.png);
+        }
+
+        #footer ul li:nth-child(5) {
+            background-image: url(./image/my.png);
+        }
+
+        #footer ul li:nth-child(1).active {
+            background-image: url(./image/home1.png);
+        }
+
+        #footer ul li:nth-child(2).active {
+            background-image: url(./image/huodong1.png);
+        }
+
+        #footer ul li:nth-child(3).active {
+            background-image: url(./image/logo4.png);
+        }
+
+        #footer ul li:nth-child(4).active {
+            background-image: url(./image/school1.png);
+        }
+
+        #footer ul li:nth-child(5).active {
+            background-image: url(./image/my1.png);
+        }
+
+        .flex-con {
+            overflow: auto
+        }
+
+        .clearBtn {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            /*display: block;float: right;*/
+        }
+
+        .aui-badge {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+            /*height: 0.8rem;*/
+            line-height: 18px;
+            font-size: 10px;
+            color: #ffffff;
+            background-color: #ff2600;
+            border-radius: 50%;
+            position: absolute;
+            top: -0.4rem;
+            left: 50%;
+            z-index: 99;
+        }
+
+        .badge2 {
+            width: 10px;
+            height: 10px!important;
+            min-width: 10px!important;
+            min-height: 10px!important;
+            top: -0.1rem;
+            left: 60%;
+        }
+
+        .opacity {
+            opacity: 0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="active">
+                    <div class="address" tapmode="hover" onclick="fnOpenCityList_win();">
+                        <span>全国</span>
+                        <img src="image/index/jiantouxia.png" alt="">
+                    </div>
+                    <span class="title">田螺哥</span>
+                    <div class="right">
+                        <div>
+                            <img src="image/index/search.png" alt="" tapmode="hover" onclick="fnOpenSearch_win();">
+                        </div>
+                        <div>
+                            <img src="image/index/erji.png" alt="" onclick="fnOpenChatList_win()">
+                            <span class="aui-badge badge1 opacity"></span>
+                        </div>
+                        <div>
+                            <img src="image/index/message.png" alt="" tapmode="hover" onclick="fnOpenMessage_win();">
+                            <span class="aui-badge badge2 opacity"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="address" tapmode="hover" onclick="fnOpenCityList_win();">
+                        <span>全国</span>
+                        <img src="image/index/jiantouxia.png" alt="">
+                    </div>
+                    <span class="title">活动</span>
+                    <div class="right">
+                        <div>
+                            <img src="image/index/search.png" alt="" tapmode="hover" onclick="fnOpenSearch_win();">
+                        </div>
+                        <div>
+                            <img src="image/index/erji.png" alt="" onclick="fnOpenChatList_win()">
+                            <span class="aui-badge badge1 opacity"></span>
+                        </div>
+                        <div>
+                            <img src="image/index/message.png" alt="" tapmode="hover" onclick="fnOpenMessage_win();">
+                            <span class="aui-badge badge2 opacity"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="address" tapmode="hover" onclick="fnOpenCityList_win();">
+                        <span>全国</span>
+                        <img src="image/index/jiantouxia.png" alt="">
+                    </div>
+                    <span class="title">田螺哥</span>
+                    <div class="right">
+                        <div>
+                            <img src="image/index/search.png" alt="" tapmode="hover" onclick="fnOpenSearch_win();">
+                        </div>
+                        <div>
+                            <img src="image/index/erji.png" alt="" onclick="fnOpenChatList_win()">
+                            <span class="aui-badge badge1 opacity"></span>
+                        </div>
+                        <div>
+                            <img src="image/index/message.png" alt="" tapmode="hover" onclick="fnOpenMessage_win();">
+                            <span class="aui-badge badge2 opacity"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="schoolLi">
+                    <div class="address" tapmode="hover" onclick="fnOpenCityList_win();">
+                        <span>全国</span>
+                        <img src="image/index/jiantouxia.png" alt="">
+                    </div>
+                    <span class="title">田螺学院</span>
+                    <div class="right">
+                        <div>
+                            <img src="image/index/search.png" alt="" tapmode="hover" onclick="fnOpenSearch_win();">
+                        </div>
+                        <div>
+                            <img src="image/index/erji.png" alt="" onclick="fnOpenChatList_win()">
+                            <span class="aui-badge badge1 opacity"></span>
+                        </div>
+                        <div>
+                            <img src="image/index/message.png" alt="" tapmode="hover" onclick="fnOpenMessage_win();">
+                            <span class="aui-badge badge2 opacity"></span>
+                        </div>
+                    </div>
+                    <div class="aui-tab">
+                        <div class="aui-tab-item tapmode aui-active" tapmode="hover" onclick="fnClickTab(0)"> <span>装修案例</span></div>
+                        <div class="aui-tab-item tapmode" tapmode="hover" onclick="fnClickTab(1)"> <span>装修知识</span></div>
+                        <div class="aui-tab-item tapmode" tapmode="hover" onclick="fnClickTab(2)"><span>装修文化</span></div>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="address" tapmode="hover" onclick="fnOpenSetting_win();">
+                        <img src="image/index/setting.png" alt="">
+                    </div>
+                    <span class="title">我的</span>
+                    <div class="right">
+                        <div>
+                            <img src="image/index/erji.png" alt="" onclick="fnOpenChatList_win()">
+                            <span class="aui-badge badge1 opacity"></span>
+                        </div>
+                        <div>
+                            <img src="image/index/message.png" alt="" tapmode="hover" onclick="fnOpenMessage_win();">
+                            <span class="aui-badge badge2 opacity"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+        <footer id="footer">
+            <ul class="flex-wrap">
+                <li tapmode onclick="randomSwitchBtn( this );" class="flex-con active">首页</li>
+                <li tapmode onclick="randomSwitchBtn( this );" class="flex-con">活动
+                    <!-- <div class="aui-badge"></div> -->
+                </li>
+                <li tapmode onclick="randomSwitchBtn( this );" class="flex-con">田螺哥</li>
+                <li tapmode onclick="randomSwitchBtn( this );" class="flex-con">田螺学院</li>
+                <li tapmode onclick="randomSwitchBtn( this );" class="flex-con">我的</li>
+            </ul>
+        </footer>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/zepto.min.js"></script>
+<script type="text/javascript" src="script/aui-toast.js"></script>
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript" src="script/vue.min.js"></script>
+<script type="text/javascript">
+    var badge2Arr="";
+    apiready = function() {
+        var ajpush = api.require('ajpush');
+        ajpush.init(function(ret) {
+            if (ret && ret.status) {
+                ajpush.setListener(
+                    function(ret) {
+                        $api.domAll('.badge2').forEach(function(item, index) {
+                            $api.removeCls($api.domAll('.badge2')[index], 'opacity');
+                        })
+                    }
+                );
+            } else {
+                messageToast('Jpush init err')
+            }
+        });
+        fngetNoticeStatus();
+        guide(); //引导
+        //监听网络状态
+        fnAppNetwork(function() {
+            // alert(`网络已断开`)
+        }, function() {
+
+        })
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        $api.fixStatusBar($api.dom('header'));
+        $api.fixTabBar($api.dom('footer'));
+        api.setStatusBarStyle({
+            style: 'light',
+        });
+        edition(); //版本检测
+        funIniGroup(); //打开页面
+        fnGetLocationIsOpen(); //定位
+        token ? fncreateSocket() : ""; //创建长连接
+        api.addEventListener({
+            name: 'loginIn'
+        }, function(ret, err) {
+            if (ret) {
+                fncreateSocket();
+                fngetNoticeStatus();
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        api.addEventListener({
+            name: 'loginOut'
+        }, function(ret, err) {
+            if (ret) {
+                var myWebSocket = api.require('myWebSocket');
+                myWebSocket.close(function(ret, err) {});
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听地址改变
+        api.addEventListener({
+            name: 'cityChanged'
+        }, function(ret, err) {
+            if (ret) {
+                api.setPrefs({
+                    key: 'indexCity',
+                    value: ret.value.city
+                });
+                if ($('.address span').text() == ret.value.city) {
+                    return;
+                }
+                $('.address span').text(ret.value.city);
+
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        // 监听消息读取清除纬度状态
+        api.addEventListener({
+            name: 'messRead'
+        }, function(ret, err) {
+            if (ret) {
+                fnGetAllNotReadCount();
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听消息清空
+        api.addEventListener({
+            name: 'clearAll'
+        }, function(ret, err) {
+            if (ret) {
+                fnGetAllNotReadCount()
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+        //监听安卓点击返回
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.closeWidget({
+                id: 'A6093595445405',
+                retData: {
+                    name: 'closeWidget'
+                },
+                animation: {
+                    type: 'flip',
+                    subType: 'from_bottom',
+                    duration: 500
+                }
+            });
+        });
+        //监听学院frame显示index
+        api.addEventListener({
+            name: 'school_frm_group_showIndex'
+        }, function(ret, err) {
+            if (ret) {
+                var tabs = $api.domAll('.tapmode');
+                for (var i = 0; i < tabs.length; i++) {
+                    if (ret.value.index == i) {
+                        $api.addCls(tabs[i], "aui-active");
+                    } else {
+                        $api.removeCls(tabs[i], 'aui-active');
+
+                    }
+                }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听切换到frame2
+        api.addEventListener({
+            name: 'frame'
+        }, function(ret, err) {
+            if (ret) {
+                var eFootLis = $api.domAll('#footer li');
+                randomSwitchBtn(eFootLis[2]);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听APP从后台到前台
+        api.addEventListener({
+            name: 'resume'
+        }, function(ret, err) {
+            // edition();
+            ajpush.onResume();
+        });
+        //IOS状态栏通知被用户点击后
+        api.addEventListener({
+                name: 'noticeclicked'
+            }, function(ret, err) {
+                if (ret && ret.value.extra) {
+                    var extra = ret.value.extra;
+                    var noticeType = extra.type;
+                    var orderType = extra.c_type;
+                    if(noticeType==1){
+                        if (orderType == 3) {
+                            api.openWin({
+                                name: 'html/supervisionServiceOrderDetail_win',
+                                url: 'html/supervisionServiceOrderDetail_win.html',
+                                pageParam: {
+                                    oid: extra.aid
+                                }
+                            });
+                        } else if (orderType == 4) {
+                            api.openWin({
+                                name: 'html/advisoryOrderOrderDetail_webSocket_win',
+                                url: 'html/advisoryOrderOrderDetail_webSocket_win.html',
+                                pageParam: {
+                                    toName:extra.real_name,
+                                    toId: extra.snail_uid,
+                                    toHead:extra.head_url
+                                }
+                            });
+                        } else if (orderType == 5) {
+                            api.openWin({
+                                name: 'html/testServiceOrderDetail_win',
+                                url: 'html/testServiceOrderDetail_win.html',
+                                pageParam: {
+                                    oid: extra.aid
+                                }
+                            });
+                        }
+                    }else if(noticeType==2){
+                        api.openWin({
+                            name: 'html/myMoney_win',
+                            url: 'html/myMoney_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }else{
+                        api.openWin({
+                            name: 'html/activityDetails_win',
+                            url: 'html/activityDetails_win.html',
+                            pageParam: {
+                                aid :extra.aid,
+                                articType :extra.c_type,
+                                articUrl:extra.content,
+                            }
+                        });
+                    }
+                }
+            })
+        //ANDROID状态栏通知被用户点击后
+        api.addEventListener({
+                name: 'appintent'
+            }, function(ret, err) {
+                if (ret && ret.appParam.ajpush) {
+                    var extra = ret.appParam.ajpush.extra;
+                    var noticeType = extra.type;
+                    var orderType = extra.c_type;
+                    if(noticeType==1){
+                        if (orderType == 3) {
+                            api.openWin({
+                                name: 'html/supervisionServiceOrderDetail_win',
+                                url: 'html/supervisionServiceOrderDetail_win.html',
+                                pageParam: {
+                                    oid: extra.aid
+                                }
+                            });
+                        } else if (orderType == 4) {
+                            api.openWin({
+                                name: 'html/advisoryOrderOrderDetail_webSocket_win',
+                                url: 'html/advisoryOrderOrderDetail_webSocket_win.html',
+                                pageParam: {
+                                    toName:extra.real_name,
+                                    toId: extra.snail_uid,
+                                    toHead:extra.head_url
+                                }
+                            });
+                        } else if (orderType == 5) {
+                            api.openWin({
+                                name: 'html/testServiceOrderDetail_win',
+                                url: 'html/testServiceOrderDetail_win.html',
+                                pageParam: {
+                                    oid: extra.aid
+                                }
+                            });
+                        }
+                    }else if(noticeType==2){
+                        api.openWin({
+                            name: 'html/myMoney_win',
+                            url: 'html/myMoney_win.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }else{
+                        api.openWin({
+                            name: 'html/activityDetails_win',
+                            url: 'html/activityDetails_win.html',
+                            pageParam: {
+                                aid :extra.aid,
+                                articType :extra.c_type,
+                                articUrl:extra.content,
+                            }
+                        });
+                    }
+                }
+            })
+            //监听app进去后台
+        api.addEventListener({
+            name: 'pause'
+        }, function(ret, err) {
+            ajpush.onPause();
+        });
+        //监听打开了通知页面  移除MessBadge
+        api.addEventListener({
+            name: 'removeMessBadge'
+        }, function(ret, err) {
+            if (ret) {
+                fngetNoticeStatus();
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+    };
+    //判断定位是否开启
+    function fnGetLocationIsOpen() {
+        var bMap = api.require('bMap');
+        bMap.getLocationServices(function(ret, err) {
+            if (ret.enable) {
+                if (api.systemType == 'ios') {
+                    bMap.initMapSDK(function(ret) {
+                        if (ret.status) {
+                            fnGetLocation();
+                        }
+                    });
+                } else {
+                    fnGetLocation()
+                }
+            } else {
+                messageToast('定位功能关闭，无法定位当前城市')
+            }
+        });
+
+    }
+
+    function fnGetLocation() {
+        var bMap = api.require('bMap');
+        bMap.getLocation({
+            accuracy: '10m',
+            autoStop: true,
+            filter: 1
+        }, function(ret, err) {
+            // console.log("ret-----" + JSON.stringify(ret));
+            if (ret.status) {
+                lg = ret.lon;
+                lt = ret.lat;
+                bMap.getNameFromCoords({
+                    lon: lg,
+                    lat: lt
+                }, function(ret, err) {
+                    // console.log("ret-----" + JSON.stringify(ret));
+                    if (ret.status) {
+                        $('.address span').text(ret.city);
+                        api.setPrefs({
+                            key: 'indexCity',
+                            value: ret.city
+                        });
+                        api.sendEvent({
+                            name: 'indexAddChanged',
+                            extra: {
+                                address: ret.city
+                            }
+                        });
+
+                    }
+                });
+            } else {
+                // $('.address span').text(value);
+                // api.sendEvent({
+                //     name: 'indexAddChanged',
+                //     extra: {
+                //         address: value
+                //     }
+                // });
+            }
+        });
+    }
+
+
+    //检查版本
+    function edition() {
+        var appVersion = api.appVersion;
+        $.ajax({  
+            type: "POST",
+            url: URL + "home/app_set",
+            dataType: "json",
+            data: "",
+            success: function(data) {
+                hideProgress();
+                if (data.code == 10000) {
+                    if (api.systemType == "android" && checkPlugin(appVersion, data.msg[0].version_and)) {
+                        var str = '新版本型号:' + data.msg[0].version_and + ';更新提示语:' + data.msg[0].updated_desc_and;
+                        var forced = data.msg[0].and_forced_update ? '(强制更新)' : ",是否下载并安装";
+                        api.confirm({
+                            title: `有新的版本${forced}`,
+                            msg: str,
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            if (ret.buttonIndex == 1) {
+                                api.download({
+                                    url: data.msg[0].a_down_url,
+                                    report: true
+                                }, function(ret, err) {
+                                    if (ret && 0 == ret.state) { /* 下载进度 */
+                                        api.showProgress({
+                                            title: '下载应用',
+                                            text: "进度:" + ret.percent + "%",
+                                            modal: true
+                                        });
+                                    }
+                                    if (ret && 1 == ret.state) { /* 下载完成 */
+                                        api.hideProgress();
+                                        var savePath = ret.savePath;
+                                        api.installApp({
+                                            appUri: savePath
+                                        });
+                                    }
+                                });
+                            } else {
+                                if (data.msg[0].and_forced_update) {
+                                    api.closeWidget({
+                                        id: 'A6093595445405',
+                                        retData: {
+                                            name: 'closeWidget'
+                                        },
+                                        silent: true,
+                                        animation: {
+                                            type: 'flip',
+                                            subType: 'from_bottom',
+                                            duration: 500
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    } else if (api.systemType == "ios" && checkPlugin(appVersion, data.msg[0].version_ios)) {
+                        var str = '新版本型号:' + data.msg[0].version_ios + ';更新提示语:' + data.msg[0].updated_desc_ios;
+                        var forced = data.msg[0].ios_forced_update ? '(强制更新)' : ",是否下载并安装";
+                        api.confirm({
+                            title: `有新的版本${forced}`,
+                            msg: str,
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            if (ret.buttonIndex == 1) {
+                                api.installApp({
+                                    appUri: data.msg[0].i_down_url
+                                });
+                            } else {
+                                if (data.msg[0].ios_forced_update) {
+                                    api.closeWidget({
+                                        id: 'A6093595445405',
+                                        retData: {
+                                            name: 'closeWidget'
+                                        },
+                                        silent: true,
+                                        animation: {
+                                            type: 'flip',
+                                            subType: 'from_bottom',
+                                            duration: 500
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    messageToast(data.errMsg)
+                }
+            },
+            error: function() {
+                hideProgress();
+                messageToast('服务器错误')
+            }
+        })
+
+    };
+    //打开城市选择
+    function fnOpenCityList_win() {
+        var _this = this;
+        var UIActionSelector = api.require('UIActionSelector');
+
+        UIActionSelector.open({
+            datas: 'widget://res/city1.json',
+            layout: {
+                row: 7,
+                col: 2,
+                height: 30,
+                size: 12,
+                sizeActive: 14,
+                rowSpacing: 5,
+                colSpacing: 10,
+                maskBg: 'rgba(0,0,0,0.2)',
+                bg: '#fff',
+                color: '#9B9B9B',
+                colorActive: '#f00',
+                colorSelected: '#0097CB'
+            },
+            animation: true,
+            cancel: {
+                text: '取消',
+                size: 12,
+                w: 90,
+                h: 35,
+                bg: '#fff',
+                bgActive: '#ccc',
+                color: '#888',
+                colorActive: '#fff'
+            },
+            ok: {
+                text: '确定',
+                size: 12,
+                w: 90,
+                h: 35,
+                bg: '#fff',
+                bgActive: '#ccc',
+                color: '#888',
+                colorActive: '#fff'
+            },
+            title: {
+                text: '请选择',
+                size: 12,
+                h: 44,
+                bg: '#eee',
+                color: '#888'
+            },
+            selectedBold: true
+                // fixedOn: api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.eventType == "ok") {
+                    var value;
+                    if (ret.level2 == "市辖区" || ret.level2 == "县") {
+                        value = ret.level1;
+                    } else {
+                        value = ret.level2;
+                    }
+                    $('.address span').text(value);
+                    api.sendEvent({
+                        name: 'indexAddChanged',
+                        extra: {
+                            address: value
+                        }
+                    });
+
+                    // 创建地址解析器实例
+                    // var myGeo = new BMap.Geocoder();
+                    // 将地址解析结果显示在地图上，并调整地图视野
+                    // myGeo.getPoint(_this.city, function(point) {
+                    //     if (point) {
+                    //         _this.point = point;
+                    //         console.log(JSON.stringify(point))
+                    //     }
+                    // }, ret.level1);
+                }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+    }
+
+    function funIniGroup() {
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+            url = './html/frame' + i + '.html'
+            frames.push({
+                name: 'frame' + i,
+                url: url,
+                bgColor: '#FFFFFF',
+                // bounces: i == 4 ? false : true,
+                bounces: true,
+                pageParam: {
+                    y: $api.dom('header').offsetHeight,
+                    h: $api.dom('#main').offsetHeight,
+                }
+            })
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            preload: 4,
+            index: 0,
+            frames: frames
+        }, function(ret, err) {
+
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn(tag) {
+        if (tag == $api.dom('#footer li.active')) return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0, len = eFootLis.length; i < len; i++) {
+            if (tag == eFootLis[i]) {
+                index = i;
+            } else {
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        if (index == 4) {
+            $api.addCls($api.dom('header'), 'all');
+        } else {
+            $api.removeCls($api.dom('header'), 'all');
+        }
+        $api.addCls(eFootLis[index], 'active');
+        $api.addCls(eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index,
+        });
+
+        api.setFrameGroupAttr({
+            name: 'group',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+        });
+        api.setFrameGroupAttr({
+            name: 'school_frm_group',
+            hidden: index == 3 ? false : true,
+        });
+
+    }
+
+
+    //点击按钮切换田螺学院
+    function fnClickTab(index) {
+        var tabs = $api.domAll('.tapmode');
+        for (var i = 0; i < tabs.length; i++) {
+            if (index == i) {
+                $api.addCls(tabs[i], "aui-active");
+            } else {
+                $api.removeCls(tabs[i], 'aui-active');
+            }
+        }
+        api.sendEvent({
+            name: 'schoolTabChange',
+            extra: {
+                type: index + 1
+            }
+        });
+
+    }
+    //打开搜索
+    function fnOpenSearch_win() {
+        api.openWin({
+            name: 'search_win',
+            url: './html/search_win.html',
+            pageParam: {
+                // name: 'test'
+            }
+        });
+    }
+    //打开消息列表
+    function fnOpenChatList_win() {
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        if (!token) {
+            api.openWin({
+                name: 'login_win',
+                url: './html/login_win.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        } else {
+            api.openWin({
+                name: 'chatListTian_win',
+                url: './html/chatListTian_win.html',
+                // name: 'chatList_win',
+                // url: './html/chatList_win.html',
+                singleInstance: true,
+                pageParam: {
+                    // name: 'test'
+                }
+            });
+        }
+    }
+    //打开推送消息
+    function fnOpenMessage_win() {
+        // alert(badge2Arr)
+        api.openWin({
+            name: 'messagePush_win',
+            url: 'html/messagePush_win.html',
+            pageParam: {
+                badge2Arr: badge2Arr || ""
+            }
+        });
+    }
+    //打开设置
+    function fnOpenSetting_win() {
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        if (!token) {
+            api.openWin({
+                name: 'login_win',
+                url: 'html/login_win.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+
+        } else {
+            api.openWin({
+                name: 'setting_win',
+                url: './html/setting_win.html',
+                pageParam: {
+                    // name: 'test'
+                }
+            });
+        }
+    }
+
+
+    //创建场长连接
+    function fncreateSocket() {
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        if (!token) return;
+        var userInfo = api.getPrefs({
+            sync: true,
+            key: 'userInfo'
+        });
+        userInfo = userInfo ? JSON.parse(userInfo) : "";
+        //绑定极光推送别名
+        var ajpush = api.require('ajpush');
+        var param = {
+            alias: userInfo.id,
+            tags: []
+        };
+        ajpush.bindAliasAndTags(param, function(ret) {
+            var statusCode = ret.statusCode;
+        });
+        var myWebSocket = api.require('myWebSocket');
+        myWebSocket.open({
+            url: 'wss://www.tianluoge.com/wss',
+            pingInterval: 30,
+            pingData: 'ping'
+        }, function(ret, err) {
+            if (ret) {
+                fnGetAllNotReadCount();
+                myWebSocket.bindEvent(function(ret, err) {
+                    var type = ret.type;
+                    var str = ret.data;
+                    switch (type) {
+                        case 'opened':
+                            //登录...
+                            var data = {
+                                type: "bind",
+                                fromid: userInfo.id
+                            }
+                            myWebSocket.send({
+                                msg: JSON.stringify(data)
+                            })
+                            break;
+                        case 'receive':
+                            if (ret.data.type != "save_msg") {
+                                // if (api.systemType == "ios") {
+                                    api.sendEvent({
+                                        name: 'newMessage',
+                                        extra: {
+                                            message: JSON.parse(ret.data)
+                                        }
+                                    });
+                                // }
+                                // api.notification({
+                                //     title: '',
+                                //     vibrate: [500, 500],
+                                //     sound: 'default',
+                                //     notify: {
+                                //         content: '你有新消息',
+                                //         extra: str
+                                //     }
+                                // });
+                                fnGetAllNotReadCount();
+                            }
+                            break;
+                        case 'closed':
+                            fncreateSocket();
+                            // alert("连接已断开");
+                            break;
+                    }
+                });
+            } else {
+                alert('通讯打开失败');
+            }
+        });
+    }
+    //未读数量
+    function fnGetAllNotReadCount() {
+        var _this = this;
+        ajax('websocket/getAllNotReadCount', {}, function(res) {
+            hideProgress();
+            api.refreshHeaderLoadDone();
+            if (res.code == 10000) {
+                var ajpush = api.require('ajpush');
+                ajpush.setBadge({
+                    badge: res.msg
+                });
+                $api.domAll('.badge1').forEach(function(item, index) {
+                    if (res.msg == 0) {
+                        $api.addCls($api.domAll('.badge1')[index], 'opacity');
+                    } else {
+                        $api.removeCls($api.domAll('.badge1')[index], 'opacity');
+                    }
+                    $api.text($api.domAll('.badge1')[index], res.msg);
+                })
+
+            } else {
+                messageToast(res.errMsg)
+            }
+        }, function(res) {
+            api.refreshHeaderLoadDone();
+            hideProgress();
+            messageToast(ERRMSG)
+        })
+    }
+
+    //引导封装
+    function guide() {
+        var systemType = api.systemType;
+        if (systemType == 'ios') {
+            guide_ios();
+        } else {
+            guide_android();
+        }
+
+    }
+
+    function guide_android() {
+        var guide = api.getPrefs({
+            sync: true,
+            key: 'guide'
+        })
+        if (!guide) {
+            api.openWin({
+                name: 'guide_win',
+                url: './html/guide_win.html',
+                pageParam: {}
+            });
+        }
+    }
+
+    function guide_ios() {
+        var guide = api.require('guide');
+        guide.openGuidePage({
+            imgs: ['widget://image/guideImg/1.png', 'widget://image/guideImg/2.jpg', 'widget://image/guideImg/3.jpg', 'widget://image/guideImg/4.jpg'],
+            point_normal: 'widget://image/guide/point_normal@2x.png',
+            point_select: 'widget://image/guide/point_select@2x.png',
+            btnColor: '#137696',
+            btnLabel: '跳过',
+            title: '立即体验',
+            btnW: 120,
+            btnH: 33,
+            time: '0.5',
+            hideStatusBar: true
+        })
+    }
+    // 获取推送未读状态
+    function fngetNoticeStatus() {
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        if (!token) return;
+        ajax('notice/state', {}, function(res) {
+            if (res.code == 10000) {
+                badge2Arr = res.msg||"";
+                if (badge2Arr.type1 || badge2Arr.type2) {
+                    $api.domAll('.badge2').forEach(function(item, index) {
+                        $api.removeCls($api.domAll('.badge2')[index], 'opacity');
+                    })
+                } else {
+                    $api.domAll('.badge2').forEach(function(item, index) {
+                        $api.addCls($api.domAll('.badge2')[index], 'opacity');
+                    })
+                }
+            } else {
+                messageToast(res.errMsg)
+            }
+        }, function(res) {
+            messageToast(ERRMSG)
+        }, function(res) {})
+    }
+</script>

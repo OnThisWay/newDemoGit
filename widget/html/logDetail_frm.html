@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            height: auto;
+            /*padding-top: 50vw;*/
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        .banner {
+            height: calc(100vw/2);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner img {
+            /*width: 100%;*/
+            height: 100%;
+        }
+
+        .banner .cover {
+            width: 88px;
+            height: 88px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -44px;
+            margin-top: -44px;
+            border-radius: 50%;
+        }
+
+        .cover>div:first-child {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .cover>div:last-child {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .oneBox {
+            background-color: white;
+            margin-top: 10px;
+        }
+
+        .top {
+            padding: 15px 0 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .top span {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .top .right {
+            text-align: center;
+            height: 30px;
+            border-radius: 20px 0 0 20px;
+            padding: 0 15px;
+            line-height: 30px;
+            background-color: #599DD0;
+            color: white;
+            font-size: 14px;
+        }
+
+        .oneBox .con {
+            padding: 5px 15px;
+        }
+
+        .oneBox .con>div {
+            border-top: 1px solid #F8F8FA;
+            padding: 10px 0;
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .times {
+            border: 1px solid #599DD0;
+            height: 26px;
+            line-height: 26px;
+            padding: 0px 5px;
+            border-radius: 13px;
+            color: #599DD0;
+            font-size: 12px;
+            margin-left: 20px;
+        }
+
+        .supervision {
+            margin-top: 15px;
+            padding: 15px 15px 0 15px;
+            background: #ffffff;
+        }
+
+        .supervision .name {
+            font-size: 14px!important;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        ul {
+            display: flex;
+            overflow: auto;
+            margin-top: 10px;
+        }
+
+        .supervision li {
+            width: calc((100vw - 75px)/3);
+            margin-right: 15px;
+        }
+
+        .imgBox img {
+            border-radius: 10px;
+            width: 68px;
+            /*height: 68px;*/
+            /*max-width: none;*/
+        }
+
+        .supervision li div {
+            /*text-align: center;*/
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #666666;
+            line-height: 32px;
+        }
+
+        .textBox {
+            /*margin-top: 5px;*/
+            padding: 15px;
+            background: white;
+        }
+
+        .textBox>.title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .textBox>.con {
+            font-size: 12px;
+            color: #666;
+            line-height: 25px;
+            margin-top: 10px;
+        }
+
+        .no {
+            line-height: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+
+                <div class="banner" @click="fnOpenRenovationPhotos">
+                    <img :src="photos[0]" alt="">
+                    <div class="cover">
+                        <div>装修相册</div>
+                        <div>{{photos.length?photos.length+'张':"暂无相册"}}</div>
+                    </div>
+                </div>
+                <template  v-if="logs.length" v-for="(item,index) in logs">
+                    <div class="oneBox">
+                        <div class="top">
+                            <span>监理日志</span>
+                            <div class="right">{{item.pro_name}}</div>
+                        </div>
+                        <div class="con">
+                            <div>
+                                <span>检查时间：{{item.created_time}}</span>
+                                <div class="times">
+                                    第{{item.visit_count}}次上门
+                                </div>
+                            </div>
+                            <div>
+                                <span>本次检查项目：</span>
+                                <div class="">
+                                      {{item.this_inspection}}
+                                </div>
+                            </div>
+                            <div>
+                                <span>下次检查项目：</span>
+                                <div class="">
+                                    {{item.next_inspection}}
+                                </div>
+                            </div>
+                            <div>
+                                <span>现场人员：</span>
+                                <div class=""v-if="item.field_personnel">
+                                    客户{{JSON.parse(item.field_personnel).kehu}}人 / 设计师{{JSON.parse(item.field_personnel).shejishi}}人 / 工长{{JSON.parse(item.field_personnel).gongzhang}}人 / 工人{{JSON.parse(item.field_personnel).gongren}}人
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textBox">
+                        <div class="title">施工进度与施工情况</div>
+                        <div class="con">{{item.const_condition||"暂无"}}</div>
+                    </div>
+                    <div class="textBox">
+                        <div class="title">发现问题与整改建议</div>
+                        <div class="con">{{item.rect_prop||"暂无"}}</div>
+                    </div>
+                    <div class="textBox">
+                        <div class="title">后续施工建议</div>
+                        <div class="con">{{item.const_prop||"暂无"}}</div>
+                    </div>
+                    <div class="textBox">
+                        <div class="title">监理审核建议</div>
+                        <div class="con">{{item.exa_opinion||"暂无"}}</div>
+                    </div>
+                </template>
+                <div  v-if="!logs.length" class="noWin">
+                    <div><i class="iconfont icon-zanwushuju"></i></div>
+                    <div class="">
+                        <span>暂无日志</span>
+                    </div>
+                </div>
+        </template>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                day: api.pageParam.day,
+                oid: api.pageParam.oid || "",
+                photos: '',
+                logs: ''
+            },
+            mounted: function() {
+                this.fnCustomRefresh();
+                this.fnGetDetail();
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetDetail();
+                })
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                    api.addEventListener({
+                        name: 'newRequest'
+                    }, function(ret, err) {
+                        if (ret) {
+                            _this.oid = ret.value.oid;
+                            _this.fnGetDetail();
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                },
+                //获取详情
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/orderPhotos', {
+                        oid: _this.oid,
+                        date_time: _this.day
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.photos = res.msg.photos;
+                            _this.logs = res.msg.logs;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //查看相册
+                fnOpenRenovationPhotos(imgs) {
+                    fnOpenPhotoBrowser(this.photos, 0)
+                }
+
+            }
+        })
+
+
+    }
+</script>

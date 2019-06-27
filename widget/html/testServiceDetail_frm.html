@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        .section {
+            padding: 15px;
+        }
+
+        .banner {
+            /*height: calc(100vw/2);*/
+            position: relative;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner .cover {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            left: 0;
+            bottom: 0
+        }
+
+        .section>.content {
+            padding-bottom: 15px;
+            /*border-bottom: 1px solid #2D2D2D;*/
+        }
+
+        .content .text {
+            font-size: 12px;
+            color: #9B9B9B;
+            line-height: 20px;
+        }
+
+        .content .imgBox {
+            margin: 10px auto;
+            width: 100%;
+        }
+
+        .content .imgBox img {
+            width: 100%
+        }
+
+        .con {}
+
+        .commentBox {
+            padding: 15px 0;
+        }
+
+        .commentBox .top {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .commentBox .left {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333333;
+            margin-right: auto;
+        }
+
+        .commentBox .top .right {
+            font-size: 12px;
+            color: #009ED7;
+        }
+
+        .commentList {
+            padding: 15px;
+            background-color: #F4F4F4;
+            border-radius: 8px;
+        }
+
+        .commentList li {
+            display: flex;
+        }
+
+        .commentList .left {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .commentList .left img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .right {
+            width: calc(100vw - 115px);
+            margin-left: auto;
+        }
+
+        .commentList .right>div:first-child {
+            display: flex;
+        }
+
+        .commentList .right .name {
+            font-size: 12px;
+            color: #666666;
+            margin-right: auto;
+        }
+
+        .commentList .right .time {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .commentList .right .content {
+            font-size: 12px;
+            color: #333333;
+            line-height: 18px;
+            margin: 10px 0;
+        }
+
+        .commentList .imgBox {
+            overflow: hidden;
+            width: calc(100vw - 165px);
+        }
+
+        .commentList .imgBox div {
+            float: left;
+            width: calc( (100vw - 185px)/3);
+            height: calc( (100vw - 185px)/3);
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .commentList .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .imgBox div:nth-child(3n+1) {
+            margin-left: 0px;
+        }
+
+        .imgsBox img {
+            width: 100%
+        }
+
+        .noCommrnt {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 30px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app"  v-cloak>
+        <!-- <div class="banner">
+            <img :src="serveDetail.serve_cover" alt="">
+        </div> -->
+        <template id="" v-if="network">
+            <div class="section" v-if="serveDetail">
+                <div class="content" v-html="serveDetail.serve_desc"></div>
+                <div class="imgsBox">
+                    <img v-for="(item,index) in serveDetail.serve_detail_img" :src="item+'?x-oss-process=image/format,jpg/interlace,1/quality,q_50'" alt="">
+                </div>
+                <div class="con">
+                    <div class="commentBox">
+                        <div class="top">
+                            <div class="left">服务评价</div>
+                            <div class="right" @click="fnOpenSupervisionServiceComment_win">查看更多</div>
+                        </div>
+                        <ul class="commentList">
+                            <li v-for="(item,index) in serveDetail.comment">
+                                <div class="left">
+                                    <img :src="item.head+'?x-oss-process=image/format,jpg/interlace,1/quality,q_80'" alt="">
+                                </div>
+                                <div class="right">
+                                    <div>
+                                        <div class="name">{{item.nickname}}</div>
+                                        <div class="time">{{fnClipSecond(item.created_time)}}</div>
+                                    </div>
+                                    <div class="content">{{item.cmt_cont_txt}}</div>
+                                    <div class="imgBox">
+                                        <div v-for="(childItem,childIndex) in item.cmt_cont_img" @click="fnOpenImg(index,childIndex)">
+                                            <img :src="childItem" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="noCommrnt" wx:if="!serveDetail.comment.length">暂无评价</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div class="noNetWork"  v-if="!network">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                serveId: "YF001",
+                serveDetail: ''
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetDetail();
+                })
+                this.fnGetDetail();
+                api.setCustomRefreshHeaderInfo({
+                    image: {
+                        pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                            'widget://image/8.png'
+                        ],
+                        load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                            'widget://image/11.png'
+                        ]
+                    },
+                    bgColor: '#f5f5f5',
+                }, function() {
+                    _this.fnGetDetail("down");
+                });
+                api.addEventListener({
+                    name: 'openSubmitOrder'
+                }, function(ret, err){
+                    if( ret ){
+                        if(_this.serveDetail){
+                            api.openWin({
+                                name: 'submitOrder_win',
+                                url: './submitOrder_win.html',
+                                pageParam: {
+                                    serveId: _this.serveDetail.serve_id,
+                                    name: _this.serveDetail.serve_name,
+                                    orderType: 3,
+                                    money: _this.serveDetail.serve_price
+                                }
+                            });
+                        }
+                    }else{
+                         alert( JSON.stringify( err ) );
+                    }
+                });
+
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.fnGetDetail("down");
+                },
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/serveDetail', {
+                        serve_id: _this.serveId
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        console.log('-----------' + JSON.stringify(res))
+                        if (res.code == 10000) {
+                            _this.serveDetail = res.msg[0];
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //打开服务评价列表
+                fnOpenSupervisionServiceComment_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'supervisionServiceComment_win',
+                        url: './supervisionServiceComment_win.html',
+                        pageParam: {
+                            serveId: _this.serveId
+                        }
+                    });
+                },
+                //打开照片
+                fnOpenImg: function(index, childIndex) {
+                    var _this = this;
+                    fnOpenPhotoBrowser(_this.serveDetail.comment[index].cmt_cont_img, childIndex)
+                }
+            }
+        })
+
+
+    }
+</script>

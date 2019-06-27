@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 0 15px 15px 15px;
+            background-color: #FFFFFF;
+        }
+
+        .con {
+            min-height: 100vh;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            padding-top: 10px;
+        }
+
+        ul li {
+            float: left;
+            width: calc((100vw - 50px)/3);
+            margin-right: 10px;
+            background: #599DD0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+        <div class="con">
+            <ul v-if="list.length">
+                <li v-for="(item,index) in list" tapmode="hover" @click="fnOpenIndexCaiList_win(item.tid,item.type_name,item.isNav)">
+                    {{item.type_name}}
+                </li>
+            </ul>
+            <div v-else class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无数据</span>
+                </div>
+            </div>
+        </div>
+        <div v-if="list.length" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div>
+    </template>
+
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var requedtFlag = false;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                key: api.pageParam.key,
+                list: [],
+                offset: 0,
+                limit: 20,
+                noMore: false
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetList();
+                })
+                this.fnCustomRefresh();
+                this.fnUprequset();
+                this.fnGetList();
+                api.addEventListener({
+                    name: 'searchRes'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.key = ret.value.key;
+                        _this.fnGetList();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    if (requedtFlag) {
+                        return;
+                    }
+                    requedtFlag = true;
+                    var _this = this;
+
+                    type ? "" : showProgress();
+                    console.log(_this.key, _this.offset, _this.limit)
+                    ajax('home/search', {
+                        type: 1,
+                        content: _this.key,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        requedtFlag = false;
+                        if (res.code == 10000) {
+                            console.log(JSON.stringify(res))
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        requedtFlag = false;
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        requedtFlag = false;
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                fnOpenIndexCaiList_win: function(tid, name) {
+                    api.openWin({
+                        name: 'indexCaiList_win',
+                        url: './indexCaiList_win.html',
+                        pageParam: {
+                            tid: tid,
+                            name: name
+                        }
+                    });
+
+                }
+            }
+        })
+    }
+</script>

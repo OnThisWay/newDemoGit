@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>田螺哥</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <link rel="stylesheet" type="text/css" href="../font/iconfont.css" />
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        li {
+            padding: 15px 0;
+            display: flex;
+            border-bottom: 2px solid #137696;
+        }
+
+        li .imgBox {
+            width: 118px;
+            height: 84px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        li .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        li .right .date {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        li .right .title {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            line-height: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <ul>
+            <li>
+                <div class="imgBox">
+                    <img src="../image/anli.jpg" alt="">
+                </div>
+                <div class="right">
+                    <p class="date">2122-10-09</p>
+                    <div class="title">田螺学院年终大促监理终大促监理服务免</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            mounted: function() {
+
+            },
+            methods: {
+
+
+            }
+        })
+    }
+</script>
+
+</html>

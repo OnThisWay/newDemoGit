@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        .cover {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            left: 0;
+            bottom: 0
+        }
+
+        .section {
+            padding: 15px;
+        }
+
+        ul {
+            min-height: 100vh;
+        }
+
+        li {
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #F4F4F4;
+            padding-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        li .top {
+            padding: 0 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #999999;
+            background-color: #F4F4F4;
+        }
+
+        li .footer {
+            padding: 15px;
+            background: #EEEEEE;
+            display: -webkit-box;
+        }
+
+        li .footer .left {
+            width: 130px;
+            height: 50px;
+            border-radius: 25px;
+            display: flex;
+            background-color: #DDDDDD;
+            text-align: center;
+        }
+
+        li .footer .left img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        li .footer .left span {
+            margin: auto;
+            line-height: 50px;
+            display: block;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: #9A9A9A;
+        }
+
+        li .footer .right {
+            -webkit-box-flex: 1;
+            padding-left: 10px;
+            font-size: 12px;
+            font-family: ArialMT;
+            font-weight: 400;
+            color: #666666;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+
+        <div  v-if="network" class="section">
+            <ul v-if="list.length">
+                <li v-for="(item,index) in list" @click="fnOpenAdvisoryOrderOrderDetailHistory_frm_win(index)">
+                    <div class="top">
+                        订单号： {{item.oid}}
+                    </div>
+                    <div class="top" v-if="item.uids">
+                        时间周期： {{item.begin_time}} 至 {{item.end_time}}
+                    </div>
+                    <div class="top" v-else-if="!item.uids">
+                        暂未分配咨询人员
+                    </div>
+                    <div class="top">
+                        下单时间 {{item.pay_time}}
+                    </div>
+                    <div class="footer">
+                        <div class="left" v-if="item.order_state==2">
+                            <img :src="item.superUserInfo[0].head_url" alt="">
+                            <span>{{item.superUserInfo[0].name}}</span>
+                        </div>
+                        <div class="" v-if="item.order_state==0">已退款</div>
+                        <!-- <div class=""  v-if="item.order_state==1">未开始</div> -->
+                        <div class="" v-if="item.order_state==3">已结束</div>
+                        <div class="right">
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div v-else class="noWin">
+                <div><i class="iconfont icon-zanwushuju"></i></div>
+                <div class="">
+                    <span>暂无数据</span>
+                </div>
+            </div>
+            <div v-if="list.length" class="getMoreBox">
+                <img v-show="!noMore" src="../image/loading.gif" alt="">
+                <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+            </div>
+        </div>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+
+        api.closeWin({
+            name: 'advisoryOrderOrderDetail_webSocket_win'
+        });
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                list: [],
+                offset: 0,
+                limit: 20,
+                noMore: false
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.offset = 0;
+                    _this.fnGetList();
+                })
+                this.fnCustomRefresh();
+                this.fnUprequset();
+                this.fnGetList();
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.offset = 0;
+                    this.noMore = false;
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetList("up");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/historyAdvOrderList', {
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            console.log(JSON.stringify(res));
+                            if (type == "up") {
+                                if (res.msg.length != 0) {
+                                    _this.offset = _this.offset + res.msg.length;
+                                    _this.list = _this.list.concat(res.msg);
+                                } else {
+                                    _this.noMore = true;
+                                }
+                            } else {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = res.msg;
+                            }
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                fnOpenAdvisoryOrderOrderDetailHistory_frm_win: function(index) {
+                    var _this = this;
+                    api.closeWin({
+                        name: 'advisoryOrderOrderDetail_win'
+                    });
+                    if (_this.list[index].uids) {
+                        api.openWin({
+                            name: 'advisoryOrderOrderDetail_win',
+                            url: './advisoryOrderOrderDetail_win.html',
+                            pageParam: {
+                                toName: _this.list[index].superUserInfo[0].name,
+                                toId: _this.list[index].superUserInfo[0].id,
+                                toHead: _this.list[index].superUserInfo[0].head_url
+                            }
+                        });
+                        // api.openWin({
+                        //     name: 'advisoryOrderOrderDetail_webSocket_win',
+                        //     url: './advisoryOrderOrderDetail_webSocket_win.html',
+                        //     pageParam: {
+                        //         toName: _this.list[index].superUserInfo[0].name,
+                        //         toId: _this.list[index].superUserInfo[0].id,
+                        //         toHead: _this.list[index].superUserInfo[0].head_url
+                        //     }
+                        // });
+                    } else {
+                        messageToast("暂未指派咨询人员")
+                    }
+
+
+                }
+            }
+        })
+
+
+    }
+</script>

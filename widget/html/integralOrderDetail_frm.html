@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+            padding: 10px 0;
+        }
+
+        li {
+            background-color: white;
+            margin-bottom: 10px;
+        }
+
+        li .top {
+            padding: 10px 15px;
+            display: flex;
+            border-bottom: 1px solid #EDEDED;
+        }
+
+        li .top .left {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            margin-right: auto;
+        }
+
+        li .top .right {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(19, 118, 150, 1);
+        }
+
+        li .con {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #EDEDED;
+        }
+
+        li .con .imgBox {
+            min-width: 80px;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        li .con .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        li .con .right {
+            margin-left: 15px;
+        }
+
+        li .con .name {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        li .con .time {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            margin-top: 5px;
+        }
+
+        li .bottom {
+            padding: 10px 15px;
+            display: flex;
+        }
+
+        li .bottom .left {
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            margin-right: auto;
+        }
+
+        li .bottom .right {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(19, 118, 150, 1);
+        }
+
+        .listBox {
+            margin-top: 10px;
+        }
+
+        .listBox>div {
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            border-bottom: 1px solid #EDEDED;
+            padding: 10px 15px;
+            display: flex;
+            background-color: white;
+        }
+
+        .listBox>div .left {
+            width: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            width: calc(100vw - 30px);
+            line-height: 40px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+            margin: auto;
+            margin-top: 30px;
+            background-color: #0096C8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-if="detail" v-cloak>
+        <div v-if="network" >
+            <ul>
+                <li>
+                    <div class="top">
+                        <div class="left">订单号{{detail.oid}}</div>
+                        <div class="right" v-if="detail.order_status==2">待发货</div>
+                        <div class="right" v-if="detail.order_status==3">已发货</div>
+                        <div class="right" v-if="detail.order_status==4">已完成</div>
+                    </div>
+                    <div class="con">
+                        <div class="imgBox">
+                            <img :src="detail.g_cover" alt="">
+                        </div>
+                        <div class="right">
+                            <div class="name">{{detail.g_name}}</div>
+                            <div class="time">数量：{{detail.num}}</div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="left">兑换积分</div>
+                        <div class="right">{{detail.order_total}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="listBox">
+                <!-- <div>
+                    <div class="left"> <span>订</span><span>单</span><span>编</span><span>号</span></div>：8899660089
+                </div> -->
+                <div>
+                    <div class="left"><span>下</span><span>单</span><span>时</span><span>间</span></div>：{{fnClipSecond(detail.created_time)}}</div>
+                <div>
+                    <div class="left"><span>联</span> <span>系</span> <span>人</span></div>：{{detail.contacts}}</div>
+                <div>
+                    <div class="left"><span>手 </span><span>机</span> <span>号</span></div>：{{detail.phone}}</div>
+                <div>
+                    <div class="left"><span>收</span><span>货</span><span>地</span><span>址</span></div>：{{detail.receive_addr}}</div>
+                <div v-if="detail.order_status==3||detail.order_status==4">
+                    <div class="left"><span>物</span><span>流</span><span>信</span><span>息</span></div>：{{detail.csc}} {{detail.no}}</div>
+            </div>
+            <div class="btn" v-if="detail.order_status==3||detail.order_status==4"@click="fnOpenLogisties_win(detail.no)">查看物流</div>
+        </div>
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                oid: api.pageParam.oid,
+                status: api.pageParam.status,
+                detail: ''
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetList();
+                })
+                this.fnGetDetail();
+                this.fnCustomRefresh();
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                },
+                //获取积分订单列表
+                fnGetDetail: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('integralMall/orderList', {
+                        order_status: _this.status,
+                        oid: _this.oid,
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.detail = res.msg[0]
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //打开物流
+                fnOpenLogisties_win(no){
+                    api.openWin({
+                        name: 'logisties_win',
+                        url: './logisties_win.html',
+                        pageParam: {
+                            no:no
+                        }
+                    });
+
+                }
+            }
+        })
+
+
+    }
+</script>

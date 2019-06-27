@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+
+        .con {
+            width: 100vw;
+            background: #f0f0f0;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .head {
+            background: white;
+            padding: 15px;
+            display: flex;
+        }
+
+        .head div {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .head div:first-child {
+            margin-right: auto;
+        }
+
+        li {
+            background: white;
+        }
+
+        li .top {
+            padding: 10px 15px;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        li .top>div:nth-child(2) {
+            padding: 0 10px;
+            margin-right: auto;
+        }
+
+        .icon-weixin {
+            color: #00C232;
+            font-size: 40px;
+        }
+
+        .icon-zhifubao1 {
+            color: #00A2EC;
+            font-size: 40px;
+        }
+
+        li .top>div:nth-child(2)>.tit {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        li .top>div:nth-child(2)>.count {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(154, 154, 154, 1);
+        }
+
+        .footer {
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+            border-top: 1px solid #CECECE;
+        }
+
+        .footer span {
+            margin-right: auto;
+            color: #9A9A9A;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .footer>div:last-child,
+        .footer>div:nth-child(4) {
+            color: #0096C8;
+            font-size: 12px;
+            margin-left: 30px;
+        }
+
+        .duiWei {
+            color: #00C232;
+        }
+
+        .duiZhi {
+            color: #00A2EC;
+        }
+
+        .sure {
+            line-height: 60px;
+            text-align: center;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 150, 200, 1);
+        }
+
+        .noBox {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            margin-right: 1px;
+        }
+
+        .btn {
+            width: calc(100vw - 60px);
+            line-height: 40px;
+            text-align: center;
+            background: #0096C8;
+            color: white;
+            font-size: 14px;
+            margin: auto;
+            margin-top: 60px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="con">
+            <div class="box">
+                <ul>
+                    <li>
+                        <div class="top">
+                            <div><i class="iconfont icon-weixin"></i></div>
+                            <div>
+                                <div class="tit">微信账户</div>
+                                <div class="count">{{data.weChat_account?data.weChat_account:"未设置"}}</div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <div class="noBox" v-show="defaultType!=1" @click="fnSetDefaultType(1)"></div>
+                            <i class="iconfont icon-dui duiWei" v-show="defaultType==1"></i>
+                            <span>默认提现方式</span>
+                            <div @click="fnOpenWithdrawalAdd_win(1)">编辑</div>
+                            <div @click='fnDelete(1)'>删除</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="top">
+                            <div><i class="iconfont icon-zhifubao1"></i></div>
+                            <div>
+                                <div class="tit">支付宝账户</div>
+                                <div class="count">{{data.alipay_account?data.alipay_account:"未设置"}}</div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <div class="noBox" v-show="defaultType!=2" @click="fnSetDefaultType(2)"></div>
+                            <i class="iconfont icon-dui duiZhi" v-show="defaultType==2"></i>
+                            <span>默认提现方式</span>
+                            <div @click="fnOpenWithdrawalAdd_win(2)">编辑</div>
+                            <div @click='fnDelete(2)'>删除</div>
+                        </div>
+                    </li>
+                </ul>
+                <!-- <div class="btn">添加账户</div> -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                defaultType: "",
+                data: ''
+            },
+            mounted: function() {
+                var _this = this;
+                this.fnCashTypeList();
+                api.addEventListener({
+                    name: 'withdrawalAddSuccess'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.fnCashTypeList();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            },
+            methods: {
+                //选择提现方式
+                fndefaultType: function(type) {
+                    var _this = this;
+                    _this.defaultType = type;
+                },
+                //查询
+                fnCashTypeList: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/cashTypeList', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.data = res.msg;
+                            _this.defaultType = res.msg.dft_account;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //设置
+                fnSetDefaultType: function(type) {
+                    if(type==1&&!this.data.weChat_account){
+                        messageToast("未设置");
+                        return;
+                    }else if(type==2&&!this.data.alipay_account){
+                        messageToast("未设置");
+                        return;
+                    }
+                    var _this = this;
+                    showProgress();
+                    ajax('my/cashTypeList', {
+                        dft_account: type
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.fndefaultType(type)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                // 打开编辑提现
+                fnOpenWithdrawalAdd_win: function(type) {
+                    api.openWin({
+                        name: 'withdrawalAdd_win',
+                        url: './withdrawalAdd_win.html',
+                        pageParam: {
+                            type: type
+                        }
+                    });
+                },
+                //删除
+                fnDelete:function(type){
+                    var _this = this;
+                    if(type==1&&!this.data.weChat_account){
+                        messageToast("未设置");
+                        return;
+                    }else if(type==2&&!this.data.alipay_account){
+                        messageToast("未设置");
+                        return;
+                    }
+                    showProgress();
+                    ajax('my/delAccount', {
+                        type: type
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.fndefaultType(type)
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                }
+            }
+        })
+    }
+</script>

@@ -1,0 +1,665 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            /*min-height: 100vh;*/
+            background-color: #006198;
+        }
+
+        .empty {
+            /*min-height: 100vh;*/
+            background-color: #006198;
+            background-repeat: no-repeat;
+            background-image: url(../image/signIn/banner.png);
+            background-size: 100%;
+            padding: 30px 0;
+        }
+
+        .oneCover {
+            width: calc(100vw - 120px);
+            margin: auto;
+        }
+
+        .oneCover img,
+        .twoCover img {
+            width: 100%;
+        }
+
+        .twoCover {
+            width: calc(100vw - 180px);
+            margin: auto;
+        }
+
+        .con {
+            width: calc(100vw - 50px);
+            margin: auto;
+            margin-top: 30px;
+            box-shadow: 0px 0px 20px 0px rgba(109, 109, 109, 0.1);
+            border-radius: 10px;
+            border-radius: 8;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .con .top {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E9E9E9;
+        }
+
+        .con .top .left {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .con .top .left span {
+            font-size: 16px;
+            font-family: Arial-BoldMT;
+            font-weight: bold;
+            color: rgba(255, 135, 0, 1);
+        }
+
+        .con .top .right {
+            width: 50px;
+            height: 24px;
+            background: linear-gradient(-90deg, rgba(255, 137, 0, 1), rgba(255, 76, 0, 1));
+            border-radius: 12px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+            line-height: 24px;
+        }
+
+        .con .top .already {
+            width: 50px;
+            height: 24px;
+            background:#D5D5D5;
+            border-radius: 12px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        .con .wekBox {
+            padding: 15px 10px 0 10px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            font-size: 12px;
+        }
+
+        .con .wekBox>div {
+            width: calc((100vw - 50px - 30px)/7);
+            text-align: center;
+        }
+
+        .con .dayBox {
+            padding: 0px 10px 15px 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .day {
+            width: calc((100vw - 50px - 30px)/7);
+            margin-top: 15px;
+            /*display: flex;*/
+            /*flex-wrap: wrap;*/
+        }
+
+        .day>div {
+            /*width: 100%;*/
+        }
+
+        .day .num {
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            line-height: 15px;
+            margin: auto;
+            font-size: 12px;
+            color: #999999;
+            margin-bottom: 5px;
+        }
+
+        .day .yesNum {
+            color: #FF8A30;
+        }
+
+        .day .yesbox {
+            width: 15px;
+            height: 15px;
+            background: #FF8A30;
+            border-radius: 50%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .yesbox img {
+            width: 12px;
+            height: 12px;
+            /*margin: auto;*/
+            /*width: 100%;
+            height: 100%;*/
+        }
+
+        .yesbox .line {
+            width: calc((100vw - 50px - 30px)/7 - 13px);
+            height: 1px;
+            background-color: #FF8A30;
+            position: absolute;
+            top: 50%;
+            right: 100%;
+        }
+
+        .nobox {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #C1DBFF;
+            background: #EEF5FF;
+            border-radius: 50%;
+            margin: auto;
+            position: relative;
+        }
+
+        .nobox .line {
+            width: calc((100vw - 50px - 30px)/7 - 13px);
+            height: 1px;
+            background-color: #E1E1E1;
+            position: absolute;
+            top: 50%;
+            right: 100%;
+        }
+
+        .yesbox .num {
+            font-size: 12px;
+            color: #FF8A30;
+        }
+
+        .guafen {
+            width: calc(100vw - 50px);
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .guafen .tit {
+            width: 100%;
+            height: 1px;
+            background-color: #6D6D6D;
+            position: relative;
+        }
+
+        .guafen .tit .text {
+            position: absolute;
+            top: -7px;
+            left: 50%;
+            margin-left: -75px;
+            width: 150px;
+            height: 14px;
+            line-height: 14px;
+            text-align: center;
+            background-color: #006195;
+            color: #FFFFFF;
+            font-size: 14px;
+        }
+
+        .fenBox {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .fenBox .imgBox {
+            width: 60px;
+            height: 60px;
+            margin: 10px auto;
+            /*margin-bottom: 10px;*/
+        }
+
+        .fenBox .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fenBox .mess {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(139, 179, 203, 1);
+        }
+
+        .rule .text {
+            padding: 15px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            line-height: 18px;
+        }
+
+        .opacity {
+            opacity: 0;
+        }
+
+        .black {
+            background-color: #E1E1E1!important;
+        }
+        .cover {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #cover_qian .qianBox {
+            border-radius: 8px;
+            overflow: hidden;
+            /*width: calc(100vw - 100px);*/
+        }
+
+        #cover_qian .qianTop {
+            width: 268px;
+            height: 107px;
+            position: relative;
+        }
+
+        #cover_qian .qianTop div {
+            width: 100%;
+            position: absolute;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            z-index: 9999;
+            left: 0;
+            top: 61px;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianTop img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cover_qian .qianCon {
+            background-color: white;
+            padding-bottom: 10px;
+        }
+
+        #cover_qian .qianCon .qianNum {
+            font-size: 24px;
+            text-align: center;
+            color: #FF5200;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianCon .qianNum span {
+            font-size: 36px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        #cover_qian .qianCon .btn {
+            width: 200px;
+            height: 50px;
+            border-radius: 25px;
+            line-height: 50px;
+            background: linear-gradient(-90deg, rgba(255, 137, 0, 1) 0%, rgba(255, 76, 0, 1) 100%);
+            text-align: center;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 1);
+            margin: 10px auto;
+            font-weight: bold;
+        }
+
+        #cover_qian .qianCon .text {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+            line-height: 18px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .rightText span {
+            color: #FF5200;
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-if="arrDate" v-cloak>
+        <template id="" v-if="network">
+        <div class="oneCover">
+            <img src="../image/signIn/cover2.png" alt="">
+        </div>
+        <div class="twoCover">
+            <img src="../image/signIn/cover1.png" alt="">
+        </div>
+        <div class="con">
+            <div class="top">
+                <div class="left">已连续签到 <span>{{seriesDay||0}}</span> 天</div>
+                <div class="right" v-if="!sign" @click="fnQian">签到</div>
+                <div class="already"  v-if="sign">已签到</div>
+            </div>
+            <div class="wekBox">
+                <div>一</div>
+                <div>二</div>
+                <div>三</div>
+                <div>四</div>
+                <div>五</div>
+                <div>六</div>
+                <div>日</div>
+            </div>
+            <div class="dayBox">
+                <div class="day" v-for="(dayobject,index) in days" :class="{opacity:dayobject.day.getMonth()+1!=currentMonth}">
+                    <div class="num" :class="{yesNum:dayobject.isSign}">{{dayobject.day.getDate()}}</div>
+                    <div class="yesbox" v-if="dayobject.isSign||(dayobject.day.getDate()==1&&arrDate.indexOf(dayobject.day.getDate())>-1)">
+                        <img v-if="give.indexOf(dayobject.day.getDate())!=-1" src="../image/signIn/gift.png" alt="">
+                        <img v-else src="../image/signIn/yes.png" alt="">
+                        <div class="line" :class="{black:arrDate.indexOf(dayobject.day.getDate()-1)<0}" v-if="index%7!=0&&dayobject.day.getDate()!=1"></div>
+                    </div>
+                    <div class="nobox" v-else="!dayobject.isSign">
+                        <div class="line" v-if="index%7!=0&&dayobject.day.getDate()!=1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="guafen">
+            <div class="tit">
+                <div class="text">每日签到瓜分积分</div>
+            </div>
+            <div class="fenBox">
+                <div>
+                    <div class="imgBox">
+                        <img src="../image/signIn/20.png" alt="">
+                    </div>
+                    <div class="mess">连续7天签到</div>
+                </div>
+                <div>
+                    <div class="imgBox">
+                        <img src="../image/signIn/30.png" alt="">
+                    </div>
+                    <div class="mess">连续15天签到</div>
+                </div>
+                <div>
+                    <div class="imgBox">
+                        <img src="../image/signIn/50.png" alt="">
+                    </div>
+                    <div class="mess">连续30天签到</div>
+                </div>
+            </div>
+        </div>
+        <div class="con rule">
+            <div class="top">
+                <div class="left">签到奖励规则</div>
+            </div>
+            <div class="text">
+                每日签到积分采用连续签到奖励方式。每次签到获得10积分，连续签到7天获得奖励20积分；连续签到15天获得奖励30积分；连续30天签到获得奖励50积分。
+            </div>
+        </div>
+
+        <transition name="fade">
+            <div id="cover_qian" class="cover" v-show="showCover_qian" @click='fnCancel_qian'>
+                <div class="qianBox">
+                    <div class="qianTop">
+                        <img src="../image/qian.png" alt="">
+                        <div>今日签到成功</div>
+                    </div>
+                    <div class="qianCon">
+                        <div class="qianNum">
+                            + <span>{{addQianCode}}</span> 积分
+                        </div>
+                        <div class="btn">确定</div>
+                        <div class="text">每日签到最高可得50积分奖励</div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </template>
+
+    <div v-if="!network" class="noNetWork">
+        <div><i class="iconfont icon-duankailianjie"></i></div>
+        <div class="">
+            <span>网络连接已断开</span>
+        </div>
+        <div class="refBtn" @click="fnClickRefresh">刷新</div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var myVue = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                currentDay: 1,
+                currentMonth: 1,
+                currentYear: 1970,
+                currentWeek: 1,
+                days: [],
+                arrDate: '',
+                seriesDay: '',
+
+                sign: api.pageParam.sign, //是否签到
+                token: '',
+                showCover: false,
+                showCover_qian: false,
+                myCode: "",
+                showMoney: true,
+                addQianCode: "",
+                give:''
+            },
+            created: function() { //在vue初始化时调用
+
+            },
+            mounted: function() {
+                var _this =this;
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    //改版注释
+                    // _this.fnGetList();
+                    //改版新增
+                    _this.fnGetSign();
+                })
+                this.fnGetSign();
+            },
+
+            methods: {
+                fnClickRefresh(){
+                    this.fnGetSign();
+                },
+                //获取签到信息
+                fnGetSign(type) {
+                    var _this = this;
+                    type?"":showProgress();
+                    ajax('home/signRecord', {}, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.arrDate = res.msg.date;
+                            // _this.arrDate =[2,3,23,21];
+                            _this.seriesDay = res.msg.series_sign_day;
+                            _this.give = res.msg.give
+                            _this.initData(null);
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        _this.network = false;
+                    })
+                },
+                //取消
+                fnCancel_qian() {
+                    this.showCover_qian = !this.showCover_qian;
+                },
+                //签到请求
+                fnQian() {
+                    var _this =this;
+                    showProgress();
+                    ajax('home/sign', {}, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            api.sendEvent({
+                                name: 'myIntegralChanged',
+                                extra: {
+                                    key1: 'value1',
+                                    key2: 'value2'
+                                }
+                            });
+                            _this.showCover_qian = !_this.showCover_qian;
+                            _this.addQianCode = parseInt(res.msg);
+                            _this.sign = parseInt(res.msg);
+                            _this.fnGetSign(1);
+                            // _this.userInfo.integral += _this.addQianCode;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                    })
+                },
+                initData: function(cur) {
+                    var leftcount = 0; //存放剩余数量
+                    var date;
+                    if (cur) {
+                        console.log(cur)
+                        date = new Date(cur);
+                    } else {
+                        var now = new Date();
+                        var d = new Date(this.formatDate(now.getFullYear(), now.getMonth(), 1));
+                        d.setDate(42);
+                        date = new Date(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    }
+                    this.currentDay = date.getDate();
+                    this.currentYear = date.getFullYear();
+                    this.currentMonth = date.getMonth() + 1;
+
+                    this.currentWeek = date.getDay(); // 1...6,0
+                    if (this.currentWeek == 0) {
+                        this.currentWeek = 7;
+                    }
+                    var str = this.formatDate(this.currentYear, this.currentMonth, this.currentDay);
+                    this.days.length = 0;
+                    // 今天是周日，放在第一行第7个位置，前面6个
+                    //初始化本周
+                    for (var i = this.currentWeek - 1; i >= 0; i--) {
+                        var d = new Date(str);
+                        d.setDate(d.getDate() - i);
+                        var dayobject = {}; //用一个对象包装Date对象  以便为以后预定功能添加属性
+                        dayobject.day = d;
+                        this.days.push(dayobject); //将日期放入data 中的days数组 供页面渲染使用
+
+                    }
+                    //其他周
+                    for (var i = 1; i <= 42 - this.currentWeek; i++) {
+                        var d = new Date(str);
+                        d.setDate(d.getDate() + i);
+                        var dayobject = {};
+                        // dayobject.day=d;
+                        dayobject = {
+                            day: d,
+                            isSign: this.isVerDate(d.getDate())
+                        }
+                        if(i==1){
+                            console.log(d+"-------------"+this.isVerDate(d.getDate()));
+                        }
+                        this.days.push(dayobject);
+
+                    }
+
+                },
+                isVerDate(v) {
+                    return this.arrDate.includes(v)
+                },
+                pickPre: function(year, month) {
+
+                    // setDate(0); 上月最后一天
+                    // setDate(-1); 上月倒数第二天
+                    // setDate(dx) 参数dx为 上月最后一天的前后dx天
+                    var d = new Date(this.formatDate(year, month, 1));
+                    d.setDate(0);
+                    this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                },
+                pickNext: function(year, month) {
+                    var d = new Date(this.formatDate(year, month, 1));
+                    d.setDate(42);
+                    this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                },
+                pickYear: function(year, month) {
+                    alert(year + "," + month);
+                },
+
+                // 返回 类似 2016-01-02 格式的字符串
+                formatDate: function(year, month, day) {
+                    var y = year;
+                    var m = month;
+                    if (m < 10) m = "0" + m;
+                    var d = day;
+                    if (d < 10) d = "0" + d;
+                    return y + "-" + m + "-" + d
+                },
+            },
+        });
+
+    }
+</script>

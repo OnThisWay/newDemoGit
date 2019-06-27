@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F3F3F3;
+            height: auto;
+            padding-top: 40px;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F3F3F3;
+            padding: 15px;
+        }
+
+        .top {
+            text-align: center;
+            font-size: 34px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(48, 48, 48, 1);
+            margin-bottom: 20px;
+        }
+
+        .leg {
+            text-align: center;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+            margin-bottom: 50px;
+        }
+
+        .shareBtn {
+            width: 200px;
+            line-height: 50px;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 18px;
+            color: white;
+            margin: auto;
+            background-color: #0096C8;
+        }
+
+        .legO {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(154, 154, 154, 1);
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .messBox {
+            width: calc(100vw - 30px);
+            border: 8px;
+            background-color: white;
+            margin: auto;
+            position: relative;
+            padding: 50px 0;
+            border-radius: 8px;
+        }
+
+        .messBox .tit {
+            width: 100px;
+            text-align: center;
+            line-height: 35px;
+            background-color: #D7D7D7;
+            color: #333333;
+            font-size: 14px;
+            position: absolute;
+            top: -17.5px;
+            left: 50%;
+            margin-left: -50px;
+            border-radius: 35px;
+        }
+
+        .messBox p {
+            padding: 0 30px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(59, 59, 59, 1);
+            line-height: 25px;
+        }
+
+        .footer {
+            font-size: 10px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(205, 205, 205, 1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .cover {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99;
+        }
+
+        .cover>div {
+            width: calc(100vw - 20px);
+            background: white;
+            border-radius: 8px;
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            overflow: hidden;
+        }
+
+        .cover>div>.con {
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cover>div>.con div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .cover>div>.con img {
+            margin: auto;
+            width: 30px;
+            height: 30px;
+        }
+
+        .cover>div>.con span {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(102, 102, 102, 1);
+        }
+
+        .cancelBtn {
+            text-align: center;
+            padding: 15px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Medium;
+            font-weight: 500;
+            color: rgba(154, 154, 154, 1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="top">
+            邀请好友送奖励
+        </div>
+        <div class="leg">好友消费后您可获得一定比例奖励金额</div>
+        <div class="shareBtn" @click="fnOpenScreenCover">立即分享</div>
+        <div class="legO">奖励无上限 呼朋唤友来存豆</div>
+        <div class="messBox">
+            <div class="tit">活动规则</div>
+            <p>1. 邀请多人可获多人奖励哦</p>
+            <p>2. 用户点击并注册视为有效用户，没注册无效</p>
+            <p>3. 您可通过多种途径分享邀请好友</p>
+            <p>4. 用户消费后，您可获得一定比例奖励</p>
+
+        </div>
+        <div class="footer">活动最终解释权归主办方所有</div>
+        <div class="cover" v-show="showCover" @click='fnCancel'>
+            <div>
+                <div class="con">
+                    <div @click.stop="fnWeiShare(1)">
+                        <img src="../image/share1.png" alt="">
+                        <span>微信</span>
+                    </div>
+                    <div @click.stop="fnWeiShare(2)">
+                        <img src="../image/share2.png" alt="">
+                        <span>微信朋友圈</span>
+                    </div>
+                </div>
+                <div class="cancelBtn" @click='fnCancel'>取消</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var uid = api.getPrefs({
+            sync: true,
+            key: 'uid'
+        });
+        var app = new Vue({
+            el: '#app',
+            data: {
+                serveId: api.pageParam.serveId,
+                detail: '',
+                showCover: false,
+                uid: uid
+            },
+            mounted: function() {},
+            methods: {
+                //分享
+                fnWeiShare: function(type) {
+                    var wx = api.require('wx');
+                    var scene = type == 1 ? 'session' : 'timeline';
+                    var _this = this;
+                    wx.shareWebpage({
+                        apiKey: '',
+                        scene: scene,
+                        title: '田螺哥',
+                        description: '田螺哥邀请你加入我们',
+                        thumb: 'widget://a.jpg',
+                        contentUrl: 'https://www.tianluoge.com/tianluogeH5/index.html?serveId=' + _this.serveId + '&uid=' + _this.uid
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            // alert(JSON.stringify(ret));
+                        } else {
+                            alert(err.code);
+                        }
+                    });
+                },
+                fnOpenScreenCover: function() {
+                    this.showCover = true;
+                },
+                fnCancel: function() {
+                    this.showCover = false;
+                }
+            }
+        })
+
+
+    }
+</script>

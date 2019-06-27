@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>案例详情</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+    header {
+        background-color: #137696;
+        position: relative;
+    }
+    header ul li {
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        position: relative;
+    }
+
+    header ul li:nth-child(4) {
+        height: 90px;
+    }
+
+
+
+
+    header .title {
+        color: #FFFFFF;
+        font-size: 16px;
+        font-family: SourceHanSansCN-Medium;
+    }
+
+    header .left {
+        position: absolute;
+        margin-left: 15px;
+        color: #FFFFFF;
+        display: flex;
+        opacity: 0.6;
+        font-weight: bolder;
+        width: 50px;
+    }
+
+    header .left img {
+        width: 26px;
+        margin: auto;
+    }
+
+    header .right {
+        height: 50px;
+        top: 0;
+        position: absolute;
+        float: right;
+        right: 15px;
+        color: #FFFFFF;
+        display: flex;
+        opacity: 0.6;
+        font-weight: bolder;
+    }
+
+    header .right img {
+        width: 26px;
+        height: 26px;
+        margin: auto 4px;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="">
+                    <div class="left" tapmode="hover" onclick="fnCloseWin()">
+                        <i class="iconfont icon-left"></i>
+                    </div>
+                    <div class="title">
+                        <span class="name">案例详情</span>
+                    </div>
+                </li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        api.openFrame({
+            name: 'anliDetail_frm',
+            url: './anliDetail_frm.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                id:api.pageParam.id
+            },
+            bounces: true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+
+
+    }
+
+    function fnCloseWin() {
+        api.closeWin({});
+    }
+</script>

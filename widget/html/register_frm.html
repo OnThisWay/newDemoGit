@@ -1,0 +1,388 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 27px;
+            background-color: #FFFFFF;
+        }
+
+        .phoneBox {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            padding: 10px 0;
+            align-items: center;
+        }
+
+        .phoneBox img {
+            width: 21px;
+            height: 21px;
+            margin-right: 10px;
+            /*margin: auto;*/
+        }
+
+        .phoneBox input {
+            color: #919191;
+            font-size: 14px;
+            width: calc(100vw - 54px - 21px - 10px)
+        }
+
+        .codeBox {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            padding: 15px 0;
+            /*margin-top: 15px;*/
+            align-items: center;
+        }
+
+        .codeBox input {
+            color: #919191;
+            font-size: 14px;
+            width: calc(100vw - 54px - 21px - 10px - 100px)
+        }
+
+        .codeBox span {
+            width: 100px;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 149, 197, 1);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #EEEEEE;
+        }
+
+        .r_btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border: 1px solid #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #0095C5;
+            background-color: white;
+        }
+
+        .hui {
+            color: #666!important;
+        }
+
+        .yingsi {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .yingsi span {
+            color: #0095C5;
+        }
+
+        .imgCode {
+            margin-left: auto;
+            width: 90px;
+            height: 35px;
+        }
+
+        .vaptcha-init-main {
+   display: table;
+   width: 100%;
+   height: 100%;
+   background-color: #EEEEEE;
+ }
+​
+ .vaptcha-init-loading {
+   display: table-cell;
+   vertical-align: middle;
+   text-align: center
+ }
+​
+ .vaptcha-init-loading>a {
+   display: inline-block;
+   width: 18px;
+   height: 18px;
+   border: none;
+ }
+​
+ .vaptcha-init-loading>a img {
+   vertical-align: middle
+ }
+​
+ .vaptcha-init-loading .vaptcha-text {
+   font-family: sans-serif;
+   font-size: 12px;
+   color: #CCCCCC;
+   vertical-align: middle
+ }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="inputBox">
+            <div class="phoneBox">
+                <img src="../image/phone.png" alt="">
+                <input type="number" name="" v-model="phone" placeholder="请输入手机号码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="password" placeholder="请输入密码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="password2" placeholder="请再次输入密码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/yao2.png" alt="">
+                <input type="number" name="" v-model="invitation" placeholder="邀请码（选填）">
+            </div>
+            <div class="codeBox">
+                <input type="text" name="" v-model="imgCode" placeholder="请输入右侧图形验证码">
+                <img class="imgCode" @click='fnChangeImgCode' :src="URL+'verifyCode'" alt="刷新验证">
+            </div>
+            <div class="codeBox">
+                <input type="number" name="" v-model="code" placeholder="请输入验证码">
+                <span @click='fnGetCode' v-if="getShow">获取验证码</span>
+                <span v-else class="hui">重新获取{{time}}s</span>
+            </div>
+        </div>
+        <div class="btn" @click='fnBth'>{{id?"立即绑定":"立即注册"}}</div>
+        <div class="r_btn" @click="fnOpenLoginWin">返回登录</div>
+        <div class="yingsi"><input type="checkbox" v-model="checked" class="checked"> 我已阅读并同意<span @click="fnOpenPrivacyProtocol_win">《 田螺哥隐私协议
+》</span></div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var myInterval;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                URL:URL,
+                id: api.pageParam.id, //根据Id判断注册还是绑定
+                type: api.pageParam.type,
+                phone: '',
+                password: '',
+                password2: '',
+                invitation: '',
+                imgCode: '',
+                code: '',
+                getShow: true,
+                time: 60,
+                checked: true
+            },
+            mounted: function() {
+                this.fnChangeImgCode();
+                // 初始化倒计时
+                var countDown = localStorage.getItem('countDown') || 0;
+                if (Date.parse(new Date()) - countDown < 60000) {
+                    this.fncutDown();
+                }
+            },
+            methods: {
+
+                //立即注册
+                fnBth: function() {
+                    var _this = this;
+                    if (!this.phone) {
+                        messageToast('请输入电话号码')
+                    } else if (!(/^1(3|4|5|7|8)[\d]{9}$/.test(this.phone))) {
+                        messageToast('电话号码格式有误')
+                    } else if (!this.password) {
+                        messageToast('请输入密码')
+                    } else if (!(/^[a-zA-Z0-9]{6,16}$/.test(this.password))) {
+                        messageToast('密码6-16位数字或字母以及其组合')
+                    } else if (!this.password2) {
+                        messageToast('请再次输入密码')
+                    } else if (this.password2 != this.password) {
+                        messageToast('两次密码不一致')
+                    } else if (!this.code) {
+                        messageToast('请输入验证码')
+                    } else if (!this.checked) {
+                        messageToast('请阅读并同意隐私协议')
+                    } else {
+                        if (_this.id) {
+                            this.fnSynPhone();
+                        } else {
+                            this.fnRegister();
+                        }
+                    }
+                },
+                //注冊接口
+                fnRegister: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('register', {
+                        phone: _this.phone,
+                        password: _this.password,
+                        c_password: _this.password2,
+                        bind_code: _this.invitation,
+                        code: _this.code
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.fnLoginSuccess(res);
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        // console.log(JSON.stringify(res))
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //綁定手机号
+                fnSynPhone: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('synPhone', {
+                        type: _this.type,
+                        id: _this.id,
+                        phone: _this.phone,
+                        password: _this.password,
+                        c_password: _this.password2,
+                        bind_code: _this.invitation,
+                        code: _this.code
+                    }, function(res) {
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.fnLoginSuccess(res);
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        console.log(JSON.stringify(res))
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                // 发送验证码
+                fnGetCode: function() {
+                    var _this = this;
+                    if (_this.getShow) {
+                        if (_this.phone) {
+                            if (_this.imgCode) {
+                                showProgress()
+                                ajax('sendMsg', {
+                                    type: 1,
+                                    phone: _this.phone,
+                                    state: 1,
+                                    checkCode:_this.imgCode
+                                }, function(res) {
+                                    hideProgress();
+                                    if (res.code == 10000) {
+                                        localStorage.setItem('countDown', Date.parse(new Date()));
+                                        _this.fncutDown();
+                                    } else {
+                                        _this.fnChangeImgCode();
+                                        messageToast(res.errMsg);
+                                    }
+                                }, function(res) {
+                                    hideProgress();
+                                    messageToast('系统繁忙,请重试')
+                                })
+                            } else {
+                                messageToast('请输入图形验证码');
+                            }
+                        } else {
+                            messageToast('请输入手机号');
+                        }
+                    }
+                },
+                // 获取图形验证码
+                fnChangeImgCode() {
+                    var _this = this;
+                    var el=$api.dom('.imgCode');
+                    var timestamp = Date.parse(new Date());
+                    $api.attr(el,'src',this.URL+'verifyCode?'+timestamp);
+                },
+                //倒计时
+                fncutDown: function() {
+                    var _this = this;
+                    var countDown = localStorage.getItem('countDown');
+                    myInterval = setInterval(doTime, 1000);
+
+                    function doTime() {
+                        var time = (Date.parse(new Date()) - countDown) / 1000;
+                        if (time < 60) {
+                            _this.time = 60 - time;
+                            _this.getShow = false;
+                        } else {
+                            _this.getShow = true;
+                            clearInterval(myInterval)
+                        }
+                    }
+                },
+                fnOpenLoginWin: function() {
+                    api.closeWin({});
+                },
+                //登录成功
+                fnLoginSuccess: function(res) {
+                    successToast('登录成功');
+                    api.setPrefs({
+                        key: 'token',
+                        value: res.msg.token
+                    });
+                    api.setPrefs({
+                        key: 'userInfo',
+                        value: res.userInfo
+                    });
+
+                    api.sendEvent({
+                        name: 'loginIn',
+                    });
+                    api.closeWin({
+                        name: 'login_win'
+                    });
+                    setTimeout(function() {
+                        api.closeWin({});
+                    }, 2000)
+
+                },
+                fnOpenPrivacyProtocol_win: function() {
+                    api.openWin({
+                        name: 'privacyProtocol_win',
+                        url: './privacyProtocol_win.html',
+                        pageParam: {
+                            name: 'test'
+                        }
+                    });
+
+                }
+            }
+        })
+    }
+</script>

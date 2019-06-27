@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+    [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        .empty>.con {
+            padding: 15px 15px 0 15px;
+            min-height: 100vh;
+        }
+
+        .commentList li {
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            margin-bottom: 10px;
+            background-color:#F4F4F4;
+        }
+
+        .commentList .left {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .commentList .left img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .right {
+            width: calc(100vw - 115px);
+            margin-left: auto;
+        }
+
+        .commentList .right>div:first-child {
+            display: flex;
+        }
+
+        .commentList .right .name {
+            font-size: 12px;
+            color: #666666;
+            margin-right: auto;
+        }
+
+        .commentList .right .time {
+            font-size: 12px;
+            color:#999999;
+        }
+
+        .commentList .right .content {
+            font-size: 12px;
+            color:#333333;
+            line-height: 18px;
+            margin: 10px 0;
+        }
+
+        .commentList .imgBox {
+            overflow: hidden;
+            width: calc(100vw - 135px);
+        }
+
+        .commentList .imgBox div {
+            float: left;
+            width: calc( (100vw - 145px)/3);
+            height: calc( (100vw - 145px)/3);
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .commentList .imgBox img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .commentList .imgBox div:nth-child(3n+1) {
+            margin-left: 0px;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+<template id="" v-if="network">
+        <div class="con" v-if="list.length">
+            <div class="commentBox">
+                <ul class="commentList">
+                    <li v-for="(item,index) in list">
+                        <div class="left">
+                            <img :src="item.head" alt="">
+                        </div>
+                        <div class="right">
+                            <div>
+                                <div class="name">{{item.nickname}}</div>
+                                <div class="time">{{fnClipSecond(item.created_time)}}</div>
+                            </div>
+                            <div class="content">{{item.cmt_cont_txt}}</div>
+                            <div class="imgBox">
+                                <div v-for="(childItem,childIndex) in item.cmt_cont_img" @click="fnOpenImg(index,childIndex)">
+                                    <img :src="childItem" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div v-else class="noWin">
+            <div><i class="iconfont icon-zanwushuju"></i></div>
+            <div class="">
+                <span>暂无数据</span>
+            </div>
+        </div>
+        <div v-if="list.length" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div>
+    </template>
+
+    <div v-if="!network" class="noNetWork">
+        <div><i class="iconfont icon-duankailianjie"></i></div>
+        <div class="">
+            <span>网络连接已断开</span>
+        </div>
+        <div class="refBtn" @click="fnClickRefresh">刷新</div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    var requedtFlag = false;
+    var app = new Vue({
+        el: '#app',
+        data: {
+            network: true,
+            serveId: api.pageParam.serveId,
+            list: [],
+            offset: 0,
+            limit: 10,
+            noMore: false
+        },
+        mounted: function() {
+            var _this = this;
+            //监听网络状态
+            fnAppNetwork(function() {}, function() {
+                _this.network = true;
+                _this.offset = 0;
+                _this.fnGetList();
+            })
+            this.fnCustomRefresh();
+            this.fnUprequset();
+            this.fnGetList();
+        },
+        methods: {
+            //点击刷新
+            fnClickRefresh() {
+                this.offset = 0;
+                this.noMore = false;
+                this.fnGetList("down");
+            },
+            //下拉刷新
+            fnCustomRefresh: function() {
+                var _this = this;
+                api.setCustomRefreshHeaderInfo({
+                    image: {
+                        pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                            'widget://image/8.png'
+                        ],
+                        load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                            'widget://image/11.png'
+                        ]
+                    },
+                    bgColor: '#f5f5f5',
+                }, function() {
+                    _this.offset = 0;
+                    _this.noMore = false;
+                    _this.fnGetList("down");
+                });
+            },
+            //上拉加载
+            fnUprequset: function() {
+                var _this = this;
+                api.addEventListener({  
+                    name: 'scrolltobottom',
+                     extra: {      
+                        threshold: -100      
+                    }
+                }, function(ret, err) { 
+                    _this.fnGetList("up");
+                });
+            },
+            //获取列表
+            fnGetList: function(type) {
+                if (requedtFlag) {
+                    return;
+                }
+                requedtFlag = true;
+                var _this = this;
+                type ? "" : showProgress();
+                ajax('order/serveComment', {
+                    serve_id: _this.serveId,
+                    offset: _this.offset,
+                    limit: _this.limit
+                }, function(res) {
+                    requedtFlag = false;
+                    // console.log(JSON.stringify(res));
+                    hideProgress();
+                    api.refreshHeaderLoadDone();
+                    if (res.code == 10000) {
+                        if (type == "up") {
+                            if (res.msg.length != 0) {
+                                _this.offset = _this.offset + res.msg.length;
+                                _this.list = _this.list.concat(res.msg);
+                            } else {
+                                _this.noMore = true;
+                            }
+                        } else {
+                            _this.offset = _this.offset + res.msg.length;
+                            _this.list = res.msg;
+                        }
+                    } else {
+                        messageToast(res.errMsg)
+                    }
+                }, function(res) {
+                    requedtFlag = false;
+                    api.refreshHeaderLoadDone();
+                    hideProgress();
+                    messageToast(ERRMSG)
+                }, function(res) {
+                    requedtFlag = false;
+                    hideProgress();
+                    api.refreshHeaderLoadDone();
+                    _this.network = false;
+                })
+            },
+            fnOpenImg: function(index,childIndex) {
+                var _this = this;
+                fnOpenPhotoBrowser(_this.list[index].cmt_cont_img,childIndex)
+            }
+        }
+    })
+}
+
+</script>

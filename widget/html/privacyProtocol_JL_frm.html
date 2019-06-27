@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding: 15px;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        p {
+            font-size: 12px;
+            color: #666;
+            line-height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="">
+            <img v-for="(item, index) in imgs[orderType-1]"  :src="item" @click="fnOpenImg(index)" alt="">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        // alert(api.pageParam.orderType)
+        var app = new Vue({
+            el: '#app',
+            data: {
+                orderType: api.pageParam.orderType, //1=>监理  2=>咨询  3=>验房
+                imgs: [
+                    ['https://www.tianluoge.com/tianluoge/img_hetong/hetong_jianli/0001.jpg', 'https://www.tianluoge.com/tianluoge/img_hetong/hetong_jianli/0002.jpg', 'https://www.tianluoge.com/tianluoge/img_hetong/hetong_jianli/0003.jpg', 'https://www.tianluoge.com/tianluoge/img_hetong/hetong_jianli/0004.jpg'],
+                    ['https://www.tianluoge.com/tianluoge/img_hetong/hetong_zixun/0_1.jpg', 'https://www.tianluoge.com/tianluoge/img_hetong/hetong_zixun/0_2.jpg'],
+                    ['https://www.tianluoge.com/tianluoge/img_hetong/hetong_yanfang/0001.jpg', 'https://www.tianluoge.com/tianluoge/img_hetong/hetong_yanfang/0002.jpg']
+                ]
+            },
+            mounted: function() {
+
+            },
+            methods: {
+                fnOpenImg(index){
+                    var imgs = this.imgs[this.orderType-1];
+                    fnOpenPhotoBrowser(imgs,index);
+                }
+
+            }
+        })
+
+
+    }
+</script>

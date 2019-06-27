@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+        }
+
+        .title {
+            background: #f0f0f0;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #9A9A9A;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .title span {
+            color: #333333;
+            font-weight: bold;
+        }
+
+        ul {
+            margin-top: 41px;
+            min-height: 100vh;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        li div:first-child {
+            font-size: 14px;
+            color: #333;
+        }
+
+        li div:last-child {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="title">所选城市:<span>{{city}}</span></div>
+        <ul v-if="list.length">
+            <li v-for="(item,index) in list" @click="fnChooseHouse(index)">
+                <div>{{item.name}}</div>
+                <div>{{item.city}}{{item.address}}</div>
+            </li>
+        </ul>
+        <div v-else class="noWin">
+            <div><i class="iconfont icon-zanwushuju"></i></div>
+            <div class="">
+                <span>暂无搜索结果</span>
+            </div>
+        </div>
+        <div v-if="list.length" class="getMoreBox">
+            <img v-show="!noMore" src="../image/loading.gif" alt="">
+            <span>{{noMore?"我也是有底线的哟...":"加载更多"}}</span>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                key: api.pageParam.key,
+                city: api.pageParam.city,
+                latitude: api.pageParam.latitude,
+                longtitude: api.pageParam.longtitude,
+                list: [],
+                pageIndex: 0,
+                noMore: false
+            },
+            mounted: function() {
+                var _this = this;
+                api.addEventListener({
+                    name: 'searchHouse'
+                }, function(ret, err) {
+                    if (ret) {
+                        _this.key = ret.value.key;
+                        _this.pageIndex = 0;
+                        _this.list = [];
+                        _this.fnGetHouseList();
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+                this.fnUprequset();
+            },
+            methods: {
+                //上拉加载
+                fnUprequset: function() {
+                    var _this = this;
+                    api.addEventListener({  
+                        name: 'scrolltobottom',
+                         extra: {      
+                            threshold: -100      
+                        }
+                    }, function(ret, err) { 
+                        _this.fnGetHouseList("up");
+                    });
+                },
+                //获取小区列表
+                fnGetHouseList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    var bMap = api.require('bMap');
+                    bMap.searchInCity({
+                        city: _this.city,
+                        // city: "成都",
+                        keyword: _this.key,
+                        pageIndex: _this.pageIndex,
+                        pageCapacity: 50
+                    }, function(ret, err) {
+                        hideProgress();
+                        if (ret.status) {
+                            console.log(JSON.stringify(ret.results));
+                            if (ret.results.length != 0) {
+                                _this.pageIndex += 1;
+                                _this.list = _this.list.concat(ret.results);
+                            } else {
+                                _this.noMore = true;
+                            }
+
+                        } else if (err.code == 1) {
+                            _this.noMore = true;
+                            messageToast('检索词有歧义')
+                        } else if (err.code == 2) {
+                            _this.noMore = true;
+                            messageToast('检索地址有岐义')
+                        } else if (err.code == 3) {
+                            _this.noMore = true;
+                            messageToast('没有了')
+                        } else if (err.code == 4) {
+                            _this.noMore = true;
+                            messageToast('key错误')
+                        } else if (err.code == 5) {
+                            _this.noMore = true;
+                            messageToast('网络连接错误')
+                        } else if (err.code == 6) {
+                            _this.noMore = true;
+                            messageToast('网络连接超时')
+                        } else if (err.code == 7) {
+                            _this.noMore = true;
+                            messageToast('还未完成鉴权，请在鉴权通过后重试')
+                        }
+                    });
+                    // ajax('getAddr', {
+                    //     province: _this.provinc,
+                    //     city: _this.city,
+                    //     distance: 200,
+                    //     latitude: _this.latitude,
+                    //     longtitude: _this.longtitude,
+                    //     keyword: _this.key,
+                    //     page: 10
+                    // }, function(res) {
+                    //     hideProgress();
+                    //     if (res.code == 10000) {
+                    //         var r = JSON.parse(res.msg)
+                    //         if (r.code == 1001) {
+                    //             _this.list = r.result;
+                    //         } else {
+                    //             messageToast(r.msg)
+                    //         }
+                    //     } else {
+                    //         messageToast(res.errMsg)
+                    //     }
+                    // }, function(res) {
+                    //     hideProgress();
+                    //     messageToast(ERRMSG)
+                    // })
+                },
+                //选择小区地址
+                fnChooseHouse: function(index) {
+                    var _this = this;
+                    api.sendEvent({
+                        name: 'chooseHouse',
+                        extra: {
+                            houseName: _this.list[index].name, //小区名字
+                            houseAddress: _this.list[index].address, //小区详细地址
+                            lon: _this.list[index].lon,
+                            lat: _this.list[index].lat,
+                        }
+                    });
+                    api.closeWin();
+                }
+            }
+        })
+    }
+</script>

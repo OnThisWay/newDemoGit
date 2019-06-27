@@ -1,0 +1,422 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            padding: 27px;
+            background-color: #FFFFFF;
+        }
+
+        .phoneBox {
+            display: flex;
+            border-bottom: 1px solid #CECECE;
+            padding: 15px 0;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phoneBox img {
+            width: 21px;
+            height: 21px;
+            margin-right: 10px;
+            margin: auto;
+        }
+
+        .phoneBox input {
+            color: #919191;
+            font-size: 14px;
+            padding: 0 10px;
+        }
+
+        .phoneBox div {
+            font-size: 12px;
+            color: #0096C8;
+            width: 100px;
+            text-align: right;
+        }
+
+        .btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #EEEEEE;
+        }
+
+        .r_btn {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border: 1px solid #0095C5;
+            border-radius: 8px;
+            margin-top: 30px;
+            color: #0095C5;
+            background-color: white;
+        }
+
+        .top {
+            height: 40px;
+            position: relative;
+            margin-bottom: 15px;
+            margin-top: 50px;
+        }
+
+        .top .line {
+            width: 100%;
+            border-bottom: 1px solid #137696;
+            position: absolute;
+            top: 20px;
+            z-index: 99;
+        }
+
+        .top .name {
+            padding: 0 10px;
+            line-height: 40px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -40px;
+            background-color: #FFFFFF;
+            z-index: 999;
+            font-size: 14px;
+            color: #666;
+            line-height: 40px;
+        }
+
+        .otherBox {
+            display: flex;
+            justify-content: center;
+        }
+
+        .otherBox i {
+            font-size: 40px;
+            margin: 0 20px;
+        }
+
+        .icon-weixin-copy {
+            color: #00C232;
+        }
+
+        .icon-zhifubao {
+            color: #00A2EC;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app">
+        <div class="inputBox">
+            <div class="phoneBox">
+                <img src="../image/phone.png" alt="">
+                <input type="number" name="" v-model="phone" placeholder="请输入手机号码">
+            </div>
+            <div class="phoneBox">
+                <img src="../image/password.png" alt="">
+                <input type="password" name="" v-model="password" placeholder="请输入密码">
+                <div class="forget" @click="fnOpenSettingPwd_win">忘记密码</div>
+            </div>
+
+        </div>
+        <div class="btn" @click="fnLogin">登录</div>
+        <div class="r_btn" @click="fnOpenRegister_win">注册</div>
+        <div class="top" v-if="havaWei||haveZhi" >
+            <div class="line"></div>
+            <div class="name">其它登录</div>
+        </div>
+        <div class="otherBox"  v-if="havaWei||haveZhi">
+            <i class="iconfont icon-weixin-copy" v-if="havaWei" @click="fnOpenWeiLogin"></i>
+            <i class="iconfont icon-zhifubao" v-if="haveZhi" @click="fnOpenAliLogin"></i>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                phone: '',
+                password: '',
+                havaWei: true,
+                haveZhi: true
+            },
+            mounted: function() {
+                if(api.systemType=="ios"){
+                    this.fnHaveWei();
+                    this.fnHaveZhi();
+                }
+            },
+            methods: {
+                //判断是否安装微信
+                fnHaveWei: function() {
+                    var wx = api.require('wx');
+                    var _this = this;
+                    wx.isInstalled(function(ret, err) {
+                        ret.installed ? _this.havaWei = true : _this.havaWei = false;
+                    });
+                },
+                //判断是否安装支付宝
+                fnHaveZhi: function() {
+                    var _this =this;
+                    var installed = api.appInstalled({
+                        sync: true,
+                        appBundle: 'alipay'
+                    });
+
+                    installed ? _this.haveZhi = true : _this.haveZhi = false;
+                },
+                //立即登录
+                fnLogin: function() {
+                    var _this = this;
+                    if (!this.phone) {
+                        messageToast('请输入电话号码')
+                    } else if (!(/^1(3|4|5|7|8)[\d]{9}$/.test(this.phone))) {
+                        messageToast('电话号码格式有误')
+                    } else if (!this.password) {
+                        messageToast('请输入密码')
+                    } else if (!(/^[a-zA-Z0-9]{6,16}$/.test(this.password))) {
+                        messageToast('密码6-16位数字或字母以及其组合')
+                    } else {
+                        showProgress();
+                        ajax('login', {
+                            phone: _this.phone,
+                            password: _this.password,
+                        }, function(res) {
+                            hideProgress();
+                            // console.log(JSON.stringify(res))
+                            if (res.code == 10000) {
+                                _this.fnLoginSuccess(res)
+
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            console.log(JSON.stringify(res))
+                            hideProgress();
+                            messageToast(ERRMSG)
+                        })
+                    }
+                },
+                //支付宝登录
+                fnOpenAliLogin: function() {
+                    var _this = this;
+                    var aliPayPlus = api.require('aliPayPlus');
+                    aliPayPlus.config({
+                        appId: '2019021363230438',
+                        rsaPriKey: 'MIIEowIBAAKCAQEAs41KFLAic2RHUV1dNchR4opMM87ykwEuv79YqGK2B9AfXlt9fX646g2Nz4ug00KXNJmFlbkgeM3h6Ywt083yBNwyGq+dnJsYvkjFTWGOwoEIqXoV6Ymc1MdOX//BHPR6KDqAQmYztG7QIvzyYTUx+MBbnGjwuzczgSarPiA29m8v9t9bHTN5BHqaB1diaf0oVupCpk9Ce0dSCv7ZJDJ8x+KDmPFFn2bd+u+MB0xso9U3OP0p1AqQKMe8cu9EII/Su8vzFPin8OVwOuWLYPLVWl96wOMyZZMnwWpKKiXO+1Po2WGjS0KMomBA4wQYBNkcZM5eOhUP0kz3IJudF5E+lQIDAQABAoIBAG4YT3lZ+vXYYiaQ4guNVjBbbphB59md2wV2Fa3CQS2PPvzDirH9lvLk9rRxQF7psP9ut0t0JWYNj919t8fsut6iChL05ebV7xkWU+y7yiaXqjEJDBCT8ddCklso3keb3J94J5cPRdr4K6WYhiJ21LpbcJD6g8m38lvZ0xyX8juuML/MG7Oy2Db/ccPF4T/HcYM8Tz9FlQCfyS+PlJlpo5KqSnIu50z482Tfqe4g8n0avF0D8aUa8vJcjksTHOwrulivqvX2UqViBBqj6nUGULc6XSGNUaUs55EH453qgPi9FNNSpO3nbJBAUUT4UIBdyYS3A0haZmw5nwrHrXuJLs0CgYEA2TbnbrAKwXQ5OuLZy+kBiF8k+QVZ3JQRyK5gCIuVwIieaEbn+m6z1MP80YZZkePOVjkXdpV8v5NUNRqTgQ4cSi2pixDKKgl4TS6v0RR8YNN5uIKRMFvEc2Llax6EOdU/UfuOY6o24mmF+4XEVmV0/0jsn3li7gnjD6yQWRnVbr8CgYEA05zKj+iIo4XV2EomKjaYmxPLuAHf6JMEeM8WcJK2LEioNm4xHOPUs7KbNHmuPwqHY4VOnMGMKhth2kd2EOLpA/tRpWYYTkRbANVvlZXt316/92mXsAibNPCWDgrIe1i2jn44NQtMKEJDPcgPY2KjybckIeunhSPgDOWRmXNV+6sCgYEAzYqNvwjodJ0FFrrY+4J2R9Q4iUfN+9NFbM/M4eksAK+GrggCtdCRbNE0aBQop8uYUbDeigD0tde1BDcswx9WF79TwttVYifp5ac7Ca7H71vNv5IVz1vW7pTzoMSUvKEUtQBEgfzsyJywAw1Wd6az6mnYNyPHQJasfQV+5kFy3MMCgYBJCajwmrXumtcAXDdoAogRnneF/z+lKnk0qWV5XWn7RuioQMg6zHgxvcfMCOOXZq7sLqq/eB5Euka/7EJX+bmrYicAC4kAGp++XeyxmJoNqspfPtbYL2BCmXdxSU+BI1F/RRlpVYjnrFdBD7gf+X/Gs6uI+alMTuGaEfJ7IE/hGQKBgGlTCfYuBXv7MO6VgkSAZPphMxTw24yyyLC6i7D/wTW5Iy+qmf2ysFhjuBsJrUBkz/Kfp0+zEB5Pb+m7rIRAFLpU0AsIvxM+JZA/1m7FRChqeZWfGRcibTRg1JCVmpdVNEf2SO3uf6J5vVkGTTqVxOh95UACVw4YmflLpU7MTJ3i',
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            aliPayPlus.authDirect({
+                                authInfoStr: 'apiname=com.alipay.account.auth&app_id=2019021363230438&app_name=mc&auth_type=LOGIN&biz_type=openservice&method=alipay.open.auth.sdk.code.get&pid=2088431300245352&product_id=APP_FAST_LOGIN&scope=kuaijie&sign_type=RSA&target_id=20141225xxxx&sign=KP8y5lsVPGFLmXH6+N6sbdGXaqInNQemuSPykWbseH6gvXsPwK+prG9G5ZhNit4FxmHn8xOSJ8+ML9ZmwdUwY8CJPlmM7+4fIkzF85AaKaRyOblY/O0WQlykr73mBicm+nofwNF0jkYCcpF6YiIlTLwcnSigvjJdkooAMSfxt8c='
+                            }, function(ret) {
+                                if (ret.resultStatus == 9000) {
+                                    var res = parseStrObjByFor(ret.result, '&');
+                                    if (res.result_code == 200) {
+                                        showProgress();
+                                        ajax('aliPayLogin', {
+                                            code: res.auth_code
+                                        }, function(res) {
+                                            // console.log(JSON.stringify(res));
+                                            hideProgress();
+                                            if (res.code == 20000) {
+                                                successToast('授权成功，绑定手机号');
+                                                setTimeout(function() {
+                                                    api.openWin({
+                                                        name: 'register_win',
+                                                        url: './register_win.html',
+                                                        pageParam: {
+                                                            name: 'bind',
+                                                            id: res.id,
+                                                            type: res.type
+                                                        }
+                                                    });
+
+                                                }, 1000)
+                                            } else if (res.code == 10000) {
+                                                _this.fnLoginSuccess(res)
+                                            }
+                                        }, function(res) {
+                                            console.log(JSON.stringify(res))
+                                            hideProgress();
+                                            messageToast(ERRMSG)
+                                        })
+                                    } else if (res.result_code == 1005) {
+                                        api.alert({
+                                            title: '授权失败',
+                                            msg: '账户已冻结，如有疑问，请联系支付宝技术支持',
+                                        }, function(ret, err) {
+                                            if (ret) {
+                                                alert(JSON.stringify(ret));
+                                            } else {
+                                                alert(JSON.stringify(err));
+                                            }
+                                        });
+                                    } else if (res.result_code == 202) {
+                                        api.alert({
+                                            title: '授权失败',
+                                            msg: '系统异常，请稍后再试或联系支付宝技术支持',
+                                        }, function(ret, err) {
+                                            if (ret) {
+                                                alert(JSON.stringify(ret));
+                                            } else {
+                                                alert(JSON.stringify(err));
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    _this.fnAliArrCode(ret.resultStatus)
+                                }
+                            });
+                        }
+                    })
+                },
+                //微信登录
+                fnOpenWeiLogin: function() {
+                    var _this = this;
+                    var wx = api.require('wx');
+                    wx.isInstalled(function(ret, err) {
+                        if (ret.installed) {
+                            wx.auth({
+                                apiKey: 'wxb1090e2b51807019',
+                                scope: 'snsapi_userinfo'
+                            }, function(ret, err) {
+                                if (ret.status) {
+                                    showProgress();
+                                    ajax('weChatLogin', {
+                                        code: ret.code
+                                    }, function(res) {
+                                        hideProgress();
+                                        if (res.code == 20000) {
+                                            successToast('授权成功，绑定手机号');
+                                            setTimeout(function() {
+                                                api.openWin({
+                                                    name: 'register_win',
+                                                    url: './register_win.html',
+                                                    pageParam: {
+                                                        name: 'bind',
+                                                        id: res.id,
+                                                        type: res.type
+                                                    }
+                                                });
+
+                                            }, 1000)
+                                        } else if (res.code == 10000) {
+                                            _this.fnLoginSuccess(res)
+                                        } else {
+                                            messageToast(res.errMsg)
+                                        }
+                                    }, function(res) {
+                                        console.log(JSON.stringify(res))
+                                        hideProgress();
+                                        messageToast(ERRMSG)
+                                    })
+                                } else {
+                                    messageToast('微信授权失败')
+                                }
+
+                            });
+                        } else {
+                            alert('当前设备未安装微信客户端');
+                        }
+                    });
+                },
+                //阿里errCode提示
+                fnAliArrCode: function(code) {
+                    switch (code) {
+                        case '8000':
+                            messageToast('正在处理中');
+                            break;
+                        case '4000':
+                            messageToast('订单支付失败');
+                            break;
+                        case '5000':
+                            messageToast('重复请求');
+                            break;
+                        case '6001':
+                            messageToast('操作已取消');
+                            break;
+                        case '6002':
+                            messageToast('网络连接出错');
+                            break;
+                        case '0001':
+                            messageToast('缺少商户配置信息（商户id，支付公钥，支付密钥）');
+                            break;
+                        case '0002':
+                            messageToast('缺少参数（subject、body、amount、tradeNO）');
+                            break;
+                        case '0003':
+                            messageToast('签名错误（公钥私钥错误）');
+                            break;
+                        default:
+                            messageToast('未知错误');
+                    }
+                },
+                //忘记密码
+                fnOpenSettingPwd_win: function() {
+                    api.openWin({
+                        name: 'settingPwdBefore_win',
+                        url: './settingPwdBefore_win.html',
+                        pageParam: {
+                            which: 'forget'
+                        }
+                    });
+                },
+
+                fnOpenRegister_win: function() {
+                    api.openWin({
+                        name: 'register_win',
+                        url: './register_win.html',
+                        pageParam: {
+                            name: 'test'
+                        }
+                    });
+                },
+                //登录成功
+                fnLoginSuccess: function(res) {
+                    successToast('登录成功');
+                    api.setPrefs({
+                        key: 'token',
+                        value: res.msg.token
+                    });
+                    api.setPrefs({
+                        key: 'userInfo',
+                        value: res.userInfo
+                    });
+
+                    api.sendEvent({
+                        name: 'loginIn',
+                    });
+
+                    setTimeout(function() {
+                        api.closeWin({});
+                    }, 2000)
+
+                }
+
+            }
+        })
+    }
+</script>

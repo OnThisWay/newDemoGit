@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>田螺哥</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <style>
+        body {
+            background-color: #FFFFFF;
+            min-height: auto;
+        }
+
+        .empty {
+            background-color: #FFFFFF;
+            padding: 0 15px;
+        }
+
+        .anLiBox {
+            margin-top: 15px;
+        }
+
+        .anLiBox .content>div {
+            width: calc((100vw - 45px)/2);
+            height: calc((100vw - 45px)/4);
+            margin-bottom: 10px;
+            display: inline-block;
+            border-radius: 8px;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .anLiBox .content>div:nth-child(odd) {
+            margin-right: 15px;
+        }
+
+        .anLiBox .content>div .cover {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+            line-height: calc((100vw - 45px)/4);
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .teamShow {
+            margin-top: 15px;
+        }
+
+        .teamShow .content {
+            height: calc((100vw - 30px)/2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .content>div {
+            background-size: auto;
+        }
+
+        .content img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .banner {
+            width: 100%!important;
+            height: 100%!important;
+            position: relative;
+        }
+
+        .banner .cover {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: rgba(255, 255, 255, 1);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            z-index: 999;
+            line-height: 100px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <template id="" v-if="network">
+
+        <div class="anLiBox">
+            <div class="content">
+                <div v-for="(item,index) in data.hidden_case_type" :style="{background:'url('+ item.type_cover +')',backgroundSize:'cover'}" @click="fnOpenHiddenDanger_win(item.id,item.type_title)">
+                    <div class="cover">
+                        <span>{{item.type_title}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="qaBox">
+            <img src="../image/q&a/Q&A_01.jpg" alt=""><img src="../image/q&a/Q&A_02.jpg" alt=""><img src="../image/q&a/Q&A_03.jpg" alt=""><img src="../image/q&a/Q&A_04.jpg" alt="">
+        </div>
+        </template>
+
+        <div v-if="!network" class="noNetWork">
+            <div><i class="iconfont icon-duankailianjie"></i></div>
+            <div class="">
+                <span>网络连接已断开</span>
+            </div>
+            <div class="refBtn" @click="fnClickRefresh">刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                data: '',
+                iamges: ['widget://image/banner1.jpg', 'widget://image/banner2.jpg', 'widget://image/banner3.jpg']
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetList();
+                })
+                this.fnGetList();
+                this.fnCustomRefresh();
+            },
+            methods: {
+
+                //点击刷新
+                fnClickRefresh() {
+                    this.fnGetList("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.offset = 0;
+                        _this.noMore = false;
+                        _this.fnGetList("down");
+                    });
+                },
+                //获取列表
+                fnGetList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('home/snail', {
+                        type: _this.type,
+                        offset: _this.offset,
+                        limit: _this.limit
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.data = res.msg;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+                //打开服务列表
+                fnOpenSupervisionService_win: function() {
+                    api.openWin({
+                        name: 'supervisionServiceDetail_win',
+                        url: './supervisionServiceDetail_win.html',
+                        pageParam: {}
+                    });
+                },
+                //打开咨询服务
+                fnOpenZixunService_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'zixunServiceDetail_win',
+                        url: './zixunServiceDetail_win.html',
+                        pageParam: {
+                            serveId: 'ZX001',
+                            price: _this.data.zx_price
+                        }
+                    });
+                },
+                //打开检测服务
+                fnOpenTestService_win: function() {
+                    var _this = this;
+                    api.openWin({
+                        name: 'testServiceDetail_win',
+                        url: './testServiceDetail_win.html',
+                        pageParam: {
+                            serveId: 'YF001',
+                            price: _this.data.yf_price
+                        }
+                    });
+                },
+
+                // 打开专家介绍
+                fnOpenIntroductionExperts_win: function(uid) {
+                    return;
+                    api.openWin({
+                        name: 'introductionExperts_win',
+                        url: './introductionExperts_win.html',
+                        pageParam: {
+                            id: uid
+                        }
+                    });
+                },
+                //打开风采
+                fnOpenTeamShow: function() {
+                    api.openWin({
+                        name: 'teamShow_win',
+                        url: './teamShow_win.html',
+                        pageParam: {}
+                    });
+                },
+                //打开隐患案例
+                fnOpenHiddenDanger_win: function(tid, name) {
+                    api.openWin({
+                        name: 'q_and_a_img_win',
+                        url: './q_and_a_img_win.html',
+                        pageParam: {
+                            tid: tid,
+                            name: name
+                        }
+                    });
+                },
+
+
+            }
+        })
+    }
+</script>
+
+</html>

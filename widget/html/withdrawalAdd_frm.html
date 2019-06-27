@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #F4F4F4;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #F4F4F4;
+        }
+
+        .btn {
+            width: calc(100vw - 60px);
+            line-height: 50px;
+            text-align: center;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Bold;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            background-color: #0096C8;
+            margin: 50px auto;
+            border-radius: 8px;
+        }
+
+        .title {
+            padding: 10px 15px;
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .methodsBox {}
+
+        .methodsBox li {
+            padding: 10px 15px;
+            background: white;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F4F4F4;
+        }
+
+        .methodsBox li>div:nth-child(2) {
+            padding: 0 10px;
+            margin-right: auto;
+        }
+
+        .icon-weixin {
+            color: #00C232;
+            font-size: 40px;
+        }
+
+        .icon-zhifubao1 {
+            color: #00A2EC;
+            font-size: 40px;
+        }
+
+        .methodsBox li>div:nth-child(2)>.tit {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .methodsBox li>div:nth-child(2)>.count {
+            font-size: 12px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(154, 154, 154, 1);
+        }
+
+        .duiWei {
+            color: #00C232;
+        }
+
+        .duiZhi {
+            color: #00A2EC;
+        }
+
+        .sure {
+            line-height: 60px;
+            text-align: center;
+            font-size: 13px;
+            font-family: SourceHanSansCN-Regular;
+            font-weight: 400;
+            color: rgba(0, 150, 200, 1);
+        }
+
+        .noBox {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            margin-right: 1px;
+        }
+
+        .listBox {
+            padding: 15px;
+            background-color: #FFF;
+            border-bottom: 1px solid #F4F4F4;
+            display: -webkit-box;
+            line-height: 14px;
+        }
+
+        .listBox .name {
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .listBox .value {
+            -webkit-box-flex: 1;
+            color: #999999;
+            font-size: 14px;
+            text-align: right;
+            padding-left: 15px;
+        }
+
+        .listBox .icon-you {
+            font-size: 14px;
+            color: #9B9B9B;
+        }
+
+        .value input {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            text-align: right;
+            color: #9B9B9B;
+        }
+
+        .btn {
+            width: calc(100vw - 60px);
+            line-height: 40px;
+            text-align: center;
+            background: #0096C8;
+            color: white;
+            font-size: 14px;
+            margin: auto;
+            margin-top: 60px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" v-cloak>
+        <div class="title">选择账户类型</div>
+        <ul class="methodsBox">
+            <li @click="fnChoseType(1)">
+                <div><i class="iconfont icon-weixin"></i></div>
+                <div>
+                    <div class="tit">微信账户</div>
+                    <div class="count">使用微信账户进行提现</div>
+                </div>
+                <div>
+                    <i v-show="choseType==1" class="iconfont icon-dui duiWei"></i>
+                    <div v-show="choseType!=1" class="noBox"></div>
+                </div>
+            </li>
+            <li @click="fnChoseType(2)">
+                <div><i class="iconfont icon-zhifubao1"></i></div>
+                <div>
+                    <div class="tit">支付宝账户</div>
+                    <div class="count">使用支付宝账户进行提现</div>
+                </div>
+                <div>
+                    <i v-show="choseType==2" class="iconfont icon-dui duiZhi"></i>
+                    <div v-show="choseType!=2" class="noBox"></div>
+                </div>
+            </li>
+        </ul>
+        <div class="title">填写账户信息</div>
+        <template id="" v-if="choseType==2">
+            <div class="listBox inputbox">
+                <div class="name">真实姓名</div>
+                <div class="value"><input type="text" name="" v-model="zhiName" placeholder="请填写真实姓名"></div>
+            </div>
+            <div class="listBox inputbox">
+                <div class="name">支付宝账号</div>
+                <div class="value"><input type="text" name="" v-model="zhiCount" placeholder="请填写支付宝账号"></div>
+            </div>
+        </template>
+        <template id="" v-if="choseType==1">
+            <div class="listBox inputbox">
+                <div class="name">真实姓名</div>
+                <div class="value"><input type="text" name="" v-model="weiName" placeholder="请填写真实姓名"></div>
+            </div>
+            <div class="listBox inputbox">
+                <div class="name">微信账号</div>
+                <div class="value"><input type="text" name="" v-model="weiCount" placeholder="请填写微信账号"></div>
+            </div>
+        </template>
+        <div class="btn" @click="fnSure">保存</div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var type = api.pageParam.type;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                amount: "",
+                choseType: type,
+                zhiName: '',
+                zhiCount: '',
+                weiName: '',
+                weiCount: ''
+            },
+            mounted: function() {
+
+                this.fnCashTypeList();
+            },
+            methods: {
+                //查询
+                fnCashTypeList: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('my/cashTypeList', {
+
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.zhiName = res.msg.ali_account_name;
+                            _this.zhiCount = res.msg.alipay_account;
+                            _this.weiName = res.msg.wx_account_name;
+                            _this.weiCount = res.msg.weChat_account;
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
+                //选择提现方式
+                fnChoseType: function(type) {
+                    var _this = this;
+                    _this.choseType = type;
+                },
+                //立即提现
+                fnSure: function() {
+                    var _this = this;
+                    if (_this.choseType == 1 && !_this.weiName) {
+                        messageToast('请填写真实姓名')
+                    } else if (_this.choseType == 1 && !_this.weiCount) {
+                        messageToast('请填写微信账号')
+                    } else if (_this.choseType == 2 && !_this.zhiName) {
+                        messageToast('请填写真实姓名')
+                    } else if (_this.choseType == 2 && !_this.zhiCount) {
+                        messageToast('请填写支付宝账号')
+                    } else {
+                        showProgress();
+                        ajax('my/updateAccount', {
+                            type: _this.choseType,
+                            ali_account_name: _this.zhiName,
+                            wx_account_name: _this.weiName,
+                            account: _this.choseType == 2 ? _this.zhiCount : _this.weiCount,
+                        }, function(res) {
+                            hideProgress();
+                            if (res.code == 10000) {
+                                successToast('保存成功');
+                                api.sendEvent({
+                                    name: 'withdrawalAddSuccess',
+                                    extra: {
+                                        key1: 'value1',
+                                        key2: 'value2'
+                                    }
+                                });
+                                setTimeout(function() {
+                                    api.closeWin({});
+                                }, 1500)
+                            } else {
+                                messageToast(res.errMsg)
+                            }
+                        }, function(res) {
+                            console.log(JSON.stringify(res))
+                            hideProgress();
+                            messageToast(ERRMSG)
+                        })
+                    }
+                }
+            }
+        })
+    }
+</script>

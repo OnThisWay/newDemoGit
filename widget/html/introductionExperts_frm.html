@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            height: auto;
+        }
+
+        .empty {
+            min-height: 100vh;
+            background-color: #FFFFFF;
+            padding: 100px 15px;
+        }
+
+        .section {
+            background: #F4F4F4;
+            border-radius: 8px;
+            position: relative;
+            padding:50px 15px 15px 30px;
+        }
+
+        .imgBox {
+            width: 80px;
+            height: 80px;
+            padding: 5px;
+            background:#F4F4F4;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            margin-left: -35px;
+            top: -60px;
+        }
+
+        .imgBox img {
+             width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+        .name{
+            font-size: 14px;
+            color: #333333;
+            text-align: center;
+        }
+        .mess{
+            font-size: 12px;
+            color:#666666;
+            line-height: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="empty" id="app" >
+        <template id="" v-if="network">
+        <div class="section">
+            <div class="imgBox">
+                <img :src="detail.head" alt="" @click="fnOpenImg">
+            </div>
+            <div class="name">
+                {{detail.real_name}}
+            </div>
+            <div class="mess">
+                 {{detail.desc?detail.desc:"暂无介绍"}}
+            </div>
+        </div>
+    </template>
+
+    <div v-if="!network" class="noNetWork">
+        <div><i class="iconfont icon-duankailianjie"></i></div>
+        <div class="">
+            <span>网络连接已断开</span>
+        </div>
+        <div class="refBtn" @click="fnClickRefresh">刷新</div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                network: true,
+                id:api.pageParam.id,
+                detail: ''
+            },
+            mounted: function() {
+                var _this = this;
+                //监听网络状态
+                fnAppNetwork(function() {}, function() {
+                    _this.network = true;
+                    _this.fnGetDetail();
+                })
+                this.fnGetDetail();
+                this.fnCustomRefresh();
+            },
+            methods: {
+                //点击刷新
+                fnClickRefresh() {
+                    this.noMore = false;
+                    this.fnGetDetail("down");
+                },
+                //下拉刷新
+                fnCustomRefresh: function() {
+                    var _this = this;
+                    api.setCustomRefreshHeaderInfo({
+                        image: {
+                            pull: ['widget://image/11.png', 'widget://image/20.png', 'widget://image/3.png', 'widget://image/4.png', 'widget://image/5.png', 'widget://image/6.png', 'widget://image/7.png',
+                                'widget://image/8.png'
+                            ],
+                            load: ['widget://image/8.png', 'widget://image/7.png', 'widget://image/6.png', 'widget://image/5.png', 'widget://image/4.png', 'widget://image/3.png', 'widget://image/20.png',
+                                'widget://image/11.png'
+                            ]
+                        },
+                        bgColor: '#f5f5f5',
+                    }, function() {
+                        _this.fnGetDetail("down");
+                    });
+                },
+                //获取列表
+                fnGetDetail: function() {
+                    var _this = this;
+                    showProgress();
+                    ajax('home/snailSuperDetail', {
+                        uid:_this.id
+                    }, function(res) {
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        if (res.code == 10000) {
+                            _this.detail = res.msg[0];
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    }, function(res) {
+                        api.refreshHeaderLoadDone();
+                        hideProgress();
+                        api.refreshHeaderLoadDone();
+                        _this.network = false;
+                    })
+                },
+
+                fnOpenImg: function() {
+                    var _this = this;
+                    var imageUrls = [];
+                    imageUrls.push(_this.detail.head);
+                    fnOpenPhotoBrowser(imageUrls,0);
+                }
+            }
+        })
+
+
+    }
+</script>

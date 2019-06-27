@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>监理服务</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <style>
+        header {
+            background-color: #137696;
+            position: relative;
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        header ul li:nth-child(4) {
+            height: 90px;
+        }
+
+        header .title {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: SourceHanSansCN-Medium;
+        }
+
+        header .left {
+            position: absolute;
+            margin-left: 15px;
+            color: #FFFFFF;
+            display: flex;
+            opacity: 0.6;
+            font-weight: bolder;
+            width: 50px;
+        }
+
+        header .left img {
+            width: 26px;
+            margin: auto;
+        }
+
+        header .right {
+            height: 50px;
+            top: 0;
+            position: absolute;
+            float: right;
+            right: 15px;
+            color: #FFFFFF;
+            display: flex;
+            opacity: 0.6;
+            font-weight: bolder;
+        }
+
+        header .right img {
+            width: 20px;
+            height: 20px;
+            margin: auto 4px;
+        }
+
+        footer {
+            background-color: #FFFFFF;
+            text-align: center;
+            color: white;
+            line-height: 50px;
+            overflow: hidden;
+        }
+
+        footer .left {
+            float: left;
+            width: 50px;
+            background-color: #FFF;
+        }
+
+        footer .left img {
+            width: 50px;
+            height: 50px;
+        }
+
+        footer .right {
+            float: left;
+            width: 100vw;
+            background-color: #0097CB;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="">
+                    <div class="left" tapmode="hover" onclick="fnCloseWin()">
+                        <i class="iconfont icon-left"></i>
+                    </div>
+                    <div class="title">
+                        <span class="name">咨询服务</span>
+                    </div>
+                    <div class="right" tapmode="hover" onclick="fnOpenShare_win()">
+                        <img src="../image/share.png" alt="">
+                    </div>
+                </li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+        <footer>
+            <div class="right" tapmode="hover" onclick="fnOpenSubmitOrder_win()">我要咨询</div>
+        </footer>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        $api.fixTabBar($api.dom('footer'));
+        api.openFrame({
+            name: 'zixunServiceDetail_frm',
+            url: './zixunServiceDetail_frm.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: $api.dom('#main').offsetHeight
+            },
+            pageParam: {
+            },
+            bounces: true,
+            bgColor: '#FFFFFF',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+
+
+    }
+
+    function fnOpenSubmitOrder_win() {
+        var token = api.getPrefs({
+            sync: true,
+            key: 'token'
+        })
+        if (!token) {
+            api.openWin({
+                name: 'login_win',
+                url: './login_win.html',
+                slidBackEnabled: false,
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        }else{
+            api.sendEvent({
+                name: 'openSubmitOrder',
+                extra: {
+                    key1: 'value1',
+                    key2: 'value2'
+                }
+            });
+
+        }
+    }
+
+    function fnOpenShare_win() {
+        api.openWin({
+            name: 'share_win',
+            url: './share_win.html',
+            pageParam: {
+                serveId: 'ZX001'
+            }
+        });
+    }
+
+    function fnCloseWin() {
+        api.closeWin({});
+    }
+</script>
