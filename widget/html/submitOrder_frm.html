@@ -275,7 +275,7 @@
             <div class="name">联系电话</div>
             <div class="value"><input type="number" name="" v-model="phone" placeholder="请填写联系电话"></div>
         </div>
-        <div class="listBox" v-if="orderType==1" @click='fnChooseServiceName()'>
+        <div class="listBox" v-if="orderType==1||orderType==3" @click='fnChooseServiceName()'>
             <div class="name">服务类型</div>
             <div class="value">{{serviceNameArr[serviceChooseIndex]?serviceNameArr[serviceChooseIndex]:"请选择服务类型"}}</div>
              <i class="iconfont icon-you"></i>
@@ -403,6 +403,8 @@
                 _this.fnGetStyleList();
                 if (orderType == 1) {
                     _this.fnGetSupervisionServiceList();
+                }else if (orderType == 3) {
+                        _this.fnGetTestServiceList();
                 }
                 api.addEventListener({
                     name: 'chooseHouse'
@@ -472,11 +474,39 @@
                         messageToast(ERRMSG)
                     })
                 },
+                //查询验房服务分类
+                fnGetTestServiceList: function(type) {
+                    var _this = this;
+                    type ? "" : showProgress();
+                    ajax('order/serveList', {
+                        type: 3
+                    }, function(res) {
+                        console.log(JSON.stringify(res));
+                        hideProgress();
+                        if (res.code == 10000) {
+                            _this.serviceNameArr = res.msg.map(item => {
+                                return item.serve_name
+                            })
+                            _this.servicePriceArr = res.msg.map(item => {
+                                return item.serve_price
+                            })
+                            _this.serviceIdArr = res.msg.map(item => {
+                                return item.serve_id
+                            })
+
+                        } else {
+                            messageToast(res.errMsg)
+                        }
+                    }, function(res) {
+                        hideProgress();
+                        messageToast(ERRMSG)
+                    })
+                },
                 //选择服务类型
                 fnChooseServiceName() {
                     var _this = this;
                     api.actionSheet({
-                        title: '选择监理服务类型',
+                        title: _this.orderType==1?'选择监理服务类型':'选择验房服务类型',
                         buttons: _this.serviceNameArr
                     }, function(ret, err) {
                         if (ret) {
